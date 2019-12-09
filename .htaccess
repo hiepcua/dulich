@@ -1,0 +1,27 @@
+RewriteEngine On
+RewriteRule ^trang-chu/?$ index.php
+RewriteRule ^admin/?$ admin/index.php
+RewriteRule ^lien-he/?$ index.php?com=contact
+
+# Tour
+RewriteRule ^tour/tim-kiem/?$ 	           				index.php?com=tour&viewtype=search [QSA]
+RewriteRule ^tour/([0-9a-zA-Z\-]+)/?$                   index.php?com=tour&viewtype=detail&code=$1 [QSA]
+RewriteRule ^diem-den/([0-9a-zA-Z\-]+)?$   				index.php?com=tour&viewtype=block&code=$1 [QSA]
+RewriteRule ^booking/tour/([0-9a-zA-Z\-]+)?$   			index.php?com=tour&viewtype=booking&code=$1 [QSA]
+
+# Contents
+RewriteRule ^chuyen-muc/([0-9a-zA-Z\-]+)/?$             index.php?com=categories&viewtype=block&code=$1 [QSA]
+RewriteRule ^bai-viet/([0-9a-zA-Z\-]+)/?$             	index.php?com=contents&viewtype=detail&code=$1 [QSA]
+
+php_value memory_limit -1
+php_value post_max_size 1024M
+php_value upload_max_filesize 1024M
+
+php_value max_input_time 3000
+php_value max_execution_time 3000
+
+php_flag display_startup_errors on
+php_flag display_errors on
+php_flag html_errors on
+php_flag  log_errors on
+php_value error_log  /edu/tmp/errors.log

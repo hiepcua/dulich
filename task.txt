@@ -1,0 +1,44 @@
+- htaccess:
+	diem-den/([0-9a-zA-Z\-]+) :	tour/block
+	tour/([0-9a-zA-Z\-]+)	:	tour/detail
+
+	chuyen-muc/([0-9a-zA-Z\-]+) : categories/block
+	bai-viet/([0-9a-zA-Z\-]+) : contents/detail
+
+
+time['name', ...]
+tour_price['name', ...]
+hobbit['name', ...]
+
+tour{
+	id, name, code, un_name, view, images, content, schedule, policy, price1, price2, starting_gate, time, vehicle, cycle, number_of_holes, place_id
+}
+
+booking{
+	place_id, time, departure_day, tour, price, vehicle, number_of_holes, status, num_person, adults, children, baby, contact_info {fullname, phone, email, address}
+}
+
+place{
+	id, name, code, banner, par_id
+}
+
+group{
+	id, name, code, par_id
+
+	trong nước{
+		miền bắc,
+		miền trung, 
+		miền nam, 
+		theo mùa
+		...
+	},
+	nước ngoài{
+		Châu á,
+		Châu âu,
+		Châu mỹ,
+		Nổi bật,
+		...
+	}
+}
+
+
