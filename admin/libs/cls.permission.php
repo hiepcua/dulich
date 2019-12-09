@@ -8,7 +8,7 @@ class CLS_PERMISSION{
 		'isactive'=>1
 		);
 	private $objmysql=NULL;
-	public function CLS_PERMISSION(){
+	function __construct(){
 		$this->objmysql=new CLS_MYSQL;
 	}
 	// property set value

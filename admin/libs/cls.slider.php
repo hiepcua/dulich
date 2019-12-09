@@ -11,7 +11,7 @@ class CLS_SLIDER{
 			'Order'=>'0',
 			'isActive'=>'1');
 	private $objmysql;
-	public function CLS_SLIDER(){
+	function __construct(){
 		$this->objmysql=new CLS_MYSQL;
 	}
 	// property set value

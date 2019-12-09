@@ -10,7 +10,7 @@ class CLS_PROFILE{
         'Year'=>'','Branch'=>'',
         'isActive'=>1);
     private $objmysql=NULL;
-    public function CLS_PROFILE(){
+    function __construct(){
         $this->objmysql=new CLS_MYSQL;
     }
     // property set value

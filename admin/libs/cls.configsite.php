@@ -26,7 +26,7 @@ class CLS_CONFIG{
 		'Youtube'=>'',
 		'Nameyahoo'=>'');
 	private $objmysql=null;
-	public function CLS_CONFIG(){
+	function __construct(){
 		$this->objmysql=new CLS_MYSQL;
 	}
 	// property set value

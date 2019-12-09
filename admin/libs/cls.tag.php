@@ -7,7 +7,7 @@ class CLS_TAG{
 						'MDesc'=>''
 						);
 	private $objmysql=NULL;
-	public function CLS_TAG(){
+	function __construct(){
 		$this->objmysql=new CLS_MYSQL;
 	}
 	// property set value

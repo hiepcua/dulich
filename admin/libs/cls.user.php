@@ -22,7 +22,7 @@ class CLS_USER{
 		);
 	private $objmysql=NULL;
 	
-	public function CLS_USER(){
+	function __construct(){
 		$this->Joindate=time();
 		$this->LastLogin=time();
 		$this->objmysql=new CLS_MYSQL;

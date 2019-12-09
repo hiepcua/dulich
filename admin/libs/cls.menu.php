@@ -9,7 +9,7 @@ class CLS_MENU{
 		'isActive'=>1
 		);
 	private $objmysql=NULL;
-	public function CLS_MENU(){
+	function __construct(){
 		$this->objmysql=new CLS_MYSQL;
 	}
 	// property set value

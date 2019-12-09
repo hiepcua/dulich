@@ -6,7 +6,7 @@ class CLS_CITY{
 						'Order'=>'',
 						'isActive'=>1);
 	private $objmysql=NULL;
-	public function CLS_CITY(){
+	function __construct(){
 		$this->objmysql=new CLS_MYSQL;
 	}
 	// property set value

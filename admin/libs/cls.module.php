@@ -17,7 +17,7 @@ class CLS_MODULE{
 		'isActive'=>1
 		);
 	private $objmysql=NULL;
-	public function CLS_MODULE(){
+	function __construct(){
 		$this->objmysql=new CLS_MYSQL;
 	}
 	// property set value

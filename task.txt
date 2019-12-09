@@ -11,7 +11,7 @@ tour_price['name', ...]
 hobbit['name', ...]
 
 tour{
-	id, name, code, un_name, view, images, content, schedule, policy, price1, price2, starting_gate, time, vehicle, cycle, number_of_holes, place_id
+	id, name, code, un_name, place_id, view, images, content, schedule, policy, price1, price2, starting_gate, days, vehicle, departure, number_of_holes, 
 }
 
 booking{

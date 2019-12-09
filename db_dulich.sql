@@ -4,13 +4,13 @@ Navicat MySQL Data Transfer
 Source Server         : localhost
 Source Server Version : 50505
 Source Host           : localhost:3306
-Source Database       : admin_dathoabinh
+Source Database       : db_dulich
 
 Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2019-12-09 17:50:30
+Date: 2019-12-10 02:21:32
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -37,6 +37,29 @@ CREATE TABLE `tbl_album` (
 -- Records of tbl_album
 -- ----------------------------
 INSERT INTO `tbl_album` VALUES ('8', '0', 'thu-vien-anh', '', 'Thư viện ảnh', '', '2019-07-14 17:27:09', '5', null, '1');
+
+-- ----------------------------
+-- Table structure for tbl_booking
+-- ----------------------------
+DROP TABLE IF EXISTS `tbl_booking`;
+CREATE TABLE `tbl_booking` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `group_id` int(11) DEFAULT NULL,
+  `code` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `thumb` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `name` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `intro` text COLLATE utf8_unicode_ci NOT NULL,
+  `cdate` datetime NOT NULL,
+  `visited` int(11) DEFAULT '0',
+  `order` tinyint(5) DEFAULT NULL,
+  `isactive` tinyint(4) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- ----------------------------
+-- Records of tbl_booking
+-- ----------------------------
+INSERT INTO `tbl_booking` VALUES ('8', '0', 'thu-vien-anh', '', 'Thư viện ảnh', '', '2019-07-14 17:27:09', '5', null, '1');
 
 -- ----------------------------
 -- Table structure for tbl_boxes
@@ -895,13 +918,96 @@ CREATE TABLE `tbl_place` (
   `isactive` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `code` (`code`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=89 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
 -- Records of tbl_place
 -- ----------------------------
 INSERT INTO `tbl_place` VALUES ('1', '0', 'Du lịch trong nước', 'du-lich-trong-nuoc', '[{\"url\":\"http://localhost/dulich/images/du-lich-trong-nuoc/banner-03_dpl.jpg\",\"alt\":\"\",\"order\":\"\"}]', '', '0', '1');
 INSERT INTO `tbl_place` VALUES ('5', '0', 'Du lịch nước ngoài', 'du-lich-nuoc-ngoai', '[{\"url\":\"http://localhost/dulich/images/du-lich-nuoc-ngoai/banner-01_bjy.jpg\",\"alt\":\"\",\"order\":0},{\"url\":\"http://localhost/dulich/images/du-lich-nuoc-ngoai/banner-02_qle.jpg\",\"alt\":\"\",\"order\":0},{\"url\":\"http://localhost/dulich/images/du-lich-nuoc-ngoai/banner-03_aou.jpg\",\"alt\":\"\",\"order\":0}]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('6', '1', 'Du lịch Miền Bắc', 'du-lich-mien-bac', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('7', '1', 'Du lịch Miền Nam', 'du-lich-mien-nam', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('8', '1', 'Du lịch Nam Bộ', 'du-lich-nam-bo', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('9', '1', 'Du lịch theo mùa', 'du-lich-theo-mua', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('10', '5', 'Du lịch Châu Á', 'du-lich-chau-a', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('11', '5', 'Du lịch Châu Âu', 'du-lich-chau-au', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('12', '5', 'Du lịch Châu Mỹ - Phi - Úc', 'du-lich-chau-my-phi-uc', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('13', '5', 'Tour nổi bật', 'tour-noi-bat', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('14', '6', 'Du lịch Sapa', 'du-lich-sapa', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('15', '6', 'Du lịch Điện Biên', 'du-lich-dien-bien', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('16', '6', 'Du lịch Hòa Bình', 'du-lich-hoa-binh', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('17', '6', 'Du lịch Sơn La', 'du-lich-son-la', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('18', '6', 'Du lịch Hà Giang', 'du-lich-ha-giang', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('19', '6', 'Du lịch Cao Bằng', 'du-lich-cao-bang', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('20', '6', 'Du lịch Bắc Cạn', 'du-lich-bac-can', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('21', '6', 'Du lịch Lạng Sơn', 'du-lich-lang-son', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('22', '6', 'Du lịch Tuyên Quang', 'du-lich-tuyen-quang', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('23', '6', 'Du lịch Phú Thọ', 'du-lich-phu-tho', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('24', '6', 'Du lịch Quảng Ninh', 'du-lich-quang-ninh', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('25', '6', 'Du lịch Bắc Ninh', 'du-lich-bac-ninh', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('26', '6', 'Du lịch Hà Nội', 'du-lich-ha-noi', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('27', '6', 'Du lịch Hải Dương', 'du-lich-hai-duong', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('28', '6', 'Du lịch Hải Phòng', 'du-lich-hai-phong', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('29', '6', 'Du lịch Nam Định ', 'du-lich-nam-dinh-', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('30', '6', 'Du lịch Ninh Bình', 'du-lich-ninh-binh', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('31', '6', 'Du lịch Vĩnh Phúc', 'du-lich-vinh-phuc', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('32', '1', 'Du lịch Miền Trung', 'du-lich-mien-trung', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('33', '32', 'Du lịch Thanh Hóa', 'du-lich-thanh-hoa', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('34', '32', 'Du lịch Nghệ An', 'du-lich-nghe-an', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('35', '32', 'Du lịch Hà Tĩnh', 'du-lich-ha-tinh', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('36', '32', 'Du lịch Quảng Bình', 'du-lich-quang-binh', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('37', '32', 'Du lịch Quảng Trị', 'du-lich-quang-tri', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('38', '32', 'Du lịch Thừa Thiên Huế', 'du-lich-thua-thien-hue', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('39', '32', 'Du lịch Đà Nẵng', 'du-lich-da-nang', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('40', '32', 'Du lịch Quảng Nam', 'du-lich-quang-nam', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('41', '32', 'Du lịch Quảng Ngãi', 'du-lich-quang-ngai', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('42', '32', 'Du lịch Bình Định', 'du-lich-binh-dinh', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('43', '32', 'Du lịch Phú Yên', 'du-lich-phu-yen', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('44', '32', 'Du lịch Khánh Hòa', 'du-lich-khanh-hoa', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('45', '32', 'Du lịch Ninh Thuận', 'du-lich-ninh-thuan', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('46', '32', 'Du lịch Bình Thuận', 'du-lich-binh-thuan', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('47', '32', 'Du lịch Kon Tum', 'du-lich-kon-tum', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('48', '32', 'Du lịch Gia Lai', 'du-lich-gia-lai', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('49', '32', 'Du lịch Đắc Lắc', 'du-lich-dac-lac', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('50', '32', 'Du lịch Đắc Nông', 'du-lich-dac-nong', '[]', '<p>&nbsp;&nbsp;&nbsp;&nbsp;<br></p>', '0', '1');
+INSERT INTO `tbl_place` VALUES ('51', '32', 'Du lịch Lâm Đồng', 'du-lich-lam-dong', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('52', '7', 'Du lịch TPHCM', 'du-lich-tphcm', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('53', '7', 'Du lịch Bình Phướng', 'du-lich-binh-phuong', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('54', '7', 'Du lịch Bình Dương', 'du-lich-binh-duong', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('55', '7', 'Du lịch Đồng Nai', 'du-lich-dong-nai', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('56', '7', 'Du lịch Tây Ninh', 'du-lich-tay-ninh', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('57', '7', 'Du lịch Bà Rịa - Vũng Tàu', 'du-lich-ba-ria-vung-tau', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('58', '7', 'Du lịch Long An', 'du-lich-long-an', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('59', '7', 'Du lịch Đồng Tháp', 'du-lich-dong-thap', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('60', '7', 'Du lịch Tiền Giang', 'du-lich-tien-giang', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('61', '7', 'Du lịch An Giang', 'du-lich-an-giang', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('62', '7', 'Du lịch Bến Tre', 'du-lich-ben-tre', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('63', '7', 'Du lịch Vĩnh Long', 'du-lich-vinh-long', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('64', '7', 'Du lịch Trà Vinh', 'du-lich-tra-vinh', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('65', '7', 'Du lịch Hậu Giang', 'du-lich-hau-giang', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('66', '7', 'Du lịch Kiên Giang', 'du-lich-kien-giang', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('67', '7', 'Du lịch Sóc Trăng', 'du-lich-soc-trang', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('68', '7', 'Du lịch Cà Mau', 'du-lich-ca-mau', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('69', '7', 'Du lịch Cần Thơ', 'du-lich-can-tho', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('70', '9', 'Du lịch Phú Quốc', 'du-lich-phu-quoc', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('71', '9', 'Du lịch Đà Nẵng - Hội An', 'du-lich-da-nang-hoi-an', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('72', '9', 'Du lịch Huế', 'du-lich-hue', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('73', '9', 'Du lịch Cô Tô', 'du-lich-co-to', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('74', '9', 'Du lịch Quan Lạn', 'du-lich-quan-lan', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('75', '9', 'Du lịch Hạ Long', 'du-lich-ha-long', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('76', '9', 'Du lịch Sầm Sơn', 'du-lich-sam-son', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('77', '9', 'Du lịch Cửa Lò', 'du-lich-cua-lo', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('78', '9', 'Du lịch Nha Trang - Đà Lạt', 'du-lich-nha-trang-da-lat', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('79', '9', 'Du lịch Mũi Né - Phan Thiết', 'du-lich-mui-ne-phan-thiet', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('80', '9', 'Du lịch Vũng Tàu ', 'du-lich-vung-tau-', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('81', '9', 'Du lịch Chùa Hươnng', 'du-lich-chua-huonng', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('82', '9', 'Du lịch Tràng An - Bái Đính', 'du-lich-trang-an-bai-dinh', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('83', '9', 'Du lịch Côn Sơn Kiếp Bạc', 'du-lich-con-son-kiep-bac', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('84', '9', 'Du lịch Đền Hùng', 'du-lich-den-hung', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('85', '9', 'Du lịch Yên Tử', 'du-lich-yen-tu', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('86', '9', 'Du lịch Đền Mẫu', 'du-lich-den-mau', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('87', '9', 'Du lịch Sapa 1', 'du-lich-sapa-1', '[]', '', '0', '1');
+INSERT INTO `tbl_place` VALUES ('88', '9', 'Du lịch Hà Giang 1', 'du-lich-ha-giang-1', '[]', '', '0', '1');
 
 -- ----------------------------
 -- Table structure for tbl_position
@@ -1072,13 +1178,96 @@ CREATE TABLE `tbl_seo` (
   `order` tinyint(4) DEFAULT '0',
   `isactive` tinyint(4) DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=91 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of tbl_seo
 -- ----------------------------
 INSERT INTO `tbl_seo` VALUES ('2', 'Du lịch trong nước', 'http://localhost/dulich/diem-den/du-lich-trong-nuoc', 'http://localhost/dulich/images/du-lich-trong-nuoc/banner-03_dpl.jpg', 'Du lịch trong nước', 'Du lịch trong nước', 'Du lịch trong nước', '0', '0', '1');
 INSERT INTO `tbl_seo` VALUES ('6', 'Du lịch nước ngoài', 'http://localhost/dulich/diem-den/du-lich-nuoc-ngoai', 'http://localhost/dulich/images/du-lich-nuoc-ngoai/banner-01_bjy.jpg', 'Du lịch nước ngo&agrave;i', 'Du lịch nước ngo&agrave;i', 'Du lịch nước ngo&agrave;i', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('7', 'Du lịch Miền Bắc', 'http://localhost/dulich/diem-den/du-lich-mien-bac', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('8', 'Du lịch Miền Nam', 'http://localhost/dulich/diem-den/du-lich-mien-nam', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('9', 'Du lịch Nam Bộ', 'http://localhost/dulich/diem-den/du-lich-nam-bo', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('10', 'Du lịch theo mùa', 'http://localhost/dulich/diem-den/du-lich-theo-mua', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('11', 'Du lịch Châu Á', 'http://localhost/dulich/diem-den/du-lich-chau-a', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('12', 'Du lịch Châu Âu', 'http://localhost/dulich/diem-den/du-lich-chau-au', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('13', 'Du lịch Châu Mỹ - Phi - Úc', 'http://localhost/dulich/diem-den/du-lich-chau-my-phi-uc', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('14', 'Tour nổi bật', 'http://localhost/dulich/diem-den/tour-noi-bat', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('15', 'Du lịch Sapa', 'http://localhost/dulich/diem-den/du-lich-sapa', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('16', 'Du lịch Điện Biên', 'http://localhost/dulich/diem-den/du-lich-dien-bien', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('17', 'Du lịch Hòa Bình', 'http://localhost/dulich/diem-den/du-lich-hoa-binh', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('18', 'Du lịch Sơn La', 'http://localhost/dulich/diem-den/du-lich-son-la', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('19', 'Du lịch Hà Giang', 'http://localhost/dulich/diem-den/du-lich-ha-giang', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('20', 'Du lịch Cao Bằng', 'http://localhost/dulich/diem-den/du-lich-cao-bang', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('21', 'Du lịch Bắc Cạn', 'http://localhost/dulich/diem-den/du-lich-bac-can', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('22', 'Du lịch Lạng Sơn', 'http://localhost/dulich/diem-den/du-lich-lang-son', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('23', 'Du lịch Tuyên Quang', 'http://localhost/dulich/diem-den/du-lich-tuyen-quang', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('24', 'Du lịch Phú Thọ', 'http://localhost/dulich/diem-den/du-lich-phu-tho', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('25', 'Du lịch Quảng Ninh', 'http://localhost/dulich/diem-den/du-lich-quang-ninh', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('26', 'Du lịch Bắc Ninh', 'http://localhost/dulich/diem-den/du-lich-bac-ninh', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('27', 'Du lịch Hà Nội', 'http://localhost/dulich/diem-den/du-lich-ha-noi', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('28', 'Du lịch Hải Dương', 'http://localhost/dulich/diem-den/du-lich-hai-duong', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('30', 'Du lịch Hải Phòng', 'http://localhost/dulich/diem-den/du-lich-hai-phong', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('31', 'Du lịch Nam Định ', 'http://localhost/dulich/diem-den/du-lich-nam-dinh-', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('32', 'Du lịch Ninh Bình', 'http://localhost/dulich/diem-den/du-lich-ninh-binh', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('33', 'Du lịch Vĩnh Phúc', 'http://localhost/dulich/diem-den/du-lich-vinh-phuc', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('34', 'Du lịch Miền Trung', 'http://localhost/dulich/diem-den/du-lich-mien-trung', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('35', 'Du lịch Thanh Hóa', 'http://localhost/dulich/diem-den/du-lich-thanh-hoa', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('36', 'Du lịch Nghệ An', 'http://localhost/dulich/diem-den/du-lich-nghe-an', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('37', 'Du lịch Hà Tĩnh', 'http://localhost/dulich/diem-den/du-lich-ha-tinh', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('38', 'Du lịch Quảng Bình', 'http://localhost/dulich/diem-den/du-lich-quang-binh', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('39', 'Du lịch Quảng Trị', 'http://localhost/dulich/diem-den/du-lich-quang-tri', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('40', 'Du lịch Thừa Thiên Huế', 'http://localhost/dulich/diem-den/du-lich-thua-thien-hue', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('41', 'Du lịch Đà Nẵng', 'http://localhost/dulich/diem-den/du-lich-da-nang', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('42', 'Du lịch Quảng Nam', 'http://localhost/dulich/diem-den/du-lich-quang-nam', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('43', 'Du lịch Quảng Ngãi', 'http://localhost/dulich/diem-den/du-lich-quang-ngai', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('44', 'Du lịch Bình Định', 'http://localhost/dulich/diem-den/du-lich-binh-dinh', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('45', 'Du lịch Phú Yên', 'http://localhost/dulich/diem-den/du-lich-phu-yen', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('46', 'Du lịch Khánh Hòa', 'http://localhost/dulich/diem-den/du-lich-khanh-hoa', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('47', 'Du lịch Ninh Thuận', 'http://localhost/dulich/diem-den/du-lich-ninh-thuan', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('48', 'Du lịch Bình Thuận', 'http://localhost/dulich/diem-den/du-lich-binh-thuan', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('49', 'Du lịch Kon Tum', 'http://localhost/dulich/diem-den/du-lich-kon-tum', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('50', 'Du lịch Gia Lai', 'http://localhost/dulich/diem-den/du-lich-gia-lai', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('51', 'Du lịch Đắc Lắc', 'http://localhost/dulich/diem-den/du-lich-dac-lac', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('52', 'Du lịch Đắc Nông', 'http://localhost/dulich/diem-den/du-lich-dac-nong', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('53', 'Du lịch Lâm Đồng', 'http://localhost/dulich/diem-den/du-lich-lam-dong', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('54', 'Du lịch TPHCM', 'http://localhost/dulich/diem-den/du-lich-tphcm', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('55', 'Du lịch Bình Phướng', 'http://localhost/dulich/diem-den/du-lich-binh-phuong', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('56', 'Du lịch Bình Dương', 'http://localhost/dulich/diem-den/du-lich-binh-duong', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('57', 'Du lịch Đồng Nai', 'http://localhost/dulich/diem-den/du-lich-dong-nai', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('58', 'Du lịch Tây Ninh', 'http://localhost/dulich/diem-den/du-lich-tay-ninh', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('59', 'Du lịch Bà Rịa - Vũng Tàu', 'http://localhost/dulich/diem-den/du-lich-ba-ria-vung-tau', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('60', 'Du lịch Long An', 'http://localhost/dulich/diem-den/du-lich-long-an', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('61', 'Du lịch Đồng Tháp', 'http://localhost/dulich/diem-den/du-lich-dong-thap', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('62', 'Du lịch Tiền Giang', 'http://localhost/dulich/diem-den/du-lich-tien-giang', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('63', 'Du lịch An Giang', 'http://localhost/dulich/diem-den/du-lich-an-giang', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('64', 'Du lịch Bến Tre', 'http://localhost/dulich/diem-den/du-lich-ben-tre', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('65', 'Du lịch Vĩnh Long', 'http://localhost/dulich/diem-den/du-lich-vinh-long', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('66', 'Du lịch Trà Vinh', 'http://localhost/dulich/diem-den/du-lich-tra-vinh', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('67', 'Du lịch Hậu Giang', 'http://localhost/dulich/diem-den/du-lich-hau-giang', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('68', 'Du lịch Kiên Giang', 'http://localhost/dulich/diem-den/du-lich-kien-giang', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('69', 'Du lịch Sóc Trăng', 'http://localhost/dulich/diem-den/du-lich-soc-trang', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('70', 'Du lịch Cà Mau', 'http://localhost/dulich/diem-den/du-lich-ca-mau', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('71', 'Du lịch Cần Thơ', 'http://localhost/dulich/diem-den/du-lich-can-tho', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('72', 'Du lịch Phú Quốc', 'http://localhost/dulich/diem-den/du-lich-phu-quoc', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('73', 'Du lịch Đà Nẵng - Hội An', 'http://localhost/dulich/diem-den/du-lich-da-nang-hoi-an', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('74', 'Du lịch Huế', 'http://localhost/dulich/diem-den/du-lich-hue', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('75', 'Du lịch Cô Tô', 'http://localhost/dulich/diem-den/du-lich-co-to', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('76', 'Du lịch Quan Lạn', 'http://localhost/dulich/diem-den/du-lich-quan-lan', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('77', 'Du lịch Hạ Long', 'http://localhost/dulich/diem-den/du-lich-ha-long', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('78', 'Du lịch Sầm Sơn', 'http://localhost/dulich/diem-den/du-lich-sam-son', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('79', 'Du lịch Cửa Lò', 'http://localhost/dulich/diem-den/du-lich-cua-lo', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('80', 'Du lịch Nha Trang - Đà Lạt', 'http://localhost/dulich/diem-den/du-lich-nha-trang-da-lat', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('81', 'Du lịch Mũi Né - Phan Thiết', 'http://localhost/dulich/diem-den/du-lich-mui-ne-phan-thiet', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('82', 'Du lịch Vũng Tàu ', 'http://localhost/dulich/diem-den/du-lich-vung-tau-', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('83', 'Du lịch Chùa Hươnng', 'http://localhost/dulich/diem-den/du-lich-chua-huonng', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('84', 'Du lịch Tràng An - Bái Đính', 'http://localhost/dulich/diem-den/du-lich-trang-an-bai-dinh', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('85', 'Du lịch Côn Sơn Kiếp Bạc', 'http://localhost/dulich/diem-den/du-lich-con-son-kiep-bac', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('86', 'Du lịch Đền Hùng', 'http://localhost/dulich/diem-den/du-lich-den-hung', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('87', 'Du lịch Yên Tử', 'http://localhost/dulich/diem-den/du-lich-yen-tu', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('88', 'Du lịch Đền Mẫu', 'http://localhost/dulich/diem-den/du-lich-den-mau', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('89', 'Du lịch Sapa 1', 'http://localhost/dulich/diem-den/du-lich-sapa-1', '', '', '', '', '0', '0', '1');
+INSERT INTO `tbl_seo` VALUES ('90', 'Du lịch Hà Giang 1', 'http://localhost/dulich/diem-den/du-lich-ha-giang-1', '', '', '', '', '0', '0', '1');
 
 -- ----------------------------
 -- Table structure for tbl_slider
@@ -1153,18 +1342,19 @@ CREATE TABLE `tbl_tour` (
   `un_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `code` char(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `place_id` int(11) NOT NULL,
-  `vendor_id` int(11) DEFAULT NULL,
-  `partner_id` int(11) DEFAULT NULL,
-  `name1` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `intro` text COLLATE utf8_unicode_ci NOT NULL,
-  `fulltext` longtext COLLATE utf8_unicode_ci NOT NULL,
-  `thumb` text COLLATE utf8_unicode_ci NOT NULL,
-  `color` text COLLATE utf8_unicode_ci,
-  `size` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `start_price` decimal(10,0) DEFAULT NULL,
-  `old_price` decimal(10,0) NOT NULL,
-  `cur_price` decimal(10,0) NOT NULL,
-  `quantity` bigint(20) NOT NULL,
+  `content` text COLLATE utf8_unicode_ci NOT NULL,
+  `schedule` text COLLATE utf8_unicode_ci,
+  `policy` text COLLATE utf8_unicode_ci,
+  `image` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `images` text COLLATE utf8_unicode_ci NOT NULL,
+  `price1` int(11) DEFAULT NULL,
+  `price2` int(11) DEFAULT NULL,
+  `starting_gate` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `departure` int(11) DEFAULT NULL,
+  `days` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `vehicle` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `number_of_holes` int(11) DEFAULT NULL,
   `cdate` datetime NOT NULL,
   `mdate` datetime NOT NULL,
   `author` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -1177,8 +1367,6 @@ CREATE TABLE `tbl_tour` (
   `isactive` int(11) unsigned NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `idx_catid` (`place_id`),
-  KEY `idx_vendor` (`vendor_id`),
-  KEY `idx_partner` (`partner_id`),
   KEY `idx_hot` (`ishot`),
   KEY `idx_active` (`isactive`),
   KEY `idx_mdate` (`mdate`)
@@ -1247,7 +1435,7 @@ CREATE TABLE `tbl_user` (
 -- Records of tbl_user
 -- ----------------------------
 INSERT INTO `tbl_user` VALUES ('12', 'igf', 'd93a5def7511da3d0f2d171d9c344e91', 'IGF', 'JSC', '0000-00-00', '', '', '', '', '', null, null, null, '0000-00-00 00:00:00', '2019-10-27 10:39:49', '1', null, '1');
-INSERT INTO `tbl_user` VALUES ('16', 'admin', 'd93a5def7511da3d0f2d171d9c344e91', 'Admin', 'Admin', '0000-00-00', '0', '', '123456789', '', 'a@gmail.com', null, '1111111111', '', '2019-07-23 17:13:50', '2019-12-09 05:40:30', '1', null, '1');
+INSERT INTO `tbl_user` VALUES ('16', 'admin', 'd93a5def7511da3d0f2d171d9c344e91', 'Admin', 'Admin', '0000-00-00', '0', '', '123456789', '', 'a@gmail.com', null, '1111111111', '', '2019-07-23 17:13:50', '2019-12-10 02:20:13', '1', null, '1');
 INSERT INTO `tbl_user` VALUES ('20', 'danghien', '8fce8935f4d4dc9cfaf4ca6f705b2329', 'Hiển', 'Nguyễn Đăng', '0000-00-00', '0', '', '1234567890', '', 'a@gmail.com', null, null, null, '2019-10-17 09:33:05', '2019-12-02 10:49:24', '1', null, '1');
 
 -- ----------------------------
@@ -1410,4 +1598,4 @@ INSERT INTO `tbl_ward` VALUES ('131', '1', '83', 'x&atilde; Cẩm Lĩnh', '0', '
 -- View structure for view_cate
 -- ----------------------------
 DROP VIEW IF EXISTS `view_cate`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`hieploicho_db`@`localhost` SQL SECURITY DEFINER  VIEW `view_cate` AS (select `tbl_category`.`cat_id` AS `cat_id`,`tbl_category`.`par_id` AS `par_id`,`tbl_category`.`isactive` AS `isactive`,`tbl_category_text`.`name` AS `name`,`tbl_category_text`.`meta_title` AS `meta_title`,`tbl_category_text`.`meta_key` AS `meta_key`,`tbl_category_text`.`meta_desc` AS `meta_desc`,`tbl_category_text`.`lag_id` AS `lag_id`,`tbl_category_text`.`alias` AS `alias` from (`tbl_category_text` join `tbl_category` on((`tbl_category_text`.`cat_id` = `tbl_category`.`cat_id`)))) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost`  VIEW `view_cate` AS (select `tbl_category`.`cat_id` AS `cat_id`,`tbl_category`.`par_id` AS `par_id`,`tbl_category`.`isactive` AS `isactive`,`tbl_category_text`.`name` AS `name`,`tbl_category_text`.`meta_title` AS `meta_title`,`tbl_category_text`.`meta_key` AS `meta_key`,`tbl_category_text`.`meta_desc` AS `meta_desc`,`tbl_category_text`.`lag_id` AS `lag_id`,`tbl_category_text`.`alias` AS `alias` from (`tbl_category_text` join `tbl_category` on((`tbl_category_text`.`cat_id` = `tbl_category`.`cat_id`)))) ;

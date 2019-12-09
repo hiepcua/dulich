@@ -18,7 +18,7 @@ class CLS_MAILBOX{
 		'Viewed'=>0,
 	);
 	private $objmysql=NULL;
-	public function CLS_MAILBOX(){
+	function __construct(){
 		$this->objmysql=new CLS_MYSQL;
 		$this->CreateDate = date("d/m/Y H:i:s");
 	}

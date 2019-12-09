@@ -19,7 +19,7 @@ class CLS_MAILER {
 			);
     var $numrows=0;
 	// property set value
-    function CLS_MAILER() {
+    function __construct(){
         //$this->time=date("Y-m-d h:i:s");
     }
 	function __set($proname,$value){

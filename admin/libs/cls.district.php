@@ -6,7 +6,7 @@ class CLS_DISTRICT{
 						'Order'=>'',
 						'isActive'=>1);
 	private $objmysql=NULL;
-	public function CLS_DISTRICT(){
+	function __construct(){
 		$this->objmysql=new CLS_MYSQL;
 	}
 	// property set value

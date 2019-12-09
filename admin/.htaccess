@@ -36,6 +36,17 @@ RewriteRule ^place/edit/([0-9]+)?$ 				index.php?com=place&task=edit&id=$1
 RewriteRule ^place/delete/([0-9]+)?$ 			index.php?com=place&task=delete&id=$1
 RewriteRule ^place/active/([0-9]+)?$ 			index.php?com=place&task=active&id=$1
 
+
+# Tour
+RewriteRule ^tour/?$ 							index.php?com=tour 	[QSA]
+RewriteRule ^tour/add?$ 						index.php?com=tour&task=add
+RewriteRule ^tour/edit/([0-9]+)?$ 				index.php?com=tour&task=edit&id=$1
+RewriteRule ^tour/ishot/([0-9]+)?$ 				index.php?com=tour&task=ishot&id=$1
+RewriteRule ^tour/active/([0-9]+)?$ 			index.php?com=tour&task=active&id=$1
+RewriteRule ^tour/delete/([0-9]+)?$ 			index.php?com=tour&task=delete&id=$1
+RewriteRule ^tour/category/([0-9]+)?$ 			index.php?com=tour&task=list&cate=$1
+
+
 #Category
 RewriteRule ^category/?$ 							index.php?com=category 	[QSA]
 RewriteRule ^category/add?$ 						index.php?com=category&task=add

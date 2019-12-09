@@ -10,7 +10,7 @@ class CLS_TYPE{
         'Order'=>'',
         'isActive'=>1);
     private $objmysql=NULL;
-    public function CLS_TYPE(){
+    function __construct(){
         $this->objmysql=new CLS_MYSQL;
     }
     // property set value

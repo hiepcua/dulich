@@ -7,7 +7,7 @@ class CLS_USER_GROUP{
 		'isActive'=>1
 		);
 	private $objmysql=NULL;
-	public function CLS_USER_GROUP(){
+	function __construct(){
 		$this->objmysql=new CLS_MYSQL;
 	}
 	// property set value

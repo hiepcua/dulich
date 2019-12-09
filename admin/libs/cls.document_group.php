@@ -12,7 +12,7 @@ class CLS_DOCUMENT_TYPE {
 		"isActive"=>1
 		);
 	private $objmysql=null;
-	public function CLS_DOCUMENT_TYPE(){
+	function __construct(){
 		$this->objmysql=new CLS_MYSQL;
 	}
 	public function getList($where='',$lag_id=0){

@@ -10,7 +10,7 @@ class CLS_GUSER{
 					  'isActive'=>1
 					  );
 	private $objmysql=NULL;
-	public function CLS_GUSER(){
+	function __construct(){
 		$this->objmysql=new CLS_MYSQL;
 	}
 	// property set value

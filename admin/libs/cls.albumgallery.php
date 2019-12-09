@@ -12,7 +12,7 @@ class CLS_ALBUMGALLERY{
 						'GLink'=>'',
 						'GisActive'=>1);
 	private $objmysql=NULL;
-	public function CLS_ALBUMGALLERY(){
+	function __construct(){
 		$this->objmysql=new CLS_MYSQL;
 	}
 	// property set value

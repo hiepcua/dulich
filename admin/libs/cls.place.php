@@ -65,7 +65,7 @@ class CLS_PLACE{
         if($level!=0){  
 			$str_space.="|";
             for($i=0;$i<$level;$i++)
-                $str_space.="--- "; 
+                $str_space.="|----- "; 
         }
         while($rows=$objdata->Fetch_Assoc()){
             $rowcount++;

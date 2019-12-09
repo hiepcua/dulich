@@ -7,7 +7,7 @@ class CLS_MYSQL{
 	private $conn=NULL;
 	private $rs;
 	private $lastid;
-	public function CLS_MYSQL(){
+	function __construct(){
 		// set value
 		$this->HOSTNAME=HOSTNAME;
 		$this->USERNAME=DB_USERNAME;

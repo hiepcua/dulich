@@ -10,7 +10,7 @@ class CLS_CATEGORY{
         'Order'=>'',
         'isActive'=>1);
     private $objmysql=NULL;
-    public function CLS_CATEGORY(){
+    function __construct(){
         $this->objmysql=new CLS_MYSQL;
     }
     // property set value

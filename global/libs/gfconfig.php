@@ -9,7 +9,7 @@ elseif (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED
 $REQUEST_PROTOCOL = $isSecure ? 'https://' : 'http://';
 
 // define('ROOTHOST',$REQUEST_PROTOCOL.$_SERVER['HTTP_HOST'].'/');
-define('ROOTHOST','http://localhost:8000/dathoabinh/');
+define('ROOTHOST','http://localhost/dulich/');
 define('ROOTHOST_ADMIN',ROOTHOST.'admin/');
 define('WEBSITE',$REQUEST_PROTOCOL.$_SERVER['HTTP_HOST'].'/');
 define('BASEVIRTUAL0','../../images/');
@@ -63,4 +63,5 @@ define('COM_CONTACT','');
 define('TOUR_TIME', serialize(array("1NGÀY", "2N/1Đ", "3N/2Đ", "4N/3Đ", "5N/4Đ", "6N/5Đ", "7N/6Đ", "8N/7Đ", "9N/8Đ", "10N/9Đ", "11N/10Đ", "12N/11Đ", "13N/12Đ", "14N/13Đ", "15N/14Đ", "TRÊN 15N", "4Đ/3N", "1N1Đ", "2N2Đ", "3N3Đ")));
 define('TOUR_PRICE', serialize(array("Dưới 2tr", "Từ 2tr-3tr", "Từ 3tr-5tr", "Từ 5tr-10tr", "Từ 10tr-15tr", "Từ 15tr-20tr", "Từ 20tr-50tr", "Trên 50tr")));
 define('TOUR_HOBBIT', serialize(array("Picnic", "Phượt", "Nghỉ dưỡng", "Khám phá", "Biển", "Tâm linh")));
+define('TOUR_VEHICLE', serialize(array("Ô tô", "Xe máy", "Máy bay")));
 ?>

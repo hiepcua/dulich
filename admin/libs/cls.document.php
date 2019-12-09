@@ -25,7 +25,7 @@ class CLS_DOCUMENT{
         "isHot"=>0,
 		'IsActive'=>1);
 	private $objmysql;
-	public function CLS_DOCUMENT(){
+	function __construct(){
 		$this->objmysql=new CLS_MYSQL;
 	}
 	// property set value

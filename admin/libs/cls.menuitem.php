@@ -20,7 +20,7 @@ class CLS_MENUITEM{
 		);
 	private $rowcount=0;
 	private $objmysql=NULL;
-	public function CLS_MENUITEM(){
+	function __construct(){
 		$this->objmysql=new CLS_MYSQL;
 	}
 	// property set value

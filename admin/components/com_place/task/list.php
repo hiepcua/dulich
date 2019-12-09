@@ -109,7 +109,7 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
         <tr>
             <td align="center">
                 <?php 
-                paging($total_rows,MAX_ROWS_ADMIN,$cur_page);
+                // paging($total_rows,MAX_ROWS_ADMIN,$cur_page);
                 ?>
             </td>
         </tr>
