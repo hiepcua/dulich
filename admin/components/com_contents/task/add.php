@@ -23,13 +23,13 @@ defined("ISHOME") or die("Can't acess this page, please come back!");
 <div id="path">
     <ol class="breadcrumb">
         <li><a href="<?php echo ROOTHOST_ADMIN;?>">Admin</a></li>
-        <li><a href="<?php echo ROOTHOST_ADMIN.COMS;?>">Danh sách tin đất đai</a></li>
-        <li class="active">Thêm mới tin đất đai</li>
+        <li><a href="<?php echo ROOTHOST_ADMIN.COMS;?>">Danh sách bài viết</a></li>
+        <li class="active">Thêm mới bài viết</li>
     </ol>
 </div>
 
 <div class="com_header color">
-    <h1>Thêm mới tin đất đai</h1>
+    <h1>Thêm mới bài viết</h1>
     <div class="pull-right">
         <form id="frm_menu" name="frm_menu" method="post" action="">
             <input type="hidden" name="txtorders" id="txtorders" />
@@ -63,7 +63,7 @@ defined("ISHOME") or die("Can't acess this page, please come back!");
             <div class="tab-pane fade active in" id="info">
                 <div class="col-md-9 col-sm-8">
                     <div class="form-group">
-                        <label>Tiêu đề<small class="cred"> (*)</small><span id="err_name" class="mes-error"></span></label>
+                        <label>Tên bài viết<small class="cred"> (*)</small><span id="err_name" class="mes-error"></span></label>
                         <input type="text" name="txt_name" class="form-control" id="txt_name" placeholder="" required>
                         <div class="clearfix"></div>
                     </div>
@@ -82,39 +82,6 @@ defined("ISHOME") or die("Can't acess this page, please come back!");
                         <div class="clearfix"></div>
                     </div>
 
-                    <div class='form-group'>
-                        <label>Chọn thêm ảnh<span id="err_images" class="mes-error"></span></label>
-                        <div id="response_img">
-                            <!-- div class="default">
-                                <img src="<?php echo ROOTHOST_ADMIN;?>images/images.png" class="thumb-default" onclick="OpenPopup('<?php echo ROOTHOST_ADMIN;?>extensions/upload_images.php');">
-                            </div> -->
-                            <input type="file" multiple="multiple" name="file_images[]" accept="image/jpg, image/jpeg">
-                        </div>
-                    </div>
-					<div class="form-group"><div class="row">
-						<div class="col-md-3"><label>Tỉnh/thành</label>
-							<select name="cbo_city" id="cbo_city" class="form-control">
-								<option value="">-- Chọn tỉnh/thành--</option>
-								<?php $objcity = new CLS_CITY;
-								$objcity->getListCbo($city);?>
-							</select>
-						</div>
-						<div class="col-md-3"><label>Quận/huyện</label>
-							<select name="cbo_district" id="cbo_district" class="form-control">
-								<option value="">--Chọn Quận/huyện</option>
-							</select>
-						</div>
-						<div class="col-md-3"><label>Phường/xã</label>
-							<select name="cbo_ward" id="cbo_ward" class="form-control">
-								<option value="">--Chọn Phường/xã</option>
-							</select>
-						</div>
-					</div></div>
-					<div class="form-group"><div class="row">
-						<div class="col-md-3"><label>Vị trí bản đồ: LAT,LNG</label>
-							<input type="text" name="latlng" id="latlng" class="form-control" value="">
-						</div>
-					</div></div>
 					<div class="form-group">
                         <label>Mô tả</label>
                         <textarea name="txt_intro" id="txt_intro" class="form-control" rows="5"></textarea>
@@ -123,65 +90,19 @@ defined("ISHOME") or die("Can't acess this page, please come back!");
                     <div class="form-group">
                         <label>Nội dung</label>
                         <textarea name="txt_fulltext" id="txt_fulltext" class="form-control"></textarea>
-						<script language="javascript">
-							var oEdit3=new InnovaEditor("oEdit3");
-							oEdit3.width="100%";
-							oEdit3.height="200";
-							oEdit3.cmdAssetManager ="modalDialogShow('<?php echo ROOTHOST_ADMIN;?>extensions/editor/innovar/assetmanager/assetmanager.php',840,465)";
-							oEdit3.REPLACE("txt_fulltext");
-							document.getElementById("idContentoEdit3").style.height="450px";
-						</script>
                     </div>
                 </div>
 
                 <div class="col-md-3 col-sm-4">
-                    <div class='form-group'>
-                        <label>Loại hình<small class="cred"> (*)</small><span id="err_type_of_land" class="mes-error"></span></label>
-                        <select class="form-control" id="cbo_type_of_land" name="cbo_type_of_land" style="width: 100%" required>
-                            <option value="">Root</option>
-                            <?php
-                            $sql_tol = "SELECT * FROM tbl_type_of_land WHERE isactive = 1";
-                            $objmysql->Query($sql_tol);
-
-                            while ($r_tol = $objmysql->Fetch_Assoc()) {
-                                echo '<option value="'.$r_tol['id'].'">'.$r_tol['title'].'</option>';
-                            }
-                            ?>
-                        </select>
-                        <div class="clearfix"></div>
-                    </div>
 					<div class="form-group">
-                        <label>Danh mục<small class="cred"> (*)</small><span id="err_cate" class="mes-error"></span></label>
+                        <label>Chuyên mục<small class="cred"> (*)</small><span id="err_cate" class="mes-error"></span></label>
                         <select class="form-control" id="cbo_cata" name="cbo_cata" style="width: 100%" required>
-                            <option value="">--Danh mục--</option>
+                            <option value="">--Chuyên mục--</option>
+                            <?php $obj_cate->getListCate();?>
                         </select>
                         <div class="clearfix"></div>
                     </div>
-                    <div class="form-group">
-                        <label>Diện tích<small class="cred"> (*)</small><span id="err_area" class="mes-error"></span></label>
-                        <input type="number" name="txt_area" value="" class="form-control" id="txt_area" placeholder="Diện tích đất">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Giá<small class="cred"> (*)</small><span id="err_price" class="mes-error"></span></label>
-                        <input type="number" name="txt_price" value="" class="form-control" id="txt_price" placeholder="Giá">
-                    </div>
-					<div class="form-group">
-                        <label>Ngày đăng <span class="cred">*</span></label>
-                        <input type="date" name="txt_cdate" value="<?php echo date("Y-m-d");?>" class="form-control" id="txt_cdate" placeholder="">
-                    </div>
-                    <div class="form-group">
-                        <label>Tác giả <span class="cred">*</span></label>
-                        <input type="text" name="txt_author" value="<?php echo $_SESSION[MD5($_SERVER['HTTP_HOST']).'_USERLOGIN']['username']; ?>" class="form-control" id="txt_author" readonly placeholder="">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Tình trạng BDS:</label>
-                        <div>
-                            <label class="radio-inline"><input type="radio" value="0" name="opt_ispay" checked>Chưa bán</label>
-							<label class="radio-inline"><input type="radio" value="1" name="opt_ispay">Đã bán</label> 
-                        </div>
-                    </div>
+                    
 					<div class="form-group">
                         <label>Hiển thị</label>
                         <div>
@@ -230,32 +151,22 @@ defined("ISHOME") or die("Can't acess this page, please come back!");
 <script type="text/javascript">
     $(document).ready(function(){
         $("#cbo_cata").select2();
-        $("#cbo_type_of_land").select2();
-		
-		$("#cbo_type_of_land").change(function(){
-			var type_id = $("#cbo_type_of_land option:selected").val(); 
-			console.log(type_id);
-			var url = "<?php echo ROOTHOST_ADMIN;?>ajaxs/get_category.php";
-			$.post(url,{'type_id':type_id},function(req){
-				$("#cbo_cata").html(req);
-			})
-		})
-		
-		$('#cbo_city').change(function(){
-			var city = $("#cbo_city option:selected").val();
-			var url = '<?php echo ROOTHOST_ADMIN;?>ajaxs/district/getlist.php';
-			$.get(url,{'city':city},function(req){
-				$("#cbo_district").html(req);
-			})
-		})
-		$('#cbo_district').change(function(){
-			var city = $("#cbo_city option:selected").val();
-			var district = $("#cbo_district option:selected").val();
-			var url = '<?php echo ROOTHOST_ADMIN;?>ajaxs/ward/getlist.php';
-			$.get(url,{'city':city,'district':district},function(req){
-				$("#cbo_ward").html(req);
-			})
-		})
+        $('#txt_fulltext').summernote({
+            placeholder: 'Nội dung bài viết ...',
+            height: 300,
+            toolbar: [
+            ['style', ['style']],
+            ['font', ['bold', 'italic', 'underline', 'superscript', 'subscript', 'strikethrough', 'clear']],
+            ['fontname', ['fontname']],
+            ['fontsize', ['fontsize']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['height', ['height']],
+            ['table', ['table']],
+            ['insert', ['link', 'picture', 'video', 'hr']],
+            ['view', ['codeview']]
+            ],
+        });
     });
 
     function images_delete_item(attr){

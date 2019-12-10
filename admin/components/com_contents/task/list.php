@@ -86,15 +86,6 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
         <div class="frm-search-box form-inline pull-left">
             <input class="form-control" type="text" value="<?php echo $keyword?>" name="q" id="txtkeyword" placeholder="Từ khóa"/>&nbsp;
 
-            <select name="cbo_pay" class="form-control" id="cbo_pay">
-                <option value="all">Tất cả</option>
-                <option value="1">Chưa bán</option>
-                <option value="0">Đã bán</option>
-                <script language="javascript">
-                    cbo_Selected('cbo_pay','<?php echo $cbo_pay;?>');
-                </script>
-            </select>
-
             <select name="cbo_cate" class="form-control" id="cbo_cate">
                 <option value="0">-- Tất cả --</option>
                 <?php $obj_cate->getListCate(); ?>
@@ -130,8 +121,6 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
             <th width="30" align="center">STT</th>
             <th width="30" align="center"><input type="checkbox" name="chkall" id="chkall" value="" onclick="docheckall('chk',this.checked);" /></th>
             <th>Bài tin</th>
-            <th>Giá</th>
-            <th align="center" width="100">Tình trạng</th>
             <th align="center" width="100">Ngày đăng</th>
             <th align="center" width="70">Lượt xem</th>
             <th align="center" width="70">Tin Hot</th>
@@ -154,11 +143,6 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
                 $cdate      = date('d-m-Y', $rows['cdate']);
                 $visited    = number_format($rows['visited']);
                 $order      = number_format($rows['order']);
-                $price      = number_format($rows['price']);
-                $ispay      = (int)$rows['ispay'];
-                if($rows['thumb'] == '')
-                    $thumb  = '<img src="'.IMG_DEFAULT.'" alt="'.$title.'" width="60px">';
-                else $thumb = '<img src="'.$rows["thumb"].'" alt="'.$title.'" width="60px">';
 
                 if($rows['ishot'] == 1) 
                     $icon_hot    = "<i class='fa fa-check cgreen' aria-hidden='true'></i>";
@@ -167,10 +151,6 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
 				if($rows['isactive'] == 1) 
                     $icon_active    = "<i class='fa fa-check cgreen' aria-hidden='true'></i>";
                 else $icon_active   = '<i class="fa fa-times-circle-o cred" aria-hidden="true"></i>';
-
-                if($ispay == 1) 
-                    $html_ispay    = "<span class='btn ispay green'>Đã bán</span>";
-                else $html_ispay   = "<span class='btn ispay'>Chưa bán</span>";
 
                 // Get category name
                 $sql_cate = "SELECT name FROM tbl_categories WHERE id = ".$cat_id;
@@ -191,8 +171,7 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
                 <span>".$category."</span>
                 </div>
                 </td>";
-                echo "<td><input class='ajax-price' data-id='".$ids."' onchange=\"ajax_update_price(this)\" type='text' name='txt_price[]' value='".$price."'></td>";
-                echo "<td>$html_ispay</td>";
+
                 echo "<td>$cdate</td>";
                 echo "<td align='center'>$visited</td>";
 				echo "<td align='center' width='10'><a href='".ROOTHOST_ADMIN.COMS."/ishot/$ids'>".$icon_hot."</a></td>";

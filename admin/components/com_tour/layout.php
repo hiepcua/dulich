@@ -75,39 +75,32 @@ if(isset($_POST["cmdsave"])){
 		$Images = json_encode($obj_fileImages, JSON_UNESCAPED_UNICODE);
 	}
 
-	$CategoryID 	= isset($_POST['cbo_cata']) ? (int)$_POST['cbo_cata'] : 0;
-	$Type_of_land 	= isset($_POST['cbo_type_of_land']) ? (int)$_POST['cbo_type_of_land'] : 0;
+	$Title 			= isset($_POST['txt_name']) ? addslashes($_POST['txt_name']) : '';
+	$UnCode 		= un_unicode($_POST['txt_name']);
+	$Intro 			= isset($_POST['txt_intro']) ? addslashes($_POST['txt_intro']) : '';
+	$Content 		= isset($_POST['txt_content']) ? addslashes($_POST['txt_content']) : '';
+	$Schedule 		= isset($_POST['txt_schedule']) ? addslashes($_POST['txt_content']) : '';
+	$Policy 		= isset($_POST['txt_content']) ? addslashes($_POST['txt_content']) : '';
+	
+	$Code 			= isset($_POST['txt_code']) ? addslashes($_POST['txt_code']) : '';
+	$Price1 		= isset($_POST['txt_price1']) ? (int)$_POST['txt_price1'] : 0;
+	$Price2 		= isset($_POST['txt_price2']) ? (int)$_POST['txt_price2'] : 0;
+	$PlaceId 		= isset($_POST['cbo_place']) ? (int)$_POST['cbo_place'] : 0;
+	$Days 			= isset($_POST['cbo_days']) ? addslashes($_POST['cbo_days']) : '';
+	$Vehicle		= isset($_POST['txt_vehicle']) ? addslashes($_POST['txt_vehicle']) : '';
+	$NumberOfHoles	= isset($_POST['txt_number_of_holes']) ? (int)$_POST['txt_number_of_holes'] : 0;
+	$StartingGate	= isset($_POST['txt_starting_gate']) ? addslashes($_POST['txt_starting_gate']) : '';
+	$Departure 		= isset($_POST['txt_departure']) ? strtotime($_POST['txt_departure']) : '';
+	$Author 		= $_SESSION[MD5($_SERVER['HTTP_HOST']).'_USERLOGIN']['username'];
 	$isActive 		= isset($_POST['opt_isactive']) ? (int)$_POST['opt_isactive'] : 0;
 	$isHot 			= isset($_POST['opt_ishot']) ? (int)$_POST['opt_ishot'] : 0;
-	$ispay 			= isset($_POST['opt_ispay']) ? (int)$_POST['opt_ispay'] : 0;
-	$Price 			= isset($_POST['txt_price']) ? (int)$_POST['txt_price'] : 0;
-	$Area 			= isset($_POST['txt_area']) ? (int)$_POST['txt_area'] : 0;
-	
-	$city 			= isset($_POST['cbo_city']) ? (int)$_POST['cbo_city'] : 0;
-	$district		= isset($_POST['cbo_district']) ? (int)$_POST['cbo_district'] : 0;
-	$ward			= isset($_POST['cbo_ward']) ? (int)$_POST['cbo_ward'] : 0;
-	$latlng			= isset($_POST['latlng']) ? addslashes(strip_tags($_POST['latlng'])) :'';
 
-	$Title 			= isset($_POST['txt_name']) ? addslashes($_POST['txt_name']) : '';
-	$Code 			= un_unicode($_POST['txt_name']);
-	$Author 		= $_SESSION[MD5($_SERVER['HTTP_HOST']).'_USERLOGIN']['username'];
-	//$Sapo 			= isset($_POST['txt_sapo']) ? addslashes(htmlentities($_POST['txt_sapo'])) : '';
-	$Intro 			= isset($_POST['txt_intro']) ? addslashes($_POST['txt_intro']) : '';
-	$Fulltext 		= isset($_POST['txt_fulltext']) ? addslashes($_POST['txt_fulltext']) : '';
-	$Thumb 			= isset($_POST['txtthumb']) ? addslashes($_POST['txtthumb']) : '';
-	
-	$cdate 			= strtotime($_POST['txt_cdate']);
-	//$date 			= time();
-
+	$Cdate 			= time();
 	$Meta_title 	= isset($_POST['txt_metatitle']) ? addslashes(htmlentities($_POST['txt_metatitle'])) : '';
 	$Meta_key 		= isset($_POST['txt_metakey']) ? addslashes(htmlentities($_POST['txt_metakey'])) : '';
 	$Meta_desc 		= isset($_POST['txt_metadesc']) ? addslashes(htmlentities($_POST['txt_metadesc'])) : '';
 	$seo_link 		= isset($_POST['txt_seo_link']) ? $_POST['txt_seo_link'] : '';
-
-	$sql_cate 		= "SELECT * FROM tbl_categories WHERE id = ".$CategoryID;
-	$objmysql->Query($sql_cate);
-	$r_cate 		= $objmysql->Fetch_Assoc();
-	$Link 			= ROOTHOST.$r_cate['code'].'/'.$Code.'.html';
+	$Link 			= ROOTHOST.'tour/'.$UnCode;
 
 	if(isset($_POST['txtid'])){
 		$Mdate = time();
@@ -115,38 +108,40 @@ if(isset($_POST["cmdsave"])){
 
 		$objmysql->Query("BEGIN");
 		$sql = "UPDATE tbl_tour SET 
-		`category_id` = '".$CategoryID."', 
+		`name` 		= '".$Title."', 
+		`un_name` 	= '".$UnCode."',
 		`code` 		= '".$Code."',
-		`thumb` 	= '".$Thumb."',
+		`place_id` 	= '".$PlaceId."',
+		`intro` 	= '".$Intro."',
+		`content` 	= '".$Content."',
+		`schedule` 	= '".$Schedule."',
+		`policy` 	= '".$Policy."',
 		`images` 	= '".$Images."',
-		`cdate` 	= '".$cdate."',
+		`price1` 	= '".$Price1."',
+		`price2` 	= '".$Price2."',
+
+		`starting_gate` 	= '".$StartingGate."',
+		`departure` 		= '".$Departure."',
+		`days` 				= '".$Days."',
+		`vehicle`			= '".$Vehicle."',
+		`number_of_holes` 	= '".$NumberOfHoles."',
+
 		`mdate` 	= '".$Mdate."',
 		`author` 	= '".$Author."',
 		`ishot` 	= '".$isHot."',
-		`isactive` 	= '".$isActive."',
-		`title` 	= '".$Title."',
-		`intro` 	= '".$Intro."',
-		`fulltext` 	= '".$Fulltext."',
-		`type_of_land_id` = '".$Type_of_land."',
-		`area` 		= '".$Area."',
-		`city_id` 	= '".$city."',
-		`district_id`= '".$district."',
-		`ward_id` 	= '".$ward."',
-		`latlng` 	= '".$latlng."',
-		`price` 	= '".$Price."',
-		`ispay` 	= '".$ispay."'
+		`isactive` 	= '".$isActive."'
 		WHERE `id` 	= '".$ID."'";
-		$result = $objmysql->Exec($sql); //echo $sql;
+		$result = $objmysql->Exec($sql); 
 
 		$sql2 = "UPDATE tbl_seo SET 
 		`title` = '".$Title."', 
 		`link` = '".$Link."',
-		`image` = '".$Thumb."',
+		`image` = '".$firstImage."',
 		`meta_title` = '".$Meta_title."',
 		`meta_key` = '".$Meta_key."',
 		`meta_desc` = '".$Meta_desc."'
 		WHERE `link` = '".$seo_link."'";
-		$result2 = $objmysql->Exec($sql2);
+		$result2 = $objmysql->Exec($sql2);  
 
 		if($result && $result2){
 			$objmysql->Exec('COMMIT');
@@ -155,24 +150,22 @@ if(isset($_POST["cmdsave"])){
 			$objmysql->Exec('ROLLBACK');
 	}else{
 		$objmysql->Exec("BEGIN");
-		$sql = "INSERT INTO tbl_tour (`category_id`,`code`,`thumb`,`images`,`cdate`,`author`,
-		`ishot`,`isactive`,`ispay`,`title`,`intro`,`fulltext`,`type_of_land_id`,`area`,`price`,
-		city_id,district_id,ward_id,latlng) 
-		VALUES ('".$CategoryID."','".$Code."','".$Thumb."','$Images','".$cdate."','".$Author."','".$isHot."',
-		'".$isActive."','".$ispay."','".$Title."', '".$Intro."', '".$Fulltext."','".$Type_of_land."'
-		,'".$Area."','".$Price."','".$city."','".$district."','".$ward."', '".$latlng."')";
-		$result = $objmysql->Exec($sql); //echo $sql;
+		$sql = "INSERT INTO tbl_tour (`name`, `un_name`, `code`, `place_id`, `intro`, `content`, `schedule`, `policy`, `images`, `price1`, `price2`, `starting_gate`, `departure`, `days`, `vehicle`, `number_of_holes`, `cdate`, `author`, `ishot`, `isactive`) 
+		VALUES ('".$Title."', '".$UnCode."', '".$Code."', '".$PlaceId."', '".$Intro."', '".$Content."', 
+		'".$Schedule."', '".$Policy."', '$Images', '".$Price1."','".$Price2."'
+		, '".$StartingGate."', '".$Departure."', '".$Days."', '".$Vehicle."', '".$NumberOfHoles."', '".$Cdate."', '".$Author."', '".$isHot."', '".$isActive."')";
+		$result = $objmysql->Exec($sql); 
 
 		$sql2 = "INSERT INTO tbl_seo (`title`,`link`,`image`,`meta_title`,`meta_key`,`meta_desc`) 
-		VALUES ('".$Title."','".$Link."','".$Thumb."','".$Meta_title."','".$Meta_key."','".$Meta_desc."')";
-		$result2 = $objmysql->Exec($sql2);
+		VALUES ('".$Title."','".$Link."','".$firstImage."','".$Meta_title."','".$Meta_key."','".$Meta_desc."')";
+		$result2 = $objmysql->Exec($sql2); 
 
 		if($result && $result2){
 			$objmysql->Exec('COMMIT');
 		}else{
 			$objmysql->Exec('ROLLBACK');
 		}
-	} //echo $sql;
+	}
 	echo "<script language=\"javascript\">window.location='".ROOTHOST_ADMIN.COMS."'</script>";
 }
 

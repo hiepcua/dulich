@@ -58,9 +58,7 @@ class CLS_CATEGORY{
     }
 
     public function listTable($strwhere="",$parid=0,$level=0,$rowcount){
-        $sql="SELECT a.*,b.title AS type_name FROM tbl_categories AS a
-		INNER JOIN tbl_type_of_land AS b ON a.type_id=b.id 
-		WHERE 1=1 $strwhere AND a.par_id=$parid ORDER BY a.`order` ASC";
+        $sql="SELECT * FROM tbl_categories WHERE 1=1 $strwhere AND par_id=$parid ORDER BY `order` ASC";
         $objdata=new CLS_MYSQL();
         $objdata->Query($sql);
         $str_space="";
@@ -71,7 +69,7 @@ class CLS_CATEGORY{
         }
         while($rows=$objdata->Fetch_Assoc()){
             $rowcount++;
-            $ids=$rows['id']; $type_name =$rows['type_name'];
+            $ids=$rows['id'];
             $title=Substring(stripslashes($rows['name']),0,10);
 			if($rows['isactive']==1) 
                 $icon_active="<i class='fa fa-check cgreen' aria-hidden='true'></i>";
@@ -83,7 +81,6 @@ class CLS_CATEGORY{
             echo "<input type=\"checkbox\" name=\"chk\" id=\"chk\"   onclick=\"docheckonce('chk');\" value=\"$ids\" />";
             echo "</label></td>";
 			echo "<td align='center' width='10'><a href='".ROOTHOST_ADMIN.COMS."/delete/$ids' onclick=\" return confirm('Bạn có chắc muốn xóa ?')\"><i class='fa fa-trash cgray red' aria-hidden='true'></i></a></td>";
-            echo "<td>$type_name</td>";
             echo "<td title=''>$str_space$title</td>";
             $order=$rows['order'];
             echo "<td width=\"50\" align=\"center\"><input type=\"text\" name=\"txt_order\" id=\"txt_order\" value=\"$order\" size=\"4\" class=\"order\"></td>";

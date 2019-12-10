@@ -3,15 +3,11 @@ defined("ISHOME") or die("Can't acess this page, please come back!");
 define("BASE_PATH","../../images/");
 $id = isset($_GET['id']) ? (int)$_GET["id"] : 0;
 
-$sql = "SELECT * FROM tbl_contents WHERE id = ".$id;
+$sql = "SELECT * FROM tbl_tour WHERE id = ".$id;
 $objmysql->Query($sql);
 $row = $objmysql->Fetch_Assoc();
 
-$sql2 = "SELECT * FROM tbl_categories WHERE id = ".$row['category_id'];
-$objmysql->Query($sql2);
-$row2 = $objmysql->Fetch_Assoc();
-
-$seo_link   = ROOTHOST.$row2['code'].'/'.$row['code'].'.html';
+$seo_link   = ROOTHOST.'tour/'.$row['un_name'];
 $sql_seo    = "SELECT * FROM tbl_seo WHERE link = '".$seo_link."'";
 $objmysql->Query($sql_seo);
 $row_seo    = $objmysql->Fetch_Assoc();
@@ -33,7 +29,7 @@ if(is_dir('../images/'.$row['code'])){
     function checkinput(){
         if($("#txt_name").val()==""){
             $("#err_name").fadeTo(200,0.1,function(){
-                $(this).html('Vui lòng nhập tên bài viết').fadeTo(900,1);
+                $(this).html('Trường này là bắt buộc').fadeTo(900,1);
             });
             $("#txt_name").focus();
             return false;
@@ -45,13 +41,13 @@ if(is_dir('../images/'.$row['code'])){
 <div id="path">
     <ol class="breadcrumb">
         <li><a href="<?php echo ROOTHOST_ADMIN;?>">Admin</a></li>
-        <li><a href="<?php echo ROOTHOST_ADMIN.COMS;?>">Danh sách tin đất đai</a></li>
-        <li class="active">Cập nhật tin đất đai</li>
+        <li><a href="<?php echo ROOTHOST_ADMIN.COMS;?>">Danh sách tour</a></li>
+        <li class="active">Cập nhật thông tin tour</li>
     </ol>
 </div>
 
 <div class="com_header color">
-    <h1>Cập nhật tin đất đai</h1>
+    <h1>Cập nhật thông tin tour</h1>
     <div class="pull-right">
         <form id="frm_menu" name="frm_menu" method="post" action="">
             <input type="hidden" name="txtorders" id="txtorders" />
@@ -88,25 +84,12 @@ if(is_dir('../images/'.$row['code'])){
             <div class="tab-pane fade active in" id="info">
                 <div class="col-md-9 col-sm-8">
                     <div class='form-group'>
-                        <label>Tiêu đề<small class="cred"> (*)</small><span id="err_name" class="mes-error"></span></label>
-                        <input type="text" name="txt_name" class="form-control" id="txt_name" value="<?php echo $row['title'];?>" placeholder="Tiêu đề bài viết" required>
+                        <label>Tên Tour<small class="cred"> (*)</small><span id="err_name" class="mes-error"></span></label>
+                        <input type="text" name="txt_name" class="form-control" id="txt_name" value="<?php echo $row['name'];?>" placeholder="Tên tour" required>
                     </div>
 
                     <div class='form-group'>
-                        <label>Ảnh đại diện</label>
-                        <div class="row">
-                            <div class="col-sm-9 col-md-10">
-                                <input name="txtthumb" type="text" id="file-thumb" size="45" class='form-control' value="<?php echo $row['thumb'];?>" placeholder='' />
-                            </div>
-                            <div class="col-sm-3 col-md-2">
-                                <a class="btn btn-primary" href="#" onclick="OpenPopup('<?php echo ROOTHOST_ADMIN;?>extensions/upload_image.php');"><b style="margin-top: 15px">Chọn</b></a>
-                            </div>
-                            <div id="txt_thumb_err" class="mes-error"></div>
-                        </div>
-                    </div>
-
-                    <div class='form-group'>
-                        <label>Chọn thêm ảnh<span id="err_images" class="mes-error"></span></label>
+                        <label>Danh sách ảnh:<span id="err_images" class="mes-error"></span></label>
                         <div id="response_img">
                             <?php
                             $images = $row['images']; 
@@ -137,34 +120,7 @@ if(is_dir('../images/'.$row['code'])){
                             </div>
                         </div>
                     </div>
-                    <div class="form-group"><div class="row">
-                        <div class="col-md-3"><label>Tỉnh/thành</label>
-                            <select name="cbo_city" id="cbo_city" class="form-control">
-                                <option value="">-- Chọn tỉnh/thành--</option>
-                                <?php $objcity = new CLS_CITY;
-                                $objcity->getListCbo($row['city_id']);?>
-                            </select>
-                        </div>
-                        <div class="col-md-3"><label>Quận/huyện</label>
-                            <select name="cbo_district" id="cbo_district" class="form-control">
-                                <option value="">--Chọn Quận/huyện</option>
-                                <?php $objdist = new CLS_DISTRICT;
-                                $objdist->getListCbo($row['district_id'],$row['city_id']);?>
-                            </select>
-                        </div>
-                        <div class="col-md-3"><label>Phường/xã</label>
-                            <select name="cbo_ward" id="cbo_ward" class="form-control">
-                                <option value="">--Chọn Phường/xã</option>
-                                <?php $objwa = new CLS_WARD;
-                                $objwa->getListCbo($row['ward_id'],$row['city_id'],$row['district_id']);?>                              
-                            </select>
-                        </div>
-                    </div></div>
-                    <div class="form-group"><div class="row">
-                        <div class="col-md-3"><label>Vị trí bản đồ: LAT,LNG</label>
-                            <input type="text" name="latlng" id="latlng" class="form-control" value="<?php echo $row['latlng'];?>">
-                        </div>
-                    </div></div>
+
                     <div class="form-group">
                         <label>Mô tả</label>
                         <textarea name="txt_intro" id="txt_intro" class="form-control" rows="5"><?php echo $row['intro'];?></textarea>
@@ -172,73 +128,169 @@ if(is_dir('../images/'.$row['code'])){
 
                     <div class="form-group">
                         <label>Nội dung</label>
-                        <textarea name="txt_fulltext" id="txt_fulltext" class="form-control"><?php echo $row['fulltext'];?></textarea>
+                        <textarea name="txt_content" id="txt_content" class="form-control"><?php echo $row['content'];?></textarea>
                         <script language="javascript">
-                            var oEdit3=new InnovaEditor("oEdit3");
-                            oEdit3.width="100%";
-                            oEdit3.height="200";
-                            oEdit3.cmdAssetManager ="modalDialogShow('<?php echo ROOTHOST_ADMIN;?>extensions/editor/innovar/assetmanager/assetmanager.php',840,465)";
-                            oEdit3.REPLACE("txt_fulltext");
-                            document.getElementById("idContentoEdit3").style.height="450px";
+                            $(document).ready(function(){
+                                $('#txt_content').summernote({
+                                    placeholder: 'Nội dung bài viết',
+                                    height: 300,
+                                    toolbar: [
+                                    ['style', ['style']],
+                                    ['font', ['bold', 'italic', 'underline', 'superscript', 'subscript', 'strikethrough', 'clear']],
+                                    ['fontname', ['fontname']],
+                                    ['fontsize', ['fontsize']],
+                                    ['color', ['color']],
+                                    ['para', ['ul', 'ol', 'paragraph']],
+                                    ['height', ['height']],
+                                    ['table', ['table']],
+                                    ['insert', ['link', 'picture', 'video', 'hr']],
+                                    ['view', ['codeview']]
+                                    ],
+                                });
+                            });
+                        </script>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Lộ trình</label>
+                        <textarea name="txt_schedule" id="txt_schedule" class="form-control"><?php echo $row['schedule'];?></textarea>
+                        <script language="javascript">
+                            $(document).ready(function(){
+                                $('#txt_schedule').summernote({
+                                    placeholder: 'Nội dung bài viết',
+                                    height: 300,
+                                    toolbar: [
+                                    ['style', ['style']],
+                                    ['font', ['bold', 'italic', 'underline', 'superscript', 'subscript', 'strikethrough', 'clear']],
+                                    ['fontname', ['fontname']],
+                                    ['fontsize', ['fontsize']],
+                                    ['color', ['color']],
+                                    ['para', ['ul', 'ol', 'paragraph']],
+                                    ['height', ['height']],
+                                    ['table', ['table']],
+                                    ['insert', ['link', 'picture', 'video', 'hr']],
+                                    ['view', ['codeview']]
+                                    ],
+                                });
+                            });
+                        </script>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Chính sách</label>
+                        <textarea name="txt_policy" id="txt_policy" class="form-control"><?php echo $row['policy'];?></textarea>
+                        <script language="javascript">
+                            $(document).ready(function(){
+                                $('#txt_policy').summernote({
+                                    placeholder: 'Nội dung bài viết',
+                                    height: 300,
+                                    toolbar: [
+                                    ['style', ['style']],
+                                    ['font', ['bold', 'italic', 'underline', 'superscript', 'subscript', 'strikethrough', 'clear']],
+                                    ['fontname', ['fontname']],
+                                    ['fontsize', ['fontsize']],
+                                    ['color', ['color']],
+                                    ['para', ['ul', 'ol', 'paragraph']],
+                                    ['height', ['height']],
+                                    ['table', ['table']],
+                                    ['insert', ['link', 'picture', 'video', 'hr']],
+                                    ['view', ['codeview']]
+                                    ],
+                                });
+                            });
                         </script>
                     </div>
                 </div>
 
                 <div class="col-md-3 col-sm-4">
-                    <div class='form-group'>
-                        <label>Loại hình<small class="cred"> (*)</small><span id="err_type_of_land" class="mes-error"></span></label>
-                        <select class="form-control" id="cbo_type_of_land" name="cbo_type_of_land" style="width: 100%" required>
-                            <option value="">Root</option>
-                            <?php
-                            $sql_tol = "SELECT * FROM tbl_type_of_land WHERE isactive = 1";
-                            $objmysql->Query($sql_tol);
+                    <div class="form-group">
+                        <label>Mã<small class="cred"> (*)</small><span id="err_code" class="mes-error"></span></label>
+                        <input type="text" name="txt_code" class="form-control" id="txt_code" value="<?php echo $row['code']; ?>" required>
+                    </div>
 
-                            while ($r_tol = $objmysql->Fetch_Assoc()) {
-                                echo '<option value="'.$r_tol['id'].'">'.$r_tol['title'].'</option>';
+                    <div class="form-group">
+                        <label>Giá ban đầu</label>
+                        <input type="number" name="txt_price1" id="txt_price1" class="form-control" min="0" placeholder="Giá chưa khuyến mãi" value="<?php echo $row['price1']; ?>">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Giá khuyến mãi</label>
+                        <input type="number" name="txt_price2" id="txt_price2" class="form-control" min="0" placeholder="Giá khuyến mãi" value="<?php echo $row['price2']; ?>">
+                    </div>
+
+                    <div class='form-group'>
+                        <label>Địa điểm<span id="err_place" class="mes-error"></span></label>
+                        <select class="form-control" id="cbo_place" name="cbo_place" style="width: 100%">
+                            <option value="">-- Điểm đến --</option>
+                            <?php $obj_place->getListCate(); ?>
+                        </select>
+                        <script type="text/javascript">
+                            $(document).ready(function() {
+                                cbo_Selected('cbo_place','<?php echo $row['place_id'];?>');
+                            });
+                        </script>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Thời gian <small class="cred"> (*)</small><span id="err_code" class="mes-error"></span></label>
+                        <select class="form-control" id="cbo_days" name="cbo_days" style="width: 100%" required>
+                            <option>-- Chọn một --</option>
+                            <?php
+                            $days = unserialize(TOUR_TIME);
+                            foreach ($days as $key => $value) {
+                                echo '<option value="'.$value.'">'.$value.'</option>';
                             }
                             ?>
                         </select>
                         <script type="text/javascript">
-                            cbo_Selected('cbo_type_of_land','<?php echo $row['type_of_land_id'];?>');
+                            $(document).ready(function() {
+                                cbo_Selected('cbo_days','<?php echo $row['days'];?>');
+                            });
                         </script>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class='form-group'>
-                        <label>Danh mục<small class="cred"> (*)</small><span id="err_cate" class="mes-error"></span></label>
-                        <select class="form-control" id="cbo_cata" name="cbo_cata" style="width: 100%" required>
-                            <option value="">--Danh mục--</option>
-                            <?php $obj_cate->getListCate(0,0); ?>
-                        </select>
-                        <script type="text/javascript">
-                            cbo_Selected('cbo_cata','<?php echo $row['category_id'];?>');
-                        </script>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="form-group">
-                        <label>Diện tích (m2)<small class="cred"> (*)</small><span id="err_area" class="mes-error"></span></label>
-                        <input type="number" name="txt_area" value="<?php echo $row['area'];?>" class="form-control" id="txt_area" placeholder="Diện tích đất">
                     </div>
 
                     <div class="form-group">
-                        <label>Giá (VNĐ)<small class="cred"> (*)</small><span id="err_price" class="mes-error"></span></label>
-                        <input type="number" name="txt_price" value="<?php echo $row['price'];?>" class="form-control" id="txt_price" placeholder="Giá">
+                        <label>Phương tiện</label>
+                        <select class="form-control" id="txt_vehicle" name="txt_vehicle" style="width: 100%" required>
+                            <?php
+                            $vehicle = unserialize(TOUR_VEHICLE);
+                            foreach ($vehicle as $key => $value) {
+                                echo '<option value="'.$value.'">'.$value.'</option>';
+                            }
+                            ?>
+                        </select>
+                        <script type="text/javascript">
+                            $(document).ready(function() {
+                                cbo_Selected('txt_vehicle','<?php echo $row['vehicle'];?>');
+                            });
+                        </script>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Số trỗ</label>
+                        <input type="number" name="txt_number_of_holes" min="1" class="form-control" value="<?php echo $row['number_of_holes']; ?>">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Nơi khởi hành</label>
+                        <input type="text" name="txt_starting_gate" class="form-control" value="<?php echo $row['starting_gate']; ?>">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Ngày khởi hành<small class="mes-error">(Không chọn thì mặc định là hàng ngày)</small></label>
+                        <input type="date" name="txt_departure" class="form-control" value="<?php echo date('Y-m-d', $row['departure']); ?>">
                     </div>
 
                     <div class="form-group">
                         <label>Ngày đăng <span class="cred">*</span></label>
-                        <input type="date" name="txt_cdate" value="<?php echo date("Y-m-d",$row['cdate']);?>" class="form-control" id="txt_cdate" placeholder="">
+                        <input type="date" name="txt_cdate" value="<?php echo date("Y-m-d", $row['cdate']);?>" class="form-control" id="txt_cdate">
                     </div>
+
                     <div class="form-group">
                         <label>Tác giả <span class="cred">*</span></label>
-                        <input type="text" name="txt_author" value="<?php echo $row['author'];?>" class="form-control" id="txt_author" readonly placeholder="">
+                        <input type="text" name="txt_author" value="<?php echo $row['author'];?>" class="form-control" id="txt_author" readonly>
                     </div>
-                    <div class="form-group">
-                        <label>Tình trạng BDS:</label>
-                        <div>
-                            <label class="radio-inline"><input type="radio" value="0" name="opt_ispay"  <?php if($row['ispay']==0) echo 'checked';?>>Chưa bán</label>
-                            <label class="radio-inline"><input type="radio" value="1" name="opt_ispay"  <?php if($row['ispay']==1) echo 'checked';?>>Đã bán</label> 
-                        </div>
-                    </div>
+
                     <div class="form-group">
                         <label>Hiển thị</label>
                         <div>
@@ -289,30 +341,8 @@ if(is_dir('../images/'.$row['code'])){
 <script type="text/javascript">
     $(document).ready(function(){      
         $("#cbo_cata").select2();
-        $("#cbo_type_of_land").select2();
-        
-        $("#cbo_type_of_land").change(function(){
-            var type_id = $("#cbo_type_of_land option:selected").val(); 
-            var url = "<?php echo ROOTHOST_ADMIN;?>ajaxs/get_category.php";
-            $.post(url,{'type_id':type_id},function(req){
-                $("#cbo_cata").html(req);
-            })
-        })
-        $('#cbo_city').change(function(){
-            var city = $("#cbo_city option:selected").val();
-            var url = '<?php echo ROOTHOST_ADMIN;?>ajaxs/district/getlist.php';
-            $.get(url,{'city':city},function(req){
-                $("#cbo_district").html(req);
-            })
-        })
-        $('#cbo_district').change(function(){
-            var city = $("#cbo_city option:selected").val();
-            var district = $("#cbo_district option:selected").val();
-            var url = '<?php echo ROOTHOST_ADMIN;?>ajaxs/ward/getlist.php';
-            $.get(url,{'city':city,'district':district},function(req){
-                $("#cbo_ward").html(req);
-            })
-        })
+        $("#cbo_place").select2();
+        $("#cbo_days").select2();
     });
 
     function images_delete_item(attr){

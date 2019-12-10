@@ -136,6 +136,7 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
         <thead>
             <th width="30" align="center">STT</th>
             <th width="30" align="center"><input type="checkbox" name="chkall" id="chkall" value="" onclick="docheckall('chk',this.checked);" /></th>
+            <th width="50" align="center">Xóa</th>
             <th>Tour</th>
             <th>Giá</th>
             <th>Phương tiện</th>
@@ -144,7 +145,7 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
             <th width="70" align="center" style="text-align: center;">Sắp xếp
                 <a href="javascript:saveOrder()"><i class="fa fa-floppy-o" aria-hidden="true"></i></a>
             </th>
-            <th colspan="3"></th>
+            <th colspan="2"></th>
         </thead>
         <tbody>
             <?php
@@ -173,19 +174,29 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
                 echo "<td width='30' align='center'><label>";
                 echo "<input type='checkbox' name='chk' id='chk' onclick=\"docheckonce('chk');\" value='$ids'/>";
                 echo "</label></td>";
+
+                echo "<td align='center' width='10'><a href='".ROOTHOST_ADMIN.COMS."/delete/$ids' onclick=\" return confirm('Bạn có chắc muốn xóa ?')\"><i class='fa fa-trash cgray red' aria-hidden='true'></i></a></td>";
+
                 echo "<td>".$title."</td>";
-                echo "<td><input class='ajax-price' data-id='".$ids."' onchange=\"ajax_update_price(this)\" type='text' name='txt_price[]' value='".$price."'></td>";
+                if($rows['price2'] > 0){
+                    echo "<td><input class='ajax-price' data-id='".$ids."' onchange=\"ajax_update_price(this)\" type='text' name='txt_price[]' value='".$price."'></td>";
+                }else{
+                    echo "<td><div style='text-align:center;'>Liên hệ</div></td>";
+                }
+                
                 echo "<td>".$vehicle."</td>";
                 echo "<td>".$days."</td>";
-                echo "<td align='center'>".departure."</td>";
+                if($rows['departure'] > 0){
+                    echo "<td>".$departure."</td>";
+                }else{
+                    echo "<td><div style='text-align:center;'>Liên hệ</div></td>";
+                }
 
                 echo "<td width='50' align='center'><input type='text' name='txt_order' id='txt_order' value='$order' size='4' class='order'></td>";
 
                 echo "<td align='center' width='10'><a href='".ROOTHOST_ADMIN.COMS."/active/$ids'>".$icon_active."</a></td>";
 
                 echo "<td align='center' width='10'><a href='".ROOTHOST_ADMIN.COMS."/edit/$ids'><i class='fa fa-edit' aria-hidden='true'></i></a></td>";
-
-                echo "<td align='center' width='10'><a href='".ROOTHOST_ADMIN.COMS."/delete/$ids' onclick=\" return confirm('Bạn có chắc muốn xóa ?')\"><i class='fa fa-times-circle cred' aria-hidden='true'></i></a></td>";
 
                 echo "</tr>";
             }
@@ -209,7 +220,7 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
         var price = attr.value;
         var _price = parseInt(price.replace(/,/g, ''));
         $.ajax({
-            url : '<?php echo ROOTHOST_ADMIN.'ajaxs/contents/update_price.php' ?>',
+            url : '<?php echo ROOTHOST_ADMIN.'ajaxs/tour/update_price.php' ?>',
             type : 'POST',
             data : {
                 'id' : id,

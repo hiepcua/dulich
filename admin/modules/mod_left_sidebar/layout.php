@@ -14,17 +14,23 @@ $objmysql = new CLS_MYSQL();
 		</li>
 
 		<li>
-			<div class="title"><i class="fa fa-list" aria-hidden="true"></i> <span>Tin đất đai</span></div>
+			<div class="title"><i class="fa fa-list" aria-hidden="true"></i> <span>Quản lý tour</span></div>
 			<ul class="sub">
-				<li><a href="<?php echo ROOTHOST_ADMIN;?>contents/add" title="Thêm bài viết"><i class="fa fa-plus" aria-hidden="true"></i> <span>Thêm tin đất đai</span></a></li>
-				<li><a href="<?php echo ROOTHOST_ADMIN;?>contents" title="Ds bài viết"><i class="fa fa-bars" aria-hidden="true"></i> <span>Ds tin đất đai</span></a></li>
-				<li><a href="<?php echo ROOTHOST_ADMIN;?>type_of_land" title="Ds loại hình đất"><i class="fa fa-bars" aria-hidden="true"></i> <span>Ds loại hình đất</span></a></li>
-				<li><a href="<?php echo ROOTHOST_ADMIN;?>category" title="Ds nhóm tin"><i class="fa fa-bars" aria-hidden="true"></i> <span>Ds danh mục đất đai</span></a></li>
-				<li><a href="<?php echo ROOTHOST_ADMIN;?>?com=city" title="Ds tỉnh/thành"><i class="fa fa-bars" aria-hidden="true"></i> <span>Ds tỉnh/thành</span></a></li>
-				<li><a href="<?php echo ROOTHOST_ADMIN;?>?com=district" title="Ds quận/huyện"><i class="fa fa-bars" aria-hidden="true"></i> <span>Ds quận/huyện</span></a></li>
-				<li><a href="<?php echo ROOTHOST_ADMIN;?>?com=ward" title="Ds phường/xã"><i class="fa fa-bars" aria-hidden="true"></i> <span>Ds phường/xã</span></a></li>
+				<li><a href="<?php echo ROOTHOST_ADMIN;?>tour/add" title="Thêm bài viết"><i class="fa fa-plus" aria-hidden="true"></i> <span>Thêm tin đất đai</span></a></li>
+				<li><a href="<?php echo ROOTHOST_ADMIN;?>tour" title="Ds bài viết"><i class="fa fa-bars" aria-hidden="true"></i> <span>Ds tour</span></a></li>
+				<li><a href="<?php echo ROOTHOST_ADMIN;?>place" title="Ds điểm đến"><i class="fa fa-bars" aria-hidden="true"></i> <span>Ds điểm đến</span></a></li>
 			</ul>
 		</li>
+
+		<li>
+			<div class="title"><i class="fa fa-list" aria-hidden="true"></i> <span>Quản lý tin</span></div>
+			<ul class="sub">
+				<li><a href="<?php echo ROOTHOST_ADMIN;?>contents/add" title="Thêm bài viết"><i class="fa fa-plus" aria-hidden="true"></i> <span>Thêm bài viết</span></a></li>
+				<li><a href="<?php echo ROOTHOST_ADMIN;?>contents" title="Ds bài viết"><i class="fa fa-bars" aria-hidden="true"></i> <span>Ds bài viết</span></a></li>
+				<li><a href="<?php echo ROOTHOST_ADMIN;?>category" title="Ds chuyên mục"><i class="fa fa-bars" aria-hidden="true"></i> <span>Ds chuyên mục</span></a></li>
+			</ul>
+		</li>
+
 		<li>
 			<div class="title"><i class="fa fa-list" aria-hidden="true"></i> <span>Meta SEO</span></div>
 			<ul class="sub">
@@ -32,44 +38,6 @@ $objmysql = new CLS_MYSQL();
 				<li><a href="<?php echo ROOTHOST_ADMIN;?>seo" title="Ds meta SEO"><i class="fa fa-bars" aria-hidden="true"></i> <span>Danh sách Meta SEO</span></a></li>
 			</ul>
 		</li>
-
-		<!-- <li>
-			<div class="title"><i class="fa fa-list" aria-hidden="true"></i> <span>Menu</span></div>
-			<ul class="sub">
-				<?php 
-				// $sql_menu="SELECT * FROM tbl_menus WHERE isactive = 1";
-				// $objmysql->Query($sql_menu);
-				// while($rows = $objmysql->Fetch_Assoc()){
-				// 	echo "<li><a href=\"".ROOTHOST_ADMIN."mnuitem/".$rows["id"]."\"><i class=\"fa fa-bars\" aria-hidden=\"true\"></i>".$rows["name"]."</a></li>";
-				// }
-				?>
-				<li><a href="<?php echo ROOTHOST_ADMIN;?>menus"><i class="fa fa-bars" aria-hidden="true"></i>QL menu</a></li>
-			</ul>
-		</li> -->
-
-		<!-- <li>
-			<div class="title"><i class="fa fa-list" aria-hidden="true"></i> <span>Đối tác</span></div>
-			<ul class="sub">
-				<li><a href="<?php echo ROOTHOST_ADMIN;?>partner/add" title="Thêm đối tác"><i class="fa fa-plus" aria-hidden="true"></i> <span>Thêm đối tác</span></a></li>
-				<li><a href="<?php echo ROOTHOST_ADMIN;?>partner" title="Ds đối tác"><i class="fa fa-bars" aria-hidden="true"></i> <span>Danh sách đối tác</span></a></li>
-			</ul>
-		</li>
-
-		<li>
-			<div class="title"><i class="fa fa-picture-o" aria-hidden="true"></i><span>Thư viện ảnh</span></div>
-			<ul class="sub">
-				<li><a href="<?php echo ROOTHOST_ADMIN;?>gallery/add" title="Thêm mới"><i class="fa fa-plus" aria-hidden="true"></i> <span>Thêm mới</span></a></li>
-				<li><a href="<?php echo ROOTHOST_ADMIN;?>gallery" title="Thư viện ảnh"><i class="fa fa-bars" aria-hidden="true"></i> <span>Thư viện ảnh</span></a></li>
-			</ul>
-		</li>
-
-		<li>
-			<div class="title"><i class="fa fa-picture-o" aria-hidden="true"></i><span>Thư viện video</span></div>
-			<ul class="sub">
-				<li><a href="<?php echo ROOTHOST_ADMIN;?>video/add" title="Thêm mới"><i class="fa fa-plus" aria-hidden="true"></i> <span>Thêm mới</span></a></li>
-				<li><a href="<?php echo ROOTHOST_ADMIN;?>video" title="Ds video"><i class="fa fa-bars" aria-hidden="true"></i> <span>Ds video</span></a></li>
-			</ul>
-		</li> -->
 
 		<li>
 			<div class="title"><i class="fa fa-list" aria-hidden="true"></i> <span>Banner</span></div>

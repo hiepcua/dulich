@@ -9,7 +9,7 @@ elseif (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED
 $REQUEST_PROTOCOL = $isSecure ? 'https://' : 'http://';
 
 // define('ROOTHOST',$REQUEST_PROTOCOL.$_SERVER['HTTP_HOST'].'/');
-define('ROOTHOST','http://localhost/dulich/');
+define('ROOTHOST','http://localhost:8000/dulich/');
 define('ROOTHOST_ADMIN',ROOTHOST.'admin/');
 define('WEBSITE',$REQUEST_PROTOCOL.$_SERVER['HTTP_HOST'].'/');
 define('BASEVIRTUAL0','../../images/');

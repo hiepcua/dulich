@@ -8,31 +8,24 @@ $objmysql 	= new CLS_MYSQL();
 $obj 		= new CLS_CATEGORY();
 
 if(isset($_POST['cmdsave'])){
-	$Type_Id 		= isset($_POST['cbo_type']) ? (int)$_POST['cbo_type'] : 0;
-	$Par_Id 		= isset($_POST['cbo_cate']) ? (int)$_POST['cbo_cate'] : 0;
-	$Intro 			= isset($_POST['txtintro']) ? addslashes($_POST['txtintro']) : '';
+	$Par_Id 		= isset($_POST['cbo_par']) ? (int)$_POST['cbo_par'] : 0;
 	$Name 			= isset($_POST['txt_name']) ? addslashes($_POST['txt_name']) : '';
 	$Code 			= un_unicode(addslashes($_POST['txt_name']));
 	$Thumb 			= isset($_POST['txtthumb']) ? addslashes($_POST['txtthumb']) : '';
-	$isActive 		= 1;
-
 	$Meta_title 	= isset($_POST['txt_metatitle']) ? addslashes(htmlentities($_POST['txt_metatitle'])) : '';
 	$Meta_key 		= isset($_POST['txt_metakey']) ? addslashes(htmlentities($_POST['txt_metakey'])) : '';
 	$Meta_desc 		= isset($_POST['txt_metadesc']) ? addslashes(htmlentities($_POST['txt_metadesc'])) : '';
 	$seo_link 		= isset($_POST['txt_seo_link']) ? $_POST['txt_seo_link'] : '';
-	$Link 			= ROOTHOST.$Code;
+	$Link 			= ROOTHOST.'chuyen-muc/'.$Code;
 
 	if(isset($_POST['txtid'])){
 		$ID = (int)$_POST['txtid'];
 
 		$objmysql->Query("BEGIN");
 		$sql = "UPDATE tbl_categories SET 
-        `type_id`='".$Type_Id."',
         `par_id`='".$Par_Id."',
         `name`='".$Name."',
-        `code`='".$Code."',
-        `thumb`='".$Thumb."',
-        `intro`='".$Intro."'
+        `code`='".$Code."'
         WHERE id='".$ID."'";
         $result = $objmysql->Exec($sql);
 
@@ -53,8 +46,8 @@ if(isset($_POST['cmdsave'])){
 			$objmysql->Exec('ROLLBACK');
 	}else{
 		$objmysql->Exec("BEGIN");
-		$sql="INSERT INTO `tbl_categories`(`par_id`,`type_id`,`name`,`code`,`thumb`,`intro`,`isactive`) 
-		VALUES ('".$Par_Id."','".$Type_Id."','".$Name."','".$Code."','".$Thumb."','".$Intro."','".$isActive."')";
+		$sql="INSERT INTO `tbl_categories`(`par_id`, `name`, `code`) 
+		VALUES ('".$Par_Id."', '".$Name."', '".$Code."')";
 		$result = $objmysql->Exec($sql);
 
 		$sql2 = "INSERT INTO tbl_seo (`title`,`link`,`image`,`meta_title`,`meta_key`,`meta_desc`) VALUES ('".$Name."','".$Link."','".$Thumb."','".$Meta_title."','".$Meta_key."','".$Meta_desc."')";
@@ -84,8 +77,22 @@ if(isset($_POST["txtaction"]) && $_POST["txtaction"]!=""){
 			$objmysql->Exec($sql_unactive);
 			break;
 		case "delete":
-			$sql_del = "DELETE FROM `tbl_categories` WHERE `id` in ('$ids')";
-	        $objmysql->Exec($sql_del);
+			$sql = "SELECT * FROM tbl_categories WHERE id in ('$ids')";
+			$objmysql->Query($sql);
+			$seo_links = array();
+
+			while ( $row = $objmysql->Fetch_Assoc() ) {
+				$seo_link = ROOTHOST.'chuyen-muc/'.$row['code'];
+				array_push($seo_links, $seo_link);
+
+				$sql_del = "DELETE FROM `tbl_categories` WHERE `id` in ('$ids')";
+				$objdata->Exec($sql_del);
+			}
+
+			foreach ($seo_links as $key => $value) {
+				$sql_del1 = "DELETE FROM `tbl_seo` WHERE `link` = '".$value."'";
+				$objmysql->Exec($sql_del1);
+			}
 	        break;
 		case 'order':
 			$sls = explode(',',$_POST['txtorders']); 

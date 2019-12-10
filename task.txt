@@ -22,23 +22,47 @@ place{
 	id, name, code, banner, par_id
 }
 
-group{
-	id, name, code, par_id
+- Quản lý place
+	list
+	active 	=> ok
+	delete 	=> ok
+	add 	=> ok
+	edit 	=> ok
 
-	trong nước{
-		miền bắc,
-		miền trung, 
-		miền nam, 
-		theo mùa
-		...
-	},
-	nước ngoài{
-		Châu á,
-		Châu âu,
-		Châu mỹ,
-		Nổi bật,
-		...
-	}
-}
+- Quản lý tour
+	list 	=> ok
+	active 	=> ok
+	delete 	=> ok
+	add 	=> ok
+	edit 	=> ok
+
+- Quản lý booking
+	list
+	active
+	add
+	edit
+
+- Quản lý chuyên mục
+	list 	=> ok
+	active 	=> ok
+	delete 	=> ok
+	add 	=> ok
+	edit 	=> ok
+
+- Quản lý bài viết
+	list 	=> ok
+	active 	=> ok
+	delete 	=> ok
+	add 	=> ok
+	edit 	=> ok
+
+- Quản lý menu item
+	list 	=> ok
+	active 	=> ok
+	delete 	=> ok
+	add 	=> ok
+	edit 	=> ok
+
+
 
 

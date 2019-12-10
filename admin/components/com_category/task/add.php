@@ -5,7 +5,7 @@ defined("ISHOME") or die("Can't acess this page, please come back!");
     function checkinput(){
         if($("#txt_name").val()==""){
             $("#txt_name_err").fadeTo(200,0.1,function(){
-                $(this).html('Vui lòng nhập tên nhóm tin').fadeTo(900,1);
+                $(this).html('Trường này là yêu cầu bắt buộc').fadeTo(900,1);
             });
             $("#txt_name").focus();
             return false;
@@ -17,13 +17,13 @@ defined("ISHOME") or die("Can't acess this page, please come back!");
 <div id="path">
     <ol class="breadcrumb">
         <li><a href="<?php echo ROOTHOST_ADMIN;?>">Admin</a></li>
-        <li><a href="<?php echo ROOTHOST_ADMIN.COMS;?>">Danh sách danh mục đất đai</a></li>
-        <li class="active">Thêm mới danh mục đất đai</li>
+        <li><a href="<?php echo ROOTHOST_ADMIN.COMS;?>">Danh sách chuyên mục</a></li>
+        <li class="active">Thêm mới chuyên mục</li>
     </ol>
 </div>
 
 <div class="com_header color">
-    <h1>Thêm mới danh mục đất đai</h1>
+    <h1>Thêm mới chuyên mục</h1>
     <div class="pull-right">
         <form id="frm_menu" name="frm_menu" method="post" action="">
             <input type="hidden" name="txtorders" id="txtorders" />
@@ -54,51 +54,17 @@ defined("ISHOME") or die("Can't acess this page, please come back!");
     <form id="frm_action" class="form-horizontal" name="frm_action" method="post" enctype="multipart/form-data">
         <div class="tab-content">
             <div class="tab-pane fade active in" id="info">
-				<div class="form-group">
-                    <div class="col-md-6 col-sm-6">
-                        <label>Loại hình đất <small class="cred"> (*)</small></label>
-                        <select name="cbo_type" class="form-control" id="cbo_type" style="width: 100%;">
-                            <option value="">Chọn loại hình</option>
-                            <?php $objtype=new CLS_TYPE; $objtype->getListCbo($row['type_id']); ?>
-                        </select>
-                        <script type="text/javascript">
-                            $(document).ready(function() {
-                                cbo_Selected('cbo_type','<?php echo $row['type_id'];?>');
-                            });
-                        </script>
-                    </div>
-				</div>
                 <div class="form-group">
                     <div class="col-md-6 col-sm-6">
-                        <label>Tên danh mục<small class="cred"> (*)</small><span id="txt_name_err" class="mes-error"></span></label>
-                        <input type="text" name="txt_name" class="form-control" id="txt_name" placeholder="Tên nhóm tin" required>
+                        <label>Tên chuyên mục<small class="cred"> (*)</small><span id="txt_name_err" class="mes-error"></span></label>
+                        <input type="text" name="txt_name" class="form-control" id="txt_name" placeholder="Tên chuyên mục" required>
                     </div>
                     <div class="col-md-6 col-sm-6">
-                        <label>Danh mục cha</label>
-                        <select name="cbo_cate" class="form-control" id="cbo_cate" style="width: 100%;">
+                        <label>-- Chuyên mục cha --</label>
+                        <select name="cbo_par" class="form-control" id="cbo_par" style="width: 100%;">
                             <option value="0" title="Top">Root</option>
                             <?php $obj->getListCate(0,0); ?>
                         </select>
-                    </div>
-                </div>
-                <div class='form-group'>
-                    <div class="col-md-6 col-sm-6">
-                        <label>Ảnh đại diện</label>
-                        <div class="row">
-                            <div class="col-sm-9 col-md-10">
-                                <input name="txtthumb" type="text" id="file-thumb" size="45" class='form-control' value="" placeholder='' />
-                            </div>
-                            <div class="col-sm-3 col-md-2">
-                                <a class="btn btn-success" href="#" onclick="OpenPopup('<?php echo ROOTHOST_ADMIN;?>extensions/upload_image.php');"><b style="margin-top: 15px">Chọn</b></a>
-                            </div>
-                            <div id="txt_thumb_err" class="mes-error"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-12">
-                        <label class="form-control-label">Sapo</label>
-                        <textarea name="txtintro" id="txtintro" rows="5"></textarea>
                     </div>
                 </div>
             </div>
@@ -130,7 +96,6 @@ defined("ISHOME") or die("Can't acess this page, please come back!");
 </div>
 <script type="text/javascript">
     $(document).ready(function(){
-        $("#cbo_cate").select2();
-        tinymce.init({selector:'#txtintro'});
+        $("#cbo_par").select2();
     });
 </script>

@@ -67,23 +67,9 @@ defined("ISHOME") or die("Can't acess this page, please come back!");
                         <input type="text" name="txt_name" class="form-control" id="txt_name" placeholder="" required>
                         <div class="clearfix"></div>
                     </div>
-                    
-                    <div class='form-group'>
-                        <label>Ảnh đại diện</label>
-                        <div class="row">
-                            <div class="col-sm-9 col-md-10">
-                                <input name="txtthumb" type="text" id="file-thumb" size="45" class='form-control' value="" placeholder='Tiêu đề bài viết' />
-                            </div>
-                            <div class="col-sm-3 col-md-2">
-                                <a class="btn btn-primary" href="#" onclick="OpenPopup('<?php echo ROOTHOST_ADMIN;?>extensions/upload_image.php');"><b style="margin-top: 15px">Chọn</b></a>
-                            </div>
-                            <div id="txt_thumb_err" class="mes-error"></div>
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
 
                     <div class='form-group'>
-                        <label>Chọn thêm ảnh<span id="err_images" class="mes-error"></span></label>
+                        <label>Danh sách ảnh:<span id="err_images" class="mes-error"></span></label>
                         <div id="response_img">
                             <input type="file" multiple="multiple" name="file_images[]" accept="image/jpg, image/jpeg">
                         </div>
@@ -188,7 +174,7 @@ defined("ISHOME") or die("Can't acess this page, please come back!");
 
                     <div class='form-group'>
                         <label>Địa điểm<span id="err_place" class="mes-error"></span></label>
-                        <select class="form-control" id="cbo_place" name="cbo_place" style="width: 100%" required>
+                        <select class="form-control" id="cbo_place" name="cbo_place" style="width: 100%">
                             <option value="">-- Điểm đến --</option>
                             <?php $obj_place->getListCate(); ?>
                         </select>
@@ -197,7 +183,7 @@ defined("ISHOME") or die("Can't acess this page, please come back!");
 
                     <div class="form-group">
                         <label>Thời gian <small class="cred"> (*)</small><span id="err_code" class="mes-error"></span></label>
-                        <select class="form-control" id="txt_days" name="txt_days" style="width: 100%" required>
+                        <select class="form-control" id="cbo_days" name="cbo_days" style="width: 100%" required>
                             <option>-- Chọn một --</option>
                             <?php
                             $days = unserialize(TOUR_TIME);
@@ -227,7 +213,7 @@ defined("ISHOME") or die("Can't acess this page, please come back!");
 
                     <div class="form-group">
                         <label>Nơi khởi hành</label>
-                        <input type="text" name="txt_starting_gate" class="form-control">
+                        <input type="text" name="txt_starting_gate" class="form-control" value="Hà Nội">
                     </div>
 
                     <div class="form-group">
@@ -289,7 +275,7 @@ defined("ISHOME") or die("Can't acess this page, please come back!");
     $(document).ready(function(){
         $("#cbo_cata").select2();
         $("#cbo_place").select2();
-        $("#txt_days").select2();
+        $("#cbo_days").select2();
     })
 
     function images_delete_item(attr){
