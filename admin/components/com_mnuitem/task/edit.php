@@ -113,7 +113,7 @@ if(isset($_POST["txt_viewtype"])){
 				<label>Kiểu hiển thị<small class="cred"> (*)</small><span id="err_viewtype" class="mes-error"></span></label>
 				<select name="cbo_viewtype" id="cbo_viewtype" class="form-control" onchange="select_type();">
 					<option value="link" selected="selected">Links</option>
-					<option value="type_of_land">Ds loại hình đất đai</option>
+					<option value="place">Ds địa điểm du lịch</option>
 					<option value="block">Nhóm tin</option>
 					<option value="article">Tin đất đai</option>
 					<script language="javascript">
@@ -153,6 +153,20 @@ if(isset($_POST["txt_viewtype"])){
 						$(document).ready(function() {
 							cbo_Selected('cbo_type_of_land','<?php echo $row['type_of_land_id'];?>');
 							$("#cbo_type_of_land").select2();
+						});
+					</script>
+				</div>
+			<?php } else if($viewtype=="place"){?>
+				<div class="col-md-6">
+					<label>Ds địa điểm<small class="cred"> (*)</small><span id="err_cate" class="mes-error"></span></label>
+					<select name="cbo_place" id="cbo_place" class="form-control" style="width:100%;">
+						<option value="0" title="Top">-- Chọn một --</option>
+						<?php $obj_place->getListCate();?>
+					</select>
+					<script type="text/javascript">
+						$(document).ready(function() {
+							cbo_Selected('cbo_place','<?php echo $row['place_id'];?>');
+							$("#cbo_place").select2();
 						});
 					</script>
 				</div>
@@ -250,7 +264,22 @@ if(isset($_POST["txt_viewtype"])){
 	</div>
 </form>
 <script type="text/javascript">
-    $(document).ready(function(){
-        tinymce.init({selector:'#txtdesc'});
-    });
+	$(document).ready(function(){
+		$('#txtdesc').summernote({
+            placeholder: 'Mô tả ...',
+            height: 300,
+            toolbar: [
+            ['style', ['style']],
+            ['font', ['bold', 'italic', 'underline', 'superscript', 'subscript', 'strikethrough', 'clear']],
+            ['fontname', ['fontname']],
+            ['fontsize', ['fontsize']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['height', ['height']],
+            ['table', ['table']],
+            ['insert', ['link', 'picture', 'video', 'hr']],
+            ['view', ['codeview']]
+            ],
+        });
+	});
 </script>

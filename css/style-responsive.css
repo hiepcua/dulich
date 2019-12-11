@@ -42,9 +42,6 @@
 		max-width: 300px;
 		margin:0 ;
 	}
-	.navbar-nav>li:hover .dropdown-menu{
-		display: block;
-	}
 	#nav #nav-icon{
 		display: none;
 	}
@@ -771,7 +768,11 @@
 	}
 }
 /*===== FONT SIZE RESPONSIVE =====*/
-@media (min-width: 1200px){}
+@media (min-width: 1200px){
+	.container {
+		max-width: 1170px;
+	}
+}
 @media (min-width: 992px){
 	/* Section category */
 	.sec-type-of-land .item-wrap .item-link img {
@@ -781,7 +782,44 @@
 		max-height: 44px;
 	}
 	/* End Section category */
+	.navbar-main .dropdown.megamenu {
+		position: static;
+	}
+	.navbar-main .dropdown.megamenu .dropdown-menu {
+		width: 100%;
+		left: 0;
+		right: 0;
+		max-width: 1170px;
+		margin-left: auto;
+		margin-right: auto;
+		top: 78px;
+	}
+	.navbar-main .dropdown.megamenu .dropdown-menu.full {
+		max-width: 100%;
+	}
+	.navbar-main .dropdown.megamenu .dropdown-menu.full .col-md-2 {
+		-ms-flex: 0 0 20%;
+		flex: 0 0 20%;
+		max-width: 20%;
+	}
+	.navbar-main .dropdown.megamenu .dropdown-menu .col-sm-6 .megamenu-submenu ul {
+		border-right: 1px dotted #d0d1cd;
+	}
+	.navbar-main .dropdown.megamenu .dropdown-menu .col-sm-6:last-child .megamenu-submenu ul {
+		border-right: none;
+	}
 }
+/*========= menu mobile ============*/
+@media (max-width: 991px) {
+	.open-menu .wrapper .wrapper-inner {
+		transform: translate(256px, 0);
+	}
+	.open-menu .slidebar-menu {
+		left: 0;
+	}
+}
+
+/*========= e: menu mobile ============*/
 @media (min-width: 768px) and (max-width: 992px){
 	/* Top header */
 	.top-header .col-left ul li.current-day{

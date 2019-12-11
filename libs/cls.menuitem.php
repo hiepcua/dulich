@@ -90,12 +90,8 @@ class CLS_MENUITEM{
 				$sql = "SELECT * FROM tbl_categories WHERE isactive = 1 AND `id`='".$rows['category_id']."'";
                 $this->objmysql->Query($sql);
                 $row_cate = $this->objmysql->Fetch_Assoc();
-
-                $sql = "SELECT * FROM tbl_type_of_land WHERE isactive = 1 AND `id`='".$row_cate['type_id']."'";
-                $this->objmysql->Query($sql);
-                $row2 = $this->objmysql->Fetch_Assoc();
 				
-				$urllink = ROOTHOST.$row2['code'].'/'.$row_cate['code'];
+				$urllink = ROOTHOST.'chuyen-muc/'.$row_cate['code'];
 				if(strpos($url, $urllink)!==false) $cls.=" active";
 			}
 			else if($rows['viewtype'] == 'type_of_land'){

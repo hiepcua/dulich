@@ -82,8 +82,9 @@
     <div class="table-responsive">
         <table class="table table-bordered">
             <tr class="header">
-                <th width="30" align="center">#</th>
+                <!-- <th width="30" align="center">#</th> -->
                 <th width="30" align="center"><input type="checkbox" name="chkall" id="chkall" value="" onclick="docheckall('chk',this.checked);" /></th>
+                <th>Xóa</th>
                 <th width="50" align="center">Parent ID</th>
                 <th align="center">Tên</th>
                 <th align="center">Mã</th>
@@ -95,7 +96,6 @@
                 </th>
                 <th>Hiển thị</th>
                 <th>Sửa</th>
-                <th>Xóa</th>
             </tr>
             <?php $obj->listTableItemMenu($strwhere,0,0,0); ?>
         </table>

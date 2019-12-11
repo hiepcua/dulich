@@ -24,6 +24,7 @@ require_once 'libs/cls.configsite.php';
 $tmp = new CLS_TEMPLATE();
 $objmysql = new CLS_MYSQL();
 $objdata = new CLS_MYSQL();
+$obj_mnuitems = new CLS_MENUITEM();
 $conf = new CLS_CONFIG();
 $conf->load_config();
 global $tmp;global $conf;
@@ -46,21 +47,17 @@ global $tmp;global $conf;
 	<title><?php echo $conf->Title; ?></title>
 	<link rel="stylesheet" href="<?php echo ROOTHOST; ?>css/bootstrap.min.css" type="text/css" media="all" />
 	<link rel="stylesheet" href="<?php echo ROOTHOST; ?>css/font-awesome.min.css" type="text/css" media="all" >
-	<link rel="stylesheet" href="<?php echo ROOTHOST; ?>css/slick.css" >
-	<!-- <link rel="stylesheet" href="<?php echo ROOTHOST; ?>css/owl.carousel.min.css" > -->
-	<!-- <link rel="stylesheet" href="<?php echo ROOTHOST; ?>css/owl.theme.default.min.css"> -->
+	<link rel="stylesheet" href="<?php echo ROOTHOST; ?>css/slick.css">
 	<link rel="stylesheet" href="<?php echo ROOTHOST; ?>css/style.css" type="text/css" media="all">
 	<link rel="stylesheet" href="<?php echo ROOTHOST; ?>css/style-responsive.css" type="text/css" media="all">
 	<link rel="stylesheet" href="<?php echo ROOTHOST; ?>css/Roboto.css" type="text/css" media="all">
 
-	<!-- <script src="<?php echo ROOTHOST; ?>global/js/jquery-1.11.2.min.js"></script> -->
-	<script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-	<script src="<?php echo ROOTHOST; ?>global/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-	<script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+	<!-- <script src="<?php echo ROOTHOST; ?>js/jquery-3.4.1.slim.min.js"></script> -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="<?php echo ROOTHOST; ?>js/popper.min.js"></script>
+	<script src="<?php echo ROOTHOST; ?>js/bootstrap.min.js"></script>
 	<script src='<?php echo ROOTHOST; ?>js/slick.min.js'></script>
 	<script src='<?php echo ROOTHOST; ?>js/gfscript.js'></script>
-	<!-- <script src='<?php echo ROOTHOST; ?>js/owl.carousel.js'></script> -->
 </head>
 <body>
 	<!-- Load Facebook SDK for JavaScript -->
@@ -83,200 +80,8 @@ global $tmp;global $conf;
 		<?php }else{ ?> 
 			<?php $tmp->loadComponent(); ?> 
 		<?php }?>
-		<!-- <?php if($tmp->isFrontpage()){ ?>
-			<div class="main-home">
-				<section class="section-follow">
-					<div class="container">
-						<div id="slide-follow" class="owl-carousel owl-theme">
-							<?php
-							$sql="SELECT c.*,d.name AS cat_name,t.title as type_name FROM tbl_contents AS c 
-							INNER JOIN tbl_type_of_land AS t ON c.type_of_land_id=t.id
-							INNER JOIN tbl_categories AS d ON c.category_id=d.id
-							WHERE c.isactive=1 AND c.ishot=1 ORDER BY c.cdate DESC, c.id DESC LIMIT 0, 10";
-							$objmysql->Query($sql);
-							while($row 	= $objmysql->Fetch_Assoc()) {
-								$title 	= stripcslashes($row['title']);
-								$code 	= $row['code'];
-								$thumb 	= getThumb($row['thumb'], 'img-responsive', '');
-								$views 	= (int)$row['visited'];
-								$cdate 	= convert_date($row['cdate']);
-								$cat_name	= $row['cat_name'];
-								$price 		= convert_price($row['price']);
-								$area  		= $row['area'];
-								$type_land	= $row['type_of_land_id'];
-								$type_name  = $row['type_name'];
-
-								$sql_cate="SELECT * FROM tbl_categories WHERE isactive=1 AND id=".$row['category_id'];
-								$objdata->Query($sql_cate);
-								$r_cate = $objdata->Fetch_Assoc();
-								$link 	= ROOTHOST.$r_cate['code'].'/'.$code.'.html';
-								?>
-								<div class="item">
-									<div class="box-thumb"><a href="<?php echo $link;?>" title="<?php echo $title;?>"><?php echo $thumb;?></a></div>
-									<div class="content">
-										<div class="title"><a href="<?php echo $link;?>" title="<?php echo $title;?>"><?php echo $title;?></a></div>
-										<div class="info">
-											<div class="date">Giá: <b><?php if($price==="" || $price==0) echo 'Thỏa thuận'; else echo $price;?></b></div>
-											<div class="date">Diện tích: <?php if($area==="" || $area==0) echo 'Không xác định'; else echo number_format($area).'m²';?></div>
-										</div>
-										<div class="info">
-											<span class="date"><?php echo $cdate;?></span>
-										</div>
-									</div>
-								</div>
-							<?php } ?>
-						</div>
-					</div>
-				</section>
-
-				<div class="container">
-					<div class="row">
-						<div class="col-md-8 col-sm-8">
-							<div id="slide-hot-news" class="owl-carousel owl-theme">
-								<?php
-								$sql="SELECT c.*,d.name AS cat_name,t.title as type_name FROM tbl_contents AS c 
-								INNER JOIN tbl_type_of_land AS t ON c.type_of_land_id=t.id
-								INNER JOIN tbl_categories AS d ON c.category_id=d.id
-								WHERE c.isactive = 1 ORDER BY c.cdate DESC,c.id DESC LIMIT 0, 3";
-								$objmysql->Query($sql);
-								while($row 	= $objmysql->Fetch_Assoc()) {
-									$title 	= stripcslashes($row['title']);
-									$code 	= $row['code'];
-									$thumb 	= getThumb($row['thumb'], 'img-responsive', '');
-									$views 	= (int)$row['visited'];
-									$cdate 	= convert_date($row['cdate']);
-									$intro 	= Substring(html_entity_decode(stripslashes($row['intro'])), 0, 60);
-									$cat_name	= $row['cat_name'];
-									$price 		= convert_price($row['price']);
-									$area  		= $row['area'];
-									$type_land	= $row['type_of_land_id'];
-									$type_name  = $row['type_name'];
-
-									$sql_cate="SELECT * FROM tbl_categories WHERE isactive=1 AND id=".$row['category_id'];
-									$objdata->Query($sql_cate);
-									$r_cate = $objdata->Fetch_Assoc();
-									$link 	= ROOTHOST.$r_cate['code'].'/'.$code.'.html';
-									?>
-									<div class="item">
-										<div class="box-thumb"><a href="<?php echo $link;?>" title="<?php echo $title;?>"><?php echo $thumb;?></a></div>
-										<div class="content">
-											<div class="title"><a href="<?php echo $link;?>" title="<?php echo $title;?>"><?php echo $title;?></a></div>
-											<div class="info">
-												<span class="date">Giá: <b><?php if($price==="" || $price==0) echo 'Thỏa thuận'; else echo $price;?></b></span>
-												<span class="date">Diện tích: <?php if($area==="" || $area==0) echo 'Không xác định'; else echo number_format($area).'m²';?></span>
-											</div>
-											<div class="info">
-												<span class="date"><?php echo $cdate;?></span>
-												<?php
-												if($views > 0){
-													echo '<span class="views">'.$views.' views</span>';
-												} ?>
-												<div class="intro"><?php echo $intro; ?></div>
-											</div>
-										</div>
-									</div>
-								<?php } ?>
-							</div>
-							<?php
-							$sql="SELECT * FROM tbl_categories WHERE isactive=1 AND par_id = 0 ORDER BY `order` ASC";
-							$objmysql->Query($sql);
-							while ($r_cate = $objmysql->Fetch_Assoc()) {
-								$cate_link = ROOTHOST.$r_cate['code'];
-								echo '<section class="sec-category">
-								<h2 class="sec-title"><i class="fa fa-circle" aria-hidden="true"></i><span><a href="'.$cate_link.'" title="'.$r_cate['name'].'">'.$r_cate['name'].'</a></span></h2>';
-
-								echo '<div class="row list-items">';
-								$sql_con="SELECT c.*,d.name AS cat_name,t.title as type_name FROM tbl_contents AS c 
-								INNER JOIN tbl_type_of_land AS t ON c.type_of_land_id=t.id
-								INNER JOIN tbl_categories AS d ON c.category_id=d.id
-								WHERE c.isactive=1 AND c.category_id = ".$r_cate['id']." 
-								ORDER BY c.cdate DESC, c.id DESC LIMIT 0,6";
-								$objdata->Query($sql_con);
-								while ($r_con = $objdata->Fetch_Assoc()) {
-									$title 	= stripcslashes($r_con['title']);
-									$code 	= $r_con['code'];
-									$thumb 	= getThumb($r_con['thumb'], 'img-responsive', '');
-									$views 	= (int)$r_con['visited'];
-									$cdate 	= convert_date($r_con['cdate']);
-									$intro 	= Substring(html_entity_decode(stripslashes($r_con['intro'])), 0, 60);
-									$link 	= ROOTHOST.$r_cate['code'].'/'.$r_con['code'].'.html';
-									$cat_name	= $r_con['cat_name'];
-									$price 		= convert_price($r_con['price']);
-									$area  		= $r_con['area'];
-									$type_land	= $r_con['type_of_land_id'];
-									$type_name  = $r_con['type_name'];
-									
-									echo '<div class="col-md-6 col-sm-6 item">
-									<div class="box-thumb">
-									<a href="'.$link.'" title="'.$title.'">'.$thumb.'</a>
-									</div>
-									<div class="content">
-									<div class="title"><a href="'.$link.'" title="'.$title.'">'.$title.'</a></div>';
-									echo '<div class="info">
-										<span class="date">Giá: <b>';
-									if($price==="" || $price==0) echo 'Thỏa thuận'; else echo $price;
-									echo '</b></span>
-										<span class="date">Diện tích: ';
-									if($area==="" || $area==0) echo 'Không xác định'; 
-									else echo number_format($area).'m²';
-									echo '</span>
-									</div>
-									<div class="info">
-									<span class="date">'.$cdate.'</span>';
-									if($views > 0){
-										echo '<span class="views">'.$views.' views</span>';
-									}
-									echo '<div class="intro">'.$intro.'</div>
-									</div>
-									</div>
-									</div>';
-								}
-								echo '</div>';
-								echo '</section>';
-							}
-							?>
-
-						</div>
-						<div class="col-md-4 col-sm-4 wrap-aside">
-							<?php include_once("modules/mod_content/layout.php");?>
-						</div>
-					</div>
-				</div>
-			</div>
-		<?php }else{ ?> 
-			<div class="component">
-				<?php $tmp->loadComponent(); ?> 
-			</div>
-			<?php }?> -->
-
-			<?php include_once("modules/mod_mods/footer.php");?>
-		</div>
-		<script type="text/javascript">
-			var prevScrollpos = window.pageYOffset;
-			window.onscroll = function() {
-				var currentScrollPos = window.pageYOffset;
-				if(currentScrollPos > 300){
-					if (prevScrollpos > currentScrollPos) {
-						document.getElementById("navbar").classList.add('position-fixed');
-					// document.getElementById("navbar").style.top = "";
-				} else {
-					document.getElementById("navbar").classList.remove('position-fixed');
-					// document.getElementById("navbar").style.top = "-50px";
-				}
-				prevScrollpos = currentScrollPos;
-			}else{
-				document.getElementById("navbar").classList.remove('position-fixed');
-			}
-		}
-
-		$(".fa-caret-right").click(function () {
-			$(".social-top>ul").toggleClass("show-social-top");
-			return false;
-		});
-		$(".fa-caret-right").click(function () {
-			$(this).toggleClass("show-icon-social");
-			return false;
-		});
-	</script>
+		<?php include_once("modules/mod_mods/footer.php");?>
+	</div>
+	<script type="text/javascript" src="<?php echo ROOTHOST; ?>js/main.js"></script>
 </body>
 </html>

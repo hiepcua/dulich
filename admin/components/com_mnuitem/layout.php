@@ -16,8 +16,10 @@ if($flag == false){
 // Begin Toolbar
 require_once('libs/cls.menuitem.php');
 require_once('libs/cls.category.php');
+require_once('libs/cls.place.php');
 $objmysql = new CLS_MYSQL();
 $obj_cate = new CLS_CATEGORY();
+$obj_place = new CLS_PLACE();
 $obj = new CLS_MENUITEM();
 
 $mnuid = isset($_GET['mnuid']) ? (int)$_GET['mnuid'] : 0;
@@ -26,6 +28,7 @@ if(isset($_POST['cmdsave'])){
 	$Con_ID 	= '';
 	$Link 		= '';
 	$TypeOL_Id	= '';
+	$Place_ID	= '';
 	$Mnu_ID 	= (int)$mnuid;
 	$Code 		= addslashes(un_unicode($_POST['txtname']));
 	$Par_ID		= isset($_POST['cbo_parid']) ? (int)$_POST['cbo_parid'] : 0;
@@ -45,6 +48,9 @@ if(isset($_POST['cmdsave'])){
 	else if($Viewtype == 'type_of_land'){
 		$TypeOL_Id = (int)$_POST['cbo_type_of_land'];
 	}
+	else if($Viewtype == 'place'){
+		$Place_ID = (int)$_POST['cbo_place'];
+	}
 	else{
 		$Link = addslashes($_POST['txtlink']);
 	}
@@ -62,6 +68,7 @@ if(isset($_POST['cmdsave'])){
 		`category_id`='".$Cate_ID."',
 		`content_id`='".$Con_ID."',
 		`type_of_land_id`='".$TypeOL_Id."',
+		`place_id`='".$Place_ID."',
 		`link`='".$Link."',
 		`icon`='".$Icon."',
 		`class`='".$Class."',
@@ -69,8 +76,8 @@ if(isset($_POST['cmdsave'])){
 		$sql.=" WHERE `id`='".$ID."'";
 		$objmysql->Exec($sql);
 	}else{
-		$sql="INSERT INTO `tbl_mnuitems`(`par_id`,`name`,`code`,`menu_id`,`viewtype`,`category_id`,`content_id`,`type_of_land_id`,`link`,`icon`,`class`,`intro`,`isactive`) VALUES ";
-		$sql.="('".$Par_ID."','".$Name."','".$Code."','".$Mnu_ID."','".$Viewtype."','".$Cate_ID."','".$Con_ID."','".$TypeOL_Id."','".$Link."','".$Icon."','".$Class."','".$Intro."','".$isActive."') ";
+		$sql="INSERT INTO `tbl_mnuitems`(`par_id`,`name`,`code`,`menu_id`,`viewtype`,`category_id`,`content_id`,`type_of_land_id`,`place_id`,`link`,`icon`,`class`,`intro`,`isactive`) VALUES ";
+		$sql.="('".$Par_ID."','".$Name."','".$Code."','".$Mnu_ID."','".$Viewtype."','".$Cate_ID."','".$Con_ID."','".$TypeOL_Id."','".$Place_ID."','".$Link."','".$Icon."','".$Class."','".$Intro."','".$isActive."') ";
 		$objmysql->Exec($sql);
 	}
 	echo '<script language="javascript">window.location="'.ROOTHOST_ADMIN.COMS.'/'.$mnuid.'"</script>';

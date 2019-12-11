@@ -1,97 +1,56 @@
-var prevScrollpos = window.pageYOffset;
-window.onscroll = function() {
-	var currentScrollPos = window.pageYOffset;
-	if(currentScrollPos > 300){
-		if (prevScrollpos > currentScrollPos) {
-			document.getElementById("navbar").style.position = "fixed";
-			document.getElementById("navbar").style.top = "";
-		} else {
-			document.getElementById("navbar").style.position = "relative";
-			document.getElementById("navbar").style.top = "-50px";
+(function ($) {
+	var $win = $(window),
+	$body_m = $('body'),
+	$navbar = $('.navbar');
+
+	var prevScrollpos = window.pageYOffset;
+	window.onscroll = function() {
+		var currentScrollPos = window.pageYOffset;
+		if(currentScrollPos > 300){
+			if (prevScrollpos > currentScrollPos) {
+				document.getElementById("navbar").classList.add('position-fixed');
+			} else {
+				document.getElementById("navbar").classList.remove('position-fixed');
+			}
+			prevScrollpos = currentScrollPos;
+		}else{
+			document.getElementById("navbar").classList.remove('position-fixed');
 		}
-		prevScrollpos = currentScrollPos;
-	}else{
-		document.getElementById("navbar").style.position = "relative";
 	}
-}
 
-$(document).ready(function(){
-	$('footer .address > div').html("<i class='fa fa-map-marker'></i> "+$('footer .address > div').html())
-	$('footer .tel > div').html("<i class='fa fa-phone'></i> "+$('footer .tel > div').html())
-	$('footer .calendar > div').html("<i class='fa fa-calendar'></i> "+$('footer .calendar > div').html())
-	$('footer .ship > div').html("<i class='fa fa-truck'></i> "+$('footer .ship > div').html())
-
-	// call hotline mobile
-	var _w=$(window).width();
-	$('.mypage-alo-phone').css("left",(_w-110)/2+"px");
-
-	
-
-	$('#slide-follow').owlCarousel({
-		loop:true,
-		margin:10,
-		responsiveClass:true,
-		responsive:{
-			0:{
-				items:1,
-				nav:true
-			},
-			600:{
-				items:2,
-				nav:false
-			},
-			1000:{
-				items:4,
-				nav:true,
-				loop:false
-			}
-		}
+	$(".fa-caret-right").click(function () {
+		$(".social-top>ul").toggleClass("show-social-top");
+		return false;
+	});
+	$(".fa-caret-right").click(function () {
+		$(this).toggleClass("show-icon-social");
+		return false;
 	});
 
-	$('#slide-hot-news').owlCarousel({
-		loop:true,
-		margin:10,
-		responsiveClass:true,
-		responsive:{
-			0:{
-				items:1,
-				nav:true
-			},
-			600:{
-				items:1,
-				nav:false
-			},
-			1000:{
-				items:1,
-				nav:true,
-				loop:false
-			}
-		}
+	$('.navbar-toggler').click(function(){
+		$('body').addClass('open-menu');
 	});
 
-	$("#feedback").owlCarousel({
-		loop:true,
-		margin:10,
-		responsiveClass:true,
-		responsive:{
-			0:{
-				items:1,
-				nav:true
-			},
-			600:{
-				items:2,
-				nav:false
-			},
-			1000:{
-				items:2,
-				nav:true,
-				loop:false
-			}
-		}
+	$('.close-menu').click(function(){
+		$('body').removeClass('open-menu');
 	});
 
 	// Search form
 	$('#frmsearch .fa.fa-search').click(function(){
 		$('#frmsearch').submit();
 	});
+	$(".header-icon-search").click(function () {
+        $("#check").toggleClass("show-header-icon-search");
+        return false;
+    });
+})(jQuery);
+
+
+
+$(document).ready(function(){
+	// call hotline mobile
+	var _w = $(window).width();
+	$('.mypage-alo-phone').css("left",(_w-110)/2+"px");
+
+	
 })
