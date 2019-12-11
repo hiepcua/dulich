@@ -53,9 +53,6 @@ $objmysql1 = new CLS_MYSQL();
 						<ul class="navbar-nav navbar-main">
 							<?php
 							// Print menu
-							$class = "";
-							$subClass = "";
-							$aToggle = "nav-item";
 							foreach ($arr_menuitem as $key => $value) {
 								switch ($value['viewtype']) {
 									case 'link':
@@ -86,6 +83,8 @@ $objmysql1 = new CLS_MYSQL();
 								}
 
 								$cChild = count($value['childs']); // Count child lever 1
+								$class = "";
+								$aToggle = "nav-item";
 								$class.= $value['class'];
 								if($cChild > 0) {
 									$class.=" dropdown";
