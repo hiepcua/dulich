@@ -9,7 +9,7 @@ $action = isset($_GET['cbo_action']) ? addslashes(trim($_GET['cbo_action'])) : '
 
 // Gán strwhere
 if($keyword !== ''){
-    $strwhere.=" AND ( `name` like '%$keyword%' )";
+    $strwhere.=" AND `name` like '%$keyword%'";
 }
 if($action !== '' && $action !== 'all' ){
     $strwhere.=" AND `isactive` = '$action'";
@@ -23,7 +23,7 @@ if(isset($_POST['txtCurnpage'])){
     $_SESSION['CUR_PAGE_'.OBJ_PAGE] = (int)$_POST['txtCurnpage'];
 }
 
-$sql_count = "SELECT COUNT(*) AS count FROM tbl_categories WHERE 1=1 ".$strwhere;
+$sql_count = "SELECT COUNT(*) AS count FROM tbl_place WHERE 1=1 ".$strwhere;
 $objmysql->Query($sql_count);
 $row_count = $objmysql->Fetch_Assoc();
 $total_rows = $row_count['count'];

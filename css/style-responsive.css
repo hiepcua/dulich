@@ -771,7 +771,11 @@
 	}
 }
 /*===== FONT SIZE RESPONSIVE =====*/
-@media (min-width: 1200px){}
+@media (min-width: 1200px){
+	.container {
+	    max-width: 1170px;
+	}
+}
 @media (min-width: 992px){
 	/* Section category */
 	.sec-type-of-land .item-wrap .item-link img {

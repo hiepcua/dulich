@@ -62,10 +62,13 @@ class CLS_PLACE{
         $objdata=new CLS_MYSQL();
         $objdata->Query($sql);
         $str_space="";
+        $clsChild="";
         if($level!=0){  
-			$str_space.="|";
-            for($i=0;$i<$level;$i++)
-                $str_space.="|----- "; 
+			$clsChild = 'child-'.$level;
+            for($i=0;$i<$level;$i++){
+                $str_space.="&nbsp;&nbsp;&nbsp;";
+                $str_space.="|----";
+            }
         }
         while($rows=$objdata->Fetch_Assoc()){
             $rowcount++;
@@ -75,7 +78,7 @@ class CLS_PLACE{
                 $icon_active="<i class='fa fa-check cgreen' aria-hidden='true'></i>";
             else $icon_active='<i class="fa fa-times-circle-o cred" aria-hidden="true"></i>';
 			
-            echo "<tr name=\"trow\">";
+            echo "<tr name='trow' class='".$clsChild."'>";
             echo "<td width=\"30\" align=\"center\">$rowcount</td>";
             echo "<td width=\"30\" align=\"center\"><label>";
             echo "<input type=\"checkbox\" name=\"chk\" id=\"chk\"   onclick=\"docheckonce('chk');\" value=\"$ids\" />";

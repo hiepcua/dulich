@@ -84,10 +84,13 @@ class CLS_MENUITEM{
 		$objdata=new CLS_MYSQL;
 		$objdata->Query($sql);
 		$str_space="";
+		$clsChild="";
 		if($level!=0){
-			for($i=0;$i<$level;$i++)
+			$clsChild = 'child-'.$level;
+			for($i=0;$i<$level;$i++){
 				$str_space.="&nbsp;&nbsp;&nbsp;";
-			$str_space.="|---";
+				$str_space.="|----";
+			}
 		}
 		while($rows=$objdata->Fetch_Assoc()){
 			$rowcount++;
@@ -101,11 +104,19 @@ class CLS_MENUITEM{
 				$icon_active="<i class='fa fa-check cgreen' aria-hidden='true'></i>";
 			else $icon_active='<i class="fa fa-times-circle-o cred" aria-hidden="true"></i>';
 
-			echo "<tr name='trow'>";
-			echo "<td width='30' align='center'>".$rowcount."<label>";
+			echo "<tr name='trow' class='".$clsChild."'>";
+			// echo "<td width='30' align='center'>".$rowcount."<label>";
+
 			echo "<td width='30' align='center'><label>";
 			echo "<input type='checkbox' name='chk' id='chk' onclick=\"docheckonce('chk');\" value='$mnuids' />";
 			echo "</label></td>";
+			
+			echo "<td width='50' align='center'>";
+			echo "<a href='".ROOTHOST_ADMIN.COMS."/".$rows['menu_id']."/delete/$mnuids' onclick=\"return confirm('Do you want to delete this record?');\">";
+			echo "<i class='fa fa-times-circle cred' aria-hidden='true'></i>";
+			echo "</a>";
+			echo "</td>";
+
 			echo "<td width='50' align='center'>$par_id</td>";
 			echo "<td>$str_space $name</td>";
 			echo "<td align='left'>$str_space $code</td>";
@@ -121,11 +132,7 @@ class CLS_MENUITEM{
 			echo "<i class='fa fa-edit' aria-hidden='true'></i>";
 			echo "</a>";			
 			echo "</td>";
-			echo "<td width='50' align='center'>";
-			echo "<a href='".ROOTHOST_ADMIN.COMS."/".$rows['menu_id']."/delete/$mnuids' onclick=\"return confirm('Do you want to delete this record?');\">";
-			echo "<i class='fa fa-times-circle cred' aria-hidden='true'></i>";
-			echo "</a>";
-			echo "</td>";
+			
 			echo "</tr>";
 			$nextlevel=$level+1;
 			$this->listTableItemMenu($strwhere, $mnuids, $nextlevel, $rowcount);
