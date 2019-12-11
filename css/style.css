@@ -2515,8 +2515,3 @@ aside.module{
 	margin-bottom: 0;
 	list-style: none;
 }
-.justify-content-center {
-	-webkit-box-pack: center!important;
-	-ms-flex-pack: center!important;
-	justify-content: center!important;
-}
