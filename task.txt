@@ -57,11 +57,12 @@ place{
 	edit 	=> ok
 
 - Quản lý menu item
-	list 	=> ok
-	active 	=> ok
-	delete 	=> ok
-	add 	=> ok
-	edit 	=> ok
+	list 	
+	active 	
+	delete 	
+	add 	
+	edit 	
+	Thêm dữ liệu menu item
 
 
 
