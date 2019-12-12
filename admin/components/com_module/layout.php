@@ -11,15 +11,18 @@
 	include_once('libs/cls.menu.php');
 	include_once('libs/cls.category.php');
 	include_once('libs/cls.menuitem.php');
+	include_once('libs/cls.place.php');
 	
 	$obj=new CLS_MODULE();
 	$objmenu=new CLS_MENU();
 	$objCate=new CLS_CATEGORY();
+	$objPlace=new CLS_PLACE();
 	$objmysql = new CLS_MYSQL();
 	
 	// End toolbar
 	if(isset($_POST['cmdsave'])){
 		$Cate_ID 	= isset($_POST['cbo_cate']) ? (int)$_POST['cbo_cate'] : 0;
+		$Place_ID 	= isset($_POST['cbo_place']) ? (int)$_POST['cbo_place'] : 0;
 		$Con_ID 	= isset($_POST['cbo_content']) ? (int)$_POST['cbo_content'] : 0;
 		$MnuID 		= isset($_POST['cbo_menutype']) ? (int)$_POST['cbo_menutype'] : 0;
 		$ViewTitle	= isset($_POST['optviewtitle']) ? (int)$_POST['optviewtitle'] : 0;
@@ -43,6 +46,7 @@
 				`viewtitle`='".$ViewTitle."',
 				`menu_id`='".$MnuID."',
 				`category_id`='".$Cate_ID."',
+				`place_id`='".$Place_ID."',
 				`content_id`='".$Con_ID."',
 				`theme`='".$Theme."',
 				`position`='".$Position."',
@@ -51,7 +55,7 @@
 				WHERE `id`='".$ID."'";
 			$objmysql->Exec($sql);
 		}else{
-			$sql="INSERT INTO `tbl_modules` (`type`,`viewtitle`,`menu_id`,`category_id`,`content_id`,`theme`,`position`,`class`,`isactive`,`title`,`intro`,`content`) VALUES ('".$Type."','".$ViewTitle."','".$MnuID."','".$Cate_ID."','".$Con_ID."','".$Theme."','".$Position."','".$Class."','".$isActive."','".$Title."','".$Intro."','".$HTML."')";
+			$sql="INSERT INTO `tbl_modules` (`type`,`viewtitle`,`menu_id`,`place_id`,`category_id`,`content_id`,`theme`,`position`,`class`,`isactive`,`title`,`intro`,`content`) VALUES ('".$Type."','".$ViewTitle."','".$MnuID."','".$Place_ID."','".$Cate_ID."','".$Con_ID."','".$Theme."','".$Position."','".$Class."','".$isActive."','".$Title."','".$Intro."','".$HTML."')";
 			$objmysql->Exec($sql);
 		}
 		?>

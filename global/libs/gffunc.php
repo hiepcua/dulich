@@ -12,19 +12,22 @@ function paging($total_rows,$max_rows,$cur_page){
     $paging.='<p align="center" class="paging">';
     $paging.="<strong>Total:</strong> $total_rows <strong>on</strong> $max_pages <strong>page</strong><br>";
 
-    if($cur_page >1)
-        $paging.='<li><a href="javascript:gotopage('.($cur_page-1).')"> << </a></li>';
+    if($cur_page >1){
+        $paging.='<li class="page-item"><a class="page-link" href="javascript:gotopage('.($cur_page-1).')"> << </a></li>';
+    }else{
+        $paging.='<li class="page-item"><a class="page-link" href="javascript:void(0)"> « </a></li>';
+    }
     if($max_pages>1){
         for($i=$start;$i<=$end;$i++)
         {
             if($i!=$cur_page)
-                $paging.="<li><a href=\"javascript:gotopage($i)\"> $i </a></li>";
+                $paging.="<li class='page-item'><a class=\"page-link\" href=\"javascript:gotopage($i)\"> $i </a></li>";
             else
-                $paging.="<li class='active'><a href=\"#\" class=\"cur_page\"> $i </a></li>";
+                $paging.="<li class='page-item active'><a class=\"page-link\" href=\"#\" class=\"cur_page\"> $i </a></li>";
         }
     }
     if($cur_page <$max_pages)
-        $paging.='<li><a href="javascript:gotopage('.($cur_page+1).')"> » </a></li>';
+        $paging.='<li class="page-item"><a class="page-link" href="javascript:gotopage('.($cur_page+1).')"> » </a></li>';
 
     $paging.='</ul></p></form>';
     echo $paging;

@@ -173,7 +173,7 @@ if(isset($_POST["txt_type"])){
     </fieldset>
 
     <?php 
-    $arr_type = array('mainmenu','html','categories','slide', 'partner', 'news', 'more');
+    $arr_type = array('mainmenu','html','categories','slide', 'partner', 'news', 'more', 'place');
     if(in_array($viewtype,$arr_type)){ ?>
     <fieldset>
         <legend><strong><?php echo "Parameter";?>:</strong></legend>
@@ -208,6 +208,23 @@ if(isset($_POST["txt_type"])){
                         $(document).ready(function() {
                             cbo_Selected('cbo_cate','<?php echo $row['category_id'];?>');
                             $("#cbo_cate").select2();
+                        });
+                    </script>
+                </div>
+            </div>
+
+        <?php }else if($viewtype=="place"){ ?>
+            <div class="form-group">
+                <div class="col-md-6 col-sm-6">
+                    <label>Điểm đến du lịch</label>
+                    <select name="cbo_place" class="form-control" id="cbo_place" style="width: 100%;">
+                        <option value="0">Chọn một điểm đến</option>
+                        <?php $objPlace->getListCate(0,0); ?>
+                    </select>
+                    <script type="text/javascript">
+                        $(document).ready(function() {
+                            cbo_Selected('cbo_place','<?php echo $row['place_id'];?>');
+                            $("#cbo_place").select2();
                         });
                     </script>
                 </div>

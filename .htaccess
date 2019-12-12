@@ -11,7 +11,7 @@ RewriteRule ^booking/tour/([0-9a-zA-Z\-]+)?$   			index.php?com=tour&viewtype=bo
 
 # Contents
 RewriteRule ^chuyen-muc/([0-9a-zA-Z\-]+)/?$             index.php?com=categories&viewtype=block&code=$1 [QSA]
-RewriteRule ^bai-viet/([0-9a-zA-Z\-]+)/?$             	index.php?com=contents&viewtype=detail&code=$1 [QSA]
+RewriteRule ^bai-viet/([0-9a-zA-Z\-]+)/?$             	index.php?com=contents&viewtype=article&code=$1 [QSA]
 
 php_value memory_limit -1
 php_value post_max_size 1024M

@@ -36,12 +36,6 @@ place{
 	add 	=> ok
 	edit 	=> ok
 
-- Quản lý booking
-	list
-	active
-	add
-	edit
-
 - Quản lý chuyên mục
 	list 	=> ok
 	active 	=> ok
@@ -57,12 +51,27 @@ place{
 	edit 	=> ok
 
 - Quản lý menu item
-	list 	
-	active 	
-	delete 	
-	add 	
-	edit 	
-	Thêm dữ liệu menu item
+	list 	=> ok
+	active 	=> ok
+	delete 	=> ok
+	add 	=> ok
+	edit 	=> ok
+	Thêm dữ liệu menu item => ok
+
+- Quản lý booking
+	Thêm viewtype = place
+
+- Quản lý booking
+	list
+	active
+	add
+	edit
+
+- block tour
+- detail tour
+- page search
+- form booking
+
 
 
 
