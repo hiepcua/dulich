@@ -74,10 +74,12 @@ global $tmp;global $conf;
 		<?php include_once("modules/mod_mods/header.php");?>
 		<?php if($tmp->isFrontpage()){ ?>
 			<?php include_once("modules/mod_mods/banner-slide.php");?>
+			<?php $tmp->loadModule('box2') ;?>
 			<?php $tmp->loadModule('box3') ;?>
 			<?php //include_once("modules/mod_mods/home-body.php");?>
 			<?php $tmp->loadModule('box5') ;?>
 			<?php $tmp->loadModule('box4') ;?>
+			<?php $tmp->loadModule('box6') ;?>
 		<?php }else{ ?> 
 			<?php $tmp->loadComponent(); ?> 
 		<?php }?>

@@ -1,37 +1,60 @@
 <section class="footer-links">
 	<div class="container">
-		<h3>Website links</h3>
 		<div class="row">
-			<?php
-			$sql="SELECT * FROM tbl_type_of_land WHERE isactive = 1 LIMIT 0,6";
-			$objmysql->Query($sql);
-			while ($row = $objmysql->Fetch_Assoc()) {
-				?>
-				<div class="col-md-2">
-					<div class="links-toggle">
-						<h4 class="toggle-h4"><?php echo $row['title']; ?></h4>
-						<ul class="list-unstyled">
-							<?php
-							$sql2="SELECT `name`, `code` FROM tbl_categories WHERE isactive = 1 AND type_id = ".$row['id'];
-							$objdata->Query($sql2);
-							while ($row2 = $objdata->Fetch_Assoc()) {
-								echo '<li><a href="'.ROOTHOST.$row['code'].'/'.$row2['code'].'" title="'.$row2['name'].'">'.$row2['name'].'</a></li>';
-							}
-							?>
-						</ul>
-					</div>
-				</div>
-				<?php
-			}
-			?>
+			<div class="col-lg-6  mb-3 mb-lg-0 ">
+				<?php $tmp->loadModule('box7'); ?>
+			</div>
+			<div class="col-lg-6 ">
+				<?php $tmp->loadModule('box8'); ?>
+			</div>
+
 		</div>
 	</div>
 </section>
 <footer>
-	<div class="container">
-		<div class="row text-center">
-			<?php $tmp->loadModule('footer');?>
+	<div class="footer-blue">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-6 mb-3 mb-lg-0">
+					<?php $tmp->loadModule('box9'); ?>
+				</div>
+				<div class="col-lg-6">
+					<div class="row">
+						<div class="col-md-5 mb-3 mb-md-0"></div>
+						<div class="col-md-7">
+							<div class="footer-top-right-container">
+								<div class="facebook">
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- e: footer-blue-->
+		<!-- footer-bottom-->
+		<div class="fooer-bottom text-center text-lg-left">
+			<div class="container">
+				<div class="row align-items-center">
+					<div class="col-lg-8 mb-2 mb-lg-0">
+						<div class="footer-payment"><span class="text-uppercase">hỗ trợ thanh toán</span>
+							<img src="http://dulichdanko.com/lib/img/upload/payment-1.jpg" alt="Image">
+							<img src="http://dulichdanko.com/lib/img/upload/payment-2.jpg" alt="Image">
+							<img src="http://dulichdanko.com/lib/img/upload/payment-3.jpg" alt="Image">
+							<img src="http://dulichdanko.com/lib/img/upload/payment-4.jpg" alt="Image">
+							<img src="http://dulichdanko.com/lib/img/upload/payment-5.jpg" alt="Image">
+							<img src="http://dulichdanko.com/lib/img/upload/payment-6.jpg" alt="Image">
+							<img src="http://dulichdanko.com/lib/img/upload/payment-7.jpg" alt="Image">
+							<img src="http://dulichdanko.com/lib/img/upload/payment-8.jpg" alt="Image"></div>
+						</div>
+						<div class="col-lg-4 text-lg-right">
+							<div class="copyright">© 2019 dulich Travel.All Right Reserved</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- e: footer-bottom-->
 		</div>
 	</div>
-	<div class="copyright bg_copyright"><?php $tmp->loadModule('bottom');?></div>
 </footer>

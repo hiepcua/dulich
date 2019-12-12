@@ -3,20 +3,28 @@
 	$body_m = $('body'),
 	$navbar = $('.navbar');
 
-	var prevScrollpos = window.pageYOffset;
-	window.onscroll = function() {
-		var currentScrollPos = window.pageYOffset;
-		if(currentScrollPos > 300){
-			if (prevScrollpos > currentScrollPos) {
-				document.getElementById("navbar").classList.add('position-fixed');
-			} else {
-				document.getElementById("navbar").classList.remove('position-fixed');
-			}
-			prevScrollpos = currentScrollPos;
-		}else{
-			document.getElementById("navbar").classList.remove('position-fixed');
+	$(window).scroll(function(){
+		if ($(this).scrollTop() > 150){
+			$('body').addClass('fixed-header');
 		}
-	}
+		else{
+			$('body').removeClass('fixed-header');
+		}
+	});
+	// var prevScrollpos = window.pageYOffset;
+	// window.onscroll = function() {
+	// 	var currentScrollPos = window.pageYOffset;
+	// 	if(currentScrollPos > 300){
+	// 		if (prevScrollpos > currentScrollPos) {
+	// 			document.getElementById("navbar").classList.add('position-fixed');
+	// 		} else {
+	// 			document.getElementById("navbar").classList.remove('position-fixed');
+	// 		}
+	// 		prevScrollpos = currentScrollPos;
+	// 	}else{
+	// 		document.getElementById("navbar").classList.remove('position-fixed');
+	// 	}
+	// }
 
 	$(".fa-caret-right").click(function () {
 		$(".social-top>ul").toggleClass("show-social-top");
@@ -40,9 +48,17 @@
 		$('#frmsearch').submit();
 	});
 	$(".header-icon-search").click(function () {
-        $("#check").toggleClass("show-header-icon-search");
-        return false;
-    });
+		$("#check").toggleClass("show-header-icon-search");
+		return false;
+	});
+
+	$('.slider-banner').slick({
+		fade:true,
+		dots:false,
+		arrows:false,
+		autoplay:true,
+		speed:700
+	});
 })(jQuery);
 
 

@@ -10,7 +10,6 @@ $objmysql1 = new CLS_MYSQL();
 			</a>
 			<div class="justify-content-center navbar-collapse collapse">
 				<nav id="main-menu">
-					<?php // $tmp->loadModule('navitor');?>
 					<?php
 					$arr_menuitem = array();
 					$arr_childs = array();
@@ -140,7 +139,7 @@ $objmysql1 = new CLS_MYSQL();
 			</div>
 			<div class="hotline-header d-none d-lg-block">
 				<span class="txt-hotline">Hotline</span>
-				<i class="fa fa-phone"></i>0986 108 208
+				<i class="fa fa-phone"></i><?php $tmp->loadModule('header'); ?>
 				<div class="header-show"></div>
 			</div>
 			<div class="header-search">
@@ -158,14 +157,14 @@ $objmysql1 = new CLS_MYSQL();
 			</div>
 		</div>
 	</nav>
+	<div class="social-top">
+		<ul>
+			<li class="menu-support-children"><a title="Facebook" target="_blank" href="<?php echo $conf->Facebook;?>"><i class="fa fa-facebook"></i></a></li>
+			<li class="menu-support-children"><a title="Messenger" target="_blank" href="<?php echo $conf->Facebook;?>"><i class="fa fa-commenting"></i></a></li>
+			<li class="menu-support-children"><a title="Twitter" target="_blank" href="<?php echo $conf->Twitter;?>"><i class="fa fa-twitter"></i></a></li>
+			<li class="menu-support-children"><a title="Youtube" target="_blank" href="<?php echo $conf->Youtube;?>"><i class="fa fa-youtube-play"></i></a></li>
+			<li class="menu-support-children"><a title="Tài liệu" href="<?php echo ROOTHOST;?>"><i class="fa fa-book"></i></a></li>
+		</ul>
+		<i class="fa fa-caret-right"></i>
+	</div>
 </header>
-<div class="social-top">
-	<ul>
-		<li class="menu-support-children"><a title="Facebook" target="_blank" href="<?php echo $conf->Facebook;?>"><i class="fa fa-facebook"></i></a></li>
-		<li class="menu-support-children"><a title="Messenger" target="_blank" href="<?php echo $conf->Facebook;?>"><i class="fa fa-commenting"></i></a></li>
-		<li class="menu-support-children"><a title="Twitter" target="_blank" href="<?php echo $conf->Twitter;?>"><i class="fa fa-twitter"></i></a></li>
-		<li class="menu-support-children"><a title="Youtube" target="_blank" href="<?php echo $conf->Youtube;?>"><i class="fa fa-youtube-play"></i></a></li>
-		<li class="menu-support-children"><a title="Tài liệu" href="<?php echo ROOTHOST;?>"><i class="fa fa-book"></i></a></li>
-	</ul>
-	<i class="fa fa-caret-right"></i>
-</div>

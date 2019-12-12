@@ -1,19 +1,12 @@
-<?php 
-$obj_cat = new CLS_CATEGORY;
-if($par_id==0)
-	$obj_cat->getList(" AND `par_id`=$cat_id"); 
-else $obj_cat->getList(" AND `par_id`=$par_id"); 
-$cat_name = $obj_cat->getNameById($par_id);
-if($obj_cat->Num_rows()>0) { ?>
-<div class="module list_category">
-	<div class="title"><i class="fa fa-angle-double-right"></i> <?php echo $cat_name;?></div><ul>
-	<?php
-	while($r=$obj_cat->Fetch_Assoc()) {
-		$link = ROOTHOST.$r['code'].'/';
-		$name = stripslashes($r['name']);
-		$cls='';
-		if(isset($cat_id) && $cat_id==$r['id']) $cls='active';
-		echo "<li class='$cls'><a href='$link' title='$name'>$name</a></li>";
-	} ?></ul>
+<?php
+$MOD='category';
+$theme = 'default';
+if($r['theme']!='') $theme = $r['theme']; ?>
+<div class="module <?php echo " ".$r['class'];?>">
+	<?php if($r['viewtitle']==1){?>
+	<div class="main-title"><?php echo $r['title'];?></div>
+	<div class="space-line"></div>
+	<?php } ?>
+	<?php include(MOD_PATH."mod_$MOD/brow/".$theme.".php");?>
 </div>
-<?php } ?>
+<?php unset($obj); unset($r);?>

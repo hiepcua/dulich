@@ -173,7 +173,7 @@ if(isset($_POST["txt_type"])){
     </fieldset>
 
     <?php 
-    $arr_type = array('mainmenu','html','categories','slide', 'partner', 'news', 'more', 'place');
+    $arr_type = array('mainmenu','html','category','slide', 'partner', 'news', 'more', 'place');
     if(in_array($viewtype,$arr_type)){ ?>
     <fieldset>
         <legend><strong><?php echo "Parameter";?>:</strong></legend>
@@ -193,7 +193,7 @@ if(isset($_POST["txt_type"])){
                 </div>
             </div>
 
-        <?php }else if($viewtype=="categories"){ ?>
+        <?php }else if($viewtype=="category"){ ?>
             <div class="form-group">
                 <div class="col-md-6 col-sm-6">
                     <label>Nhóm tin</label>

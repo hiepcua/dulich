@@ -1,13 +1,13 @@
 <?php
 $code = isset($_GET['code']) ? addslashes(trim($_GET['code'])) : '';
-if($code == '') page404();
 
 $sql="SELECT * FROM tbl_place WHERE code ='".$code."'";
 $objmysql->Query($sql);
-$r_cate = $objmysql->Fetch_Assoc();
+$r_place = $objmysql->Fetch_Assoc();
+$banner = json_decode($r_place['images']);
 
 // Get all childrent
-$sql_childs="SELECT id, name, code, Place_GetFamilyTree(id) as childs FROM tbl_place WHERE id = ".$r_cate['id'];
+$sql_childs="SELECT id, name, code, Place_GetFamilyTree(id) as childs FROM tbl_place WHERE id = ".$r_place['id'];
 $objmysql->Query($sql_childs);
 $r_childs = $objmysql->Fetch_Assoc();
 
@@ -33,57 +33,50 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
 // End pagging
 ?>
 <section class="page page-contents">
-	<section class="breadcrumb-light">
-		<div class="container">
-			<ol class="breadcrumb align-items-center">
-				<li class="breadcrumb-item"><a href="<?php echo ROOTHOST; ?>"><i class="fa fa-home"></i></a></li>
-				<li class="breadcrumb-item active" aria-current="page"><?php echo $r_cate['name']; ?></li>
-			</ol>
+	<section class="banner">
+		<div class="slider-banner">
+			<?php
+			foreach ($banner as $key => $value) {
+				echo '<div class="item slide-bg-image" data-background-img="'.$value->url.'" data-bg-position-x="center center" data-height="300" style="background-image: url('.$value->url.'); background-position: center center; height: 40vh; width: 100%; display: inline-block;"></div>';
+			}
+			?>
+		</div>
+		<div class="breadcrumb-banner">
+			<div class="container text-center">
+				<h2 class="text-uppercase">Du lịch Trong Nước</h2>
+				<ul>
+					<li><a href="http://dulichdanko.com/"><i class="fa fa-home"></i></a></li>
+					<li> Du lịch Trong Nước</li>
+				</ul>
+			</div>
 		</div>
 	</section>
 
-	<div class="container">
-		<div class="page-content">
+	<section class="list-tours bg-light">
+		<div class="container">
 			<div class="row">
-				<div class="col-lg-8 col-xl-9 mb-3 mb-lg-0">
-					<h1 class="page-title"><?php echo $r_cate['name']; ?></h1>
-					<div class="blog-list">
-						<?php
-						$star = ($cur_page - 1) * $MAX_ROWS;
-						$sql = "SELECT * FROM tbl_tour WHERE isactive=1 AND place_id IN(".$r_childs['childs'].") ORDER BY `cdate` DESC LIMIT $star,".$MAX_ROWS;
-						$objmysql->Query($sql);
-						while ($row = $objmysql->Fetch_Assoc()) {
-							$title 	= stripcslashes($row['name']);
-							$un_name= $row['un_name'];
-							$images = json_decode($row['images']);
-							$thumb 	= getThumb($images[0]->url, 'img-responsive', $images[0]->alt);
-							$cdate 	= convert_date($row['cdate']);
-							$intro 	= Substring(html_entity_decode(stripslashes($row['intro'])), 0, 60);
-							$link 	= ROOTHOST.'bai-viet/'.$un_name;
-							?>
-							<article class="blog-item">
-								<div class="row">
-									<div class="col-md-6 mb-3 mb-md-0">
-										<figure><a href="<?php echo $link; ?>"><?php echo $thumb; ?></a></figure>
-									</div>
-									<div class="col-md-6">
-										<h3><a href="<?php echo $link; ?>"><?php echo $title; ?></a></h3>
-										<p class="time clr-blue"><i class="ico-time-blue-2"></i> &nbsp;<?php echo $cdate; ?></p>
-										<div class="desc dotdotdot ddd-truncated" style="overflow-wrap: break-word;"><?php echo $intro;?></div>
-									</div>
+				<?php
+				$sql1="SELECT * FROM tbl_tour WHERE place_id IN(".$r_childs['childs'].",".$r_place['id'].") ORDER BY cdate DESC";
+				$objmysql->Query($sql1);
+				while ($row1 = $objmysql->Fetch_Assoc()) {
+					
+					?>
+					<div class="col-lg-3 col-md-4 col-sm-6">
+						<div class="card card-1 rounded-bottom"><a class="card-link effect-btn" href="http://dulichdanko.com/tour/da-nang-son-tra-hoi-an-cu-lao-cham-ba-na-1"><img class="card-img-top rounded" src="http://dulichdanko.com/upload/2018/10/1540778708-1jpg" alt="ĐÀ NẴNG-SƠN TRÀ-HỘI AN-CÙ LAO CHÀM- BÀ NÀ ">
+							<div class="extra rounded-bottom"><span class="availability">Số chỗ: 30</span><span class="timer">4N/3Đ</span></div><span class="btn btn-info">Chi tiết</span></a>
+							<div class="card-body">
+								<h5 class="cart-title"> <a href="http://dulichdanko.com/tour/da-nang-son-tra-hoi-an-cu-lao-cham-ba-na-1">ĐÀ NẴNG-SƠN TRÀ-HỘI AN-CÙ LAO CHÀM- BÀ NÀ  </a></h5>
+								<div class="card-text">Khởi hành: Hàng ngày</div>
+								<div class="item-price">
+									<span class="new-price">3,299,000 đ</span>
+									<span class="old-price">Liên hệ</span>
 								</div>
-							</article>
-							<?php
-						}
-						?>
+							</div>
+						</div>
 					</div>
-				</div>
-
-				<div class="col-lg-4 col-xl-3">
-					<?php $this->loadModule('ads1'); ?>
-					<?php $this->loadModule('ads2'); ?>
-				</div>
+				<?php } ?>
 			</div>
 		</div>
-	</div>
+	</section>
+	
 </section>

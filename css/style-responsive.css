@@ -780,6 +780,7 @@
 	}
 	.card-1 .card-text {
 		max-height: 44px;
+		font-size: 14px;
 	}
 	/* End Section category */
 	.navbar-main .dropdown.megamenu {
