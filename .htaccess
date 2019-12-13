@@ -4,7 +4,8 @@ RewriteRule ^admin/?$ admin/index.php
 RewriteRule ^lien-he/?$ index.php?com=contact
 
 # Tour
-RewriteRule ^tour/tim-kiem/?$ 	           				index.php?com=tour&viewtype=search [QSA]
+RewriteRule ^tim-kiem/?$ 	           					index.php?com=tour&viewtype=search [QSA]
+RewriteRule ^search/?$ 	           						index.php?com=tour&viewtype=search [QSA]
 RewriteRule ^tour/([0-9a-zA-Z\-]+)/?$                   index.php?com=tour&viewtype=detail&code=$1 [QSA]
 RewriteRule ^diem-den/([0-9a-zA-Z\-]+)?$   				index.php?com=tour&viewtype=block&code=$1 [QSA]
 RewriteRule ^booking/tour/([0-9a-zA-Z\-]+)?$   			index.php?com=tour&viewtype=booking&code=$1 [QSA]

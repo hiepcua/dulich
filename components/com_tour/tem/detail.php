@@ -1,317 +1,274 @@
 <?php
 $thisUrl = curPageURL();
 $code = isset($_GET['code']) ? addslashes(trim($_GET['code'])) : '';
-$par_code = isset($_GET['par_code']) ? addslashes(trim($_GET['par_code'])) : '';
-if($code == '' || $par_code == '') {
+if($code == '') {
 	page404();
 }
 
-$sql = "SELECT * FROM tbl_categories WHERE `code` ='".$par_code."'";
+// Get tour info by un_name
+$sql = "SELECT * FROM tbl_tour WHERE `un_name` ='".$code."'";
 $objmysql->Query($sql);
-$r_cate		= $objmysql->Fetch_Assoc();
-$cat_id 	= $r_cate['id'];
-$par_id 	= $r_cate['par_id'];
-$cat_name 	= stripslashes($r_cate['name']);
-
-$sql = "SELECT c.*,d.name AS cat_name,t.title as type_name,
-	e.name AS city_name,f.name AS district_name,g.name AS ward_name
-	FROM tbl_contents AS c 
-	INNER JOIN tbl_type_of_land AS t ON c.type_of_land_id=t.id
-	INNER JOIN tbl_categories AS d ON c.category_id=d.id
-	LEFT JOIN tbl_city AS e ON c.city_id=e.id
-	LEFT JOIN tbl_district AS f ON c.district_id=f.id
-	LEFT JOIN tbl_ward AS g ON c.ward_id=g.id
-	WHERE c.isactive = 1 AND c.`code` ='".$code."'";
-$objmysql->Query($sql); 
 if ($objmysql->Num_rows()>0) {
-	$result = $objmysql->Fetch_Assoc();
-	$con_id = $result['id'];
-
-	if(!isset($_SESSION['VIEW-CONTENT-'.$con_id])){
-		$sql_update = "UPDATE `tbl_contents` SET `visited` = `visited` + 1 WHERE `id` = ".$con_id;
-		$_SESSION['VIEW-CONTENT-'.$con_id] = 1;
+	$row = $objmysql->Fetch_Assoc();
+	$name 		= stripcslashes($row['name']);
+	$code 		= stripcslashes($row['code']);
+	$place_id 	= $row['place_id'];
+	$visited 	= number_format($row['visited']);
+	$images 	= json_decode($row['images']);
+	
+	// Update visited
+	if(!isset($_SESSION['VIEW-TOUR-'.$row['id']])){
+		$sql_update = "UPDATE `tbl_tour` SET `visited` = `visited` + 1 WHERE `id` = ".$row['id'];
+		$_SESSION['VIEW-TOUR-'.$row['id']] = 1;
 		$objdata->Exec($sql_update);
 	}
 
-	$cat_id 	= $result['category_id'];
-	$cat_name	= $result['cat_name'];
-	$views 		= $result['visited'];
-	$cdate 		= convert_date($result['cdate']);
-	$thumb 		= getThumb($result['thumb'], '', 'img-responsive');
-	$link  		= ROOTHOST.$r_cate['code'].'/'.$result['code'].'.html';
-	$images 	= json_decode($result['images']);
-	$num_image	= count($images);
-	$price 		= convert_price($result['price']);
-	$area  		= $result['area'];
-	$type_land	= $result['type_of_land_id'];
-	$type_name  = $result['type_name'];
-	$ispay = $result['ispay']==0?'<label class="label label-success">Chưa bán</label>':'<label class="label label-danger">Đã bán</label>';
-	$city_name = $result['city_name'];
-	$district_name = $result['district_name'];
-	$ward_name = $result['ward_name'];
-	$latlng = $result['latlng']; 
-	$arr = explode(",",$latlng);
-	$lat = isset($arr[0])?$arr[0]:0;$lng = isset($arr[1])?$arr[1]:0;
-} ?>
+	// Get place info
+	$sql_place = "SELECT id, name, code FROM tbl_place WHERE `id` ='".$place_id."'";
+	$objdata->Query($sql_place);
+	$row_place = $objdata->Fetch_Assoc();
+
+	// Get all childrent
+	$sql_childs="SELECT Place_GetFamilyTree(id) as childs FROM tbl_place WHERE id = ".$place_id;
+	$objmysql->Query($sql_childs);
+	$r_childs = $objmysql->Fetch_Assoc();
+
+}?>
 <section class="page page-contents">
+	<section class="breadcrumb-light">
+		<div class="container">
+			<ol class="breadcrumb align-items-center">
+				<li class="breadcrumb-item"><a href="<?php echo ROOTHOST; ?>"><i class="fa fa-home"></i></a></li>
+				<li class="breadcrumb-item"><a href="<?php echo ROOTHOST.'diem-den/'.$row_place['code']; ?>"><?php echo $row_place['name']; ?></a></li>
+				<li class="breadcrumb-item active" aria-current="page"><?php echo $name; ?></li>
+			</ol>
+		</div>
+	</section>
 	<div class="article component">
 		<div class="container">
 			<div class="row">
-				<div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+				<div class="col-lg-8 col-xl-9 mb-4 mb-lg-0">
 					<div class="content">
-						<h1 class="page-title"><?php echo stripslashes(html_entity_decode($result['title'])); ?></h1>
-						<div class="box_area">
-							<div class="item pull-left">Loại nhà đất: <span><?php echo $type_name;?></span></div>
-							<div class="item pull-left">Khu vực: <span><?php echo $cat_name;?></span></div>
-						</div><div class="clearfix"></div>
-						<div class="box_price">
-							<div class="price pull-left">Giá: <span><?php if($price==="" || $price==0) echo 'Thỏa thuận'; else echo $price;?></span></div>
-							<div class="price pull-left">Diện tích: <span><?php if($area==="" || $area==0) echo 'Không xác định'; else echo number_format($area).'m²';?></span></div>
-							<div class="price pull-left">Trạng thái: <?php echo $ispay;?></span></div>
-						</div><div class="clearfix"></div>
-						<div class="intro"><div>Thông tin nhà đất:</div>
-							<?php echo $result['intro']; ?></div>
-						<div class="full_text">
-							<?php echo stripslashes(html_entity_decode($result['fulltext'])); ?>
+						<div class="header-tour-detail">
+							<h1 class="page-title"><?php echo $name; ?></h1>
+							<div class="entry-flex d-flex align-items-sm-center justify-content-between">
+								<div class="left">
+									<div class="social"></div>
+									<div class="code text-uppercase">
+										CODe: <span class="clr-blue"><?php echo $code; ?></span>
+									</div>
+								</div>
+								<div class="viewer"><i class="ico-eye-blue"></i><?php echo $visited; ?></div>
+							</div>
 						</div>
-						<?php if($result['thumb']!='') { ?>
-						<div id="big-image" class="box-thumb">
-							<?php echo $thumb; ?>
-							<a class="control-prev" href="javascript:void(0)" role="button" data-slide="prev">
-							  <i class="fa fa-2x fa-chevron-left" aria-hidden="true"></i>
-							</a>
-							<a class="control-next" href="javascript:void(0)" role="button" data-slide="next">
-							  <i class="fa fa-2x fa-chevron-right" aria-hidden="true"></i>
-							</a>
-						</div><?php } ?>
-						<div class="list-images">
-							<ul><?php if($result['thumb']!=''){ ?>
-								<li class='slide0 active' dataid='0'><?php echo $thumb; ?></li>
-							<?php }
-							if($num_image > 0){
-								for($i = 0 ; $i < $num_image; $i++){
-									echo '<li class="slide'.($i+1).'" dataid="'.($i+1).'">';
-									echo '<img src="'.$images[$i]->url.'" alt="'.$images[$i]->alt.'" class="small-thumb">';
-									echo '</li>';
-								}
-							} ?></ul>
-						</div>
-						<?php if($latlng!='') { ?>
-						<div class="clearfix"><br><h3>Bản đồ nhà đất</h3><br></div>
-						<div id="map" style="width: 100%; height: 500px;">&nbsp;</div>
-						<?php } ?>
-						<div class="clearfix"><br></div>
-						<div class="meta-info">
-							<ul class="list-inline">
-								<li class="date">Ngày đăng: <?php echo $cdate; ?></li>
+						<?php if(count($images) > 0){ ?>
+							<!-- slider-for-->
+							<div class="slider-for slick-slider">
 								<?php
-								if($views > 0){
-									echo '<li class="views">Lượt xem: '.$views.'</li>';
-								}else{
-									echo '<li class="views">Lượt xem: 1</li>';
-								} ?>
+								foreach ($images as $key => $value) {
+									echo '<div class="item"><img src="'.$value->url.'" alt="'.$value->alt.'"></div>';
+								}
+								?>
+							</div>
+							<!-- e: slider-for-->
+						<?php } ?>
+
+						<?php if(count($images) > 1){ ?>
+							<!-- slider-for-->
+							<div class="slider-nav slick-slider">
+								<?php
+								foreach ($images as $key => $value) {
+									echo '<div class="item"><img src="'.$value->url.'" alt="'.$value->alt.'"></div>';
+								}
+								?>
+							</div>
+							<!-- e: slider-for-->
+						<?php } ?>
+						<div class="content-tour-detail">
+							<ul class="nav nav-tour-detail" id="myTab">	
+								<li class="nav-item">
+									<a href="#tab-content-1" id="nav-tab-1" class="nav-link active" role="tab" data-toggle="tab" aria-controls="tab-content-1" aria-selected="false">GIỚI THIỆU TOUR</a>
+								</li>
+								<li class="nav-item">
+									<a href="#tab-content-2" id="nav-tab-2" class="nav-link" role="tab" data-toggle="tab" aria-controls="tab-content-2" aria-selected="false">LỊCH TRÌNH TOUR</a>
+								</li>
+								<li class="nav-item">
+									<a href="#tab-content-3" id="nav-tab-3" class="nav-link" role="tab" data-toggle="tab" aria-controls="tab-content-3" aria-selected="false">CHÍNH SÁCH</a>
+								</li>
 							</ul>
 
-							<ul class="list-inline article-social">
-								<li><div class="fb-like" data-href="<?php echo $thisUrl; ?>" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div></li>	
-							</ul>
+							<!-- Tab panes -->
+							<div class="tab-content tab-content-tour-detail">
+								<div class="tab-pane container fade show active" id="tab-content-1" role="tabpanel" aria-labelledby="nav-tab-1"><?php echo $row['content']; ?></div>
+								<div class="tab-pane container fade show" id="tab-content-2" role="tabpanel" aria-labelledby="nav-tab-3"><?php echo $row['schedule']; ?></div>
+								<div class="tab-pane container fade show" id="tab-content-3" role="tabpanel" aria-labelledby="nav-tab-3"><?php echo $row['policy']; ?></div>
+							</div>
 						</div>
 					</div>
-
-					<div class="clearfix"><br></div>
-					<ul class="list-inline">
-						<!-- <li><div class="fb-like" data-href="<?= $thisUrl; ?>" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div></li>		 -->
-					</ul>	
-					<div class="clearfix"></div>
-					<!-- <div class="fb-comments" data-href="<?= $thisUrl; ?>" data-width="100%" data-numposts="10"></div>				 -->
-					<div class="clearfix"></div>
-
-					<!-- Related news -->
-					<div class="releated_news">
-						<h2><span>Xem thêm các bất động sản khác</span></h2>
-						<ul>
-							<?php 
-							$sql = "SELECT * FROM tbl_contents WHERE isactive = 1 AND id <> $con_id AND category_id = $cat_id ORDER BY cdate DESC LIMIT 0,6";
-							$objmysql->Query($sql);
-							while($r = $objmysql->Fetch_Assoc()) { 
-								$name = stripslashes(html_entity_decode($r['title'])); 
-								$code = $r['code'];
-								$link = ROOTHOST.$par_code.'/'.$code.'.html';
-								echo '<li><a href="'.$link.'" title="'.$name.'"><i class="fa fa-circle" aria-hidden="true"></i>'.$name.'</a></li>';
-							} ?>
-						</ul>
-					</div>
-					<!-- End Related news -->
 				</div>
-
-				<div class="col-md-4 col-sm-4 wrap-aside">
-					<aside class="aside latest-news">
-						<h3 class="aside-title"><i class="fa fa-circle" aria-hidden="true"></i><span>Tin mới nhất</span></h3>
-						<?php
-						$sql="SELECT c.*,d.name AS cat_name,t.title as type_name FROM tbl_contents AS c 
-								INNER JOIN tbl_type_of_land AS t ON c.type_of_land_id=t.id
-								INNER JOIN tbl_categories AS d ON c.category_id=d.id
-								WHERE c.isactive=1 ORDER BY c.cdate DESC LIMIT 0,5";
-						$objmysql->Query($sql);
-						$i=1;
-						while ($row = $objmysql->Fetch_Assoc()) {
-							$title 	= stripcslashes($row['title']);
-							$code 	= $row['code'];
-							$thumb 	= getThumb($row['thumb'], 'img-responsive', '');
-							$views 	= (int)$row['visited'];
-							$cdate 	= convert_date($row['cdate']);
-							$cat_name	= $row['cat_name'];
-							$price 		= convert_price($row['price']);
-							$area  		= $row['area'];
-							$type_land	= $row['type_of_land_id'];
-							$type_name  = $row['type_name'];
-
-							$sql_cate="SELECT * FROM tbl_categories WHERE isactive=1 AND id=".$row['category_id'];
-							$objdata->Query($sql_cate);
-							$r_cate = $objdata->Fetch_Assoc();
-							$link 	= ROOTHOST.$r_cate['code'].'/'.$code.'.html';
-
-							echo '<div class="item">
-							<div class="number">'.$i.'.</div>
-							<div class="content">
-							<div class="title"><a href="'.$link.'" title="'.$title.'">'.$title.'</a></div>';
-							echo '<div class="info">
-								<span class="date">Giá: <b>';
-							if($price==="" || $price==0) echo 'Thỏa thuận'; else echo $price;
-							echo '</b></span>
-								<span class="date">Diện tích: ';
-							if($area==="" || $area==0) echo 'Không xác định'; 
-							else echo number_format($area).'m²';
-							echo '</span>
-							</div>
-							<div class="info">
-							<span class="date">'.$cdate.'</span>';
-							if($views > 0){
-								echo '<span class="views">'.$views.'views</span>';
-							}
-							echo '</div>
-							</div>
-							<div class="box-thumb"><a href="'.$link.'" title="'.$title.'">'.$thumb.'</a></div>
-							</div>';
-							$i++;
-						}
-						?>
-					</aside>
-
-					<aside class="aside advertisement">
-						<h3 class="aside-title"><i class="fa fa-circle" aria-hidden="true"></i><span>Trending</span></h3>
-						<div>
-							<a href="" title="Trending"><img src="<?php echo ROOTHOST; ?>images/advantisement.jpg" align=""></a>
+				<div class="col-lg-4 col-xl-3 mb-2 mb-lg-0">
+					<div class="slidebar-fixed">
+						<div class="inner-wrapper-sticky" style="position: relative;">                        
+							<div class="info-tour">
+								<div class="heading-flex">
+									<h3 class="title">thông tin<span> tour</span></h3>
+								</div>
+								<div class="item-price">
+									<div class="new-price">3,299,000 đ</div>
+									<div class="old-price">Liên hệ</div>
+								</div>                            
+								<hr class="gaps">
+								<ul class="list-unstyled list-info-tour">
+									<li>
+										<i class="ico-map-marker-blue"></i>
+										Nơi khởi hành: <strong>Hà Nội</strong>
+									</li>                                
+									<li>
+										<i class="ico-time-blue"></i>
+										Thời gian: <strong>4N/3Đ</strong>
+									</li>                                
+									<li>
+										<i class="ico-calendar-blue"></i>
+										Khởi hành: <strong>Hàng ngày</strong>
+									</li>                                
+									<li>
+										<i class="ico-paper-plane-blue"></i>
+										Phương tiện: <strong>Ô tô, Máy bay</strong>
+									</li>                                
+									<li>
+										<i class="ico-users-blue"></i>
+										Số chỗ: <strong>30</strong>
+									</li>                            
+								</ul>                            
+								<div class="text-center">
+									<a class="btn btn-info" href="http://dulichdanko.com/booking/tour/da-nang-son-tra-hoi-an-cu-lao-cham-ba-na-1">Đặt ngay</a>
+								</div>                        
+							</div>                      
 						</div>
-					</aside>
-
-					<aside class="aside latest-news">
-						<h3 class="aside-title"><i class="fa fa-circle" aria-hidden="true"></i><span>Tin mới nhất</span></h3>
-						<?php
-						$sql="SELECT c.*,d.name AS cat_name,t.title as type_name FROM tbl_contents AS c 
-								INNER JOIN tbl_type_of_land AS t ON c.type_of_land_id=t.id
-								INNER JOIN tbl_categories AS d ON c.category_id=d.id 
-								WHERE c.isactive=1 ORDER BY c.cdate DESC LIMIT 0,5";
-						$objmysql->Query($sql);
-						$i=1;
-						while ($row = $objmysql->Fetch_Assoc()) {
-							$title 	= stripcslashes($row['title']);
-							$code 	= $row['code'];
-							$thumb 	= getThumb($row['thumb'], 'img-responsive', '');
-							$views 	= (int)$row['visited'];
-							$cdate 	= convert_date($row['cdate']);
-							$cat_name	= $row['cat_name'];
-							$price 		= convert_price($row['price']);
-							$area  		= $row['area'];
-							$type_land	= $row['type_of_land_id'];
-							$type_name  = $row['type_name'];
-
-							$sql_cate="SELECT * FROM tbl_categories WHERE isactive=1 AND id=".$row['category_id'];
-							$objdata->Query($sql_cate);
-							$r_cate = $objdata->Fetch_Assoc();
-							$link 	= ROOTHOST.$r_cate['code'].'/'.$code.'.html';
-
-							echo '<div class="item">
-							<div class="number">'.$i.'.</div>
-							<div class="content">
-							<div class="title"><a href="'.$link.'" title="'.$title.'">'.$title.'</a></div>';
-							echo '<div class="info">
-								<span class="date">Giá: <b>';
-							if($price==="" || $price==0) echo 'Thỏa thuận'; else echo $price;
-							echo '</b></span>
-								<span class="date">Diện tích: ';
-							if($area==="" || $area==0) echo 'Không xác định'; 
-							else echo number_format($area).'m²';
-							echo '</span>
-							</div>
-							<div class="info">
-							<span class="date">'.$cdate.'</span>';
-							if($views > 0){
-								echo '<span class="views">'.$views.'views</span>';
-							}
-							echo '</div>
-							</div>
-							<div class="box-thumb"><a href="'.$link.'" title="'.$title.'">'.$thumb.'</a></div>
-							</div>';
-							$i++;
-						}
-						?>
-					</aside>
+					</div>
 				</div>
 			</div>
 		</div>
+
+		<?php
+		if($r_childs['childs'] == '') $r_childs['childs'] = 0;
+		$sql_release="SELECT * FROM tbl_tour WHERE isactive=1 AND place_id IN(".$r_childs['childs'].",".$place_id.") AND id <>".$row['id'];
+		$objmysql->Query($sql_release);
+		if($objmysql->Num_rows() > 0){
+			?>
+			<!-- related tour-->
+			<div class="related-tour bg-light">
+				<div class="container">
+					<h2 class="text-center text-uppercase"> tour liên quan</h2>
+					<div class="slider-related-tour slick-slider">
+						<?php
+						while ($row_rlease = $objmysql->Fetch_Assoc()) {
+							$rlease_name = stripcslashes($row_rlease['name']);
+							$rlease_link = ROOTHOST.'tour/'.$row_rlease['un_name'];
+							$rlease_images = json_decode($row_rlease['images']);
+							$rlease_thumb = getThumb($rlease_images[0]->url, 'rounded w-100', $rlease_images[0]->alt);
+							$rlease_price1 = number_format($row_rlease['price1']);
+							$rlease_price2 = number_format($row_rlease['price2']);
+							?>
+							<div class="item">
+								<div class="card card-1 rounded-bottom">
+									<a class="card-link effect-btn" href="<?php echo $rlease_link; ?>" title="<?php echo $rlease_name; ?>">
+										<?php echo $rlease_thumb; ?>
+										<div class="extra rounded-bottom">
+											<span class="availability">Số chỗ: <?php echo $row_rlease['number_of_holes']; ?></span>
+											<span class="timer"><?php echo $row_rlease['days']; ?></span>
+										</div>
+										<span class="btn btn-info">Chi tiết</span>
+									</a>
+									<div class="card-body">
+										<h5 class="cart-title">
+											<a href="<?php echo $rlease_link; ?>" title="<?php echo $rlease_name; ?>"><?php echo $rlease_name; ?></a>
+										</h5>                               
+										<div class="card-text">Khởi hành: Hàng ngày</div>                          
+										<div class="item-price">
+											<span class="new-price"><?php echo $rlease_price2; ?> đ</span>
+											<span class="old-price"><?php echo $rlease_price1; ?> đ</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<?php
+						}
+						?>
+					</div>
+				</div>
+			</div>
+			<!-- e: related tour-->
+		<?php } ?>
 	</div>
 </div>
-<script>
-var slide_num = 0; var slide_count = 0;
-$(document).ready(function(){
-	$(".list-images li").each(function(){
-		slide_count++;
-	})
-	$(".list-images li").click(function(){
-		$(".list-images li").removeClass('active');
-		$(this).addClass('active');
-		slide_num = parseInt($(this).attr('dataid'));
-		var src = $(this).find("img").attr("src");
-		//console.log(slide_num); console.log(src);
-		$("#big-image img").attr("src",src);
-	})
-	$("#big-image .control-next").click(function(){
-		if(slide_num<slide_count-1) slide_num++;
-		else slide_num=0;
-		//console.log(slide_num);
-		$(".list-images li").removeClass('active');
-		$(".list-images .slide"+slide_num).addClass('active');
-		var src = $(".list-images .slide"+slide_num).find("img").attr("src");
-		//console.log(src);
-		$("#big-image img").attr("src",src);	
-	})
-	$("#big-image .control-prev").click(function(){
-		if(slide_num>0) slide_num--;
-		else slide_num=slide_count-1;
-		//console.log(slide_num);
-		$(".list-images li").removeClass('active');
-		$(".list-images .slide"+slide_num).addClass('active');
-		var src = $(".list-images .slide"+slide_num).find("img").attr("src");
-		//console.log(src);
-		$("#big-image img").attr("src",src);
-		
-	})
-})
+<script type="text/javascript">
+	$(document).ready(function () {
+		var sidebar = new StickySidebar('.slidebar-fixed', {topSpacing: 90, bottomSpacing: 20});
+		$('#myTab .nav-link').click(function () {
+			var sidebar = new StickySidebar('.slidebar-fixed', {topSpacing: 90, bottomSpacing: 20});
+		});
+		sidebar.updateSticky();
+		$(window).scroll(function () {
+			if ($(this).scrollTop() < 90) {
+				$('.slidebar-fixed').removeAttr('style');
+				$('.inner-wrapper-sticky').removeAttr('style');
+			}
+		})
+	});
+	
+	$('.slider-for').slick({
+		slidesToShow: 1,
+		slidesToScroll: 1,
+		arrows: false,
+		fade: true,
+		speed:800,
+		asNavFor: '.slider-nav'
+	});
+
+	$('.slider-nav').slick({
+		slidesToShow: 5,
+		slidesToScroll: 1,
+		asNavFor: '.slider-for',
+		dots: false,
+		focusOnSelect: true,
+		arrows:true,
+		speed:800,
+		responsive: [
+		{
+			breakpoint: 566,
+			settings: {
+				slidesToShow: 3
+			}
+		}
+		]
+	});
+
+	$('.slider-related-tour').slick({
+		slidesToShow: 4,
+		slidesToScroll: 1,
+		dots: false,
+		arrows:true,
+		speed:700,
+		responsive: [
+		{
+			breakpoint: 992,
+			settings: {
+				slidesToShow: 3
+			}
+		},
+		{
+			breakpoint: 768,
+			settings: {
+				slidesToShow: 2
+			}
+		},
+		{
+			breakpoint: 566,
+			settings: {
+				slidesToShow: 1
+			}
+		}
+		]
+	});
 </script>
-<?php if($lat!='' && $lng!='') { ?>
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCuGtMOI9lMUSeHP1fOGYXr0v4pSXMaqlY&v=3.exp&sensor=false&libraries=places&language=vi"></script>
-<script>
-var myLatLng = {lat:<?php echo $lat;?>, lng:<?php echo $lng;?>};
-var map = new google.maps.Map(document.getElementById('map'), {
-  zoom: 12,
-  center: myLatLng,
-  mapTypeId: google.maps.MapTypeId.ROADMAP
-});
-var marker = new google.maps.Marker({
-  position: myLatLng,
-  map: map,
-  title: '<?php echo $ward_name.', '.$district_name.', '.$city_name;?>'
-});
-</script>
-<?php } ?>

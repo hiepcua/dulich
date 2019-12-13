@@ -772,8 +772,15 @@
 	.container {
 		max-width: 1170px;
 	}
+	#main-banner{
+		height: 460px;
+		overflow: hidden;
+	}
 }
 @media (min-width: 992px){
+	.navbar-brand>img{
+		height: 70px;
+	}
 	/* Section category */
 	.sec-type-of-land .item-wrap .item-link img {
 		height: 332px;
@@ -817,6 +824,10 @@
 	}
 	.open-menu .slidebar-menu {
 		left: 0;
+	}
+	#main-banner{
+		height: 440px;
+		overflow: hidden;
 	}
 }
 

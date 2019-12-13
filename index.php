@@ -56,6 +56,7 @@ global $tmp;global $conf;
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<script src="<?php echo ROOTHOST; ?>js/popper.min.js"></script>
 	<script src="<?php echo ROOTHOST; ?>js/bootstrap.min.js"></script>
+	<script src="<?php echo ROOTHOST; ?>js/sticky-sidebar.js"></script>
 	<script src='<?php echo ROOTHOST; ?>js/slick.min.js'></script>
 	<script src='<?php echo ROOTHOST; ?>js/gfscript.js'></script>
 </head>
@@ -85,6 +86,7 @@ global $tmp;global $conf;
 		<?php }?>
 		<?php include_once("modules/mod_mods/footer.php");?>
 	</div>
+	<script type="text/javascript" src="<?php echo ROOTHOST; ?>js/jquery-customselect-1.9.1.min.js"></script>
 	<script type="text/javascript" src="<?php echo ROOTHOST; ?>js/main.js"></script>
 </body>
 </html>

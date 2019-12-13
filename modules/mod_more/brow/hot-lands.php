@@ -14,7 +14,7 @@
 				$title = stripslashes($row['name']);
 				$images = json_decode($row['images']);
 				$thumb = getThumb($images[0]->url, 'expire-img w-100 rounded', $title);
-				$link = ROOTHOST.'tour/'.$row['code'];
+				$link = ROOTHOST.'tour/'.$row['un_name'];
 				$price2 = number_format($row['price2']);
 				$price1 = number_format($row['price1']);
 				?>

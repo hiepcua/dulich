@@ -59,6 +59,24 @@
 		autoplay:true,
 		speed:700
 	});
+
+	if($("#myTab").length){
+		setTimeout(function(){
+			var _top = $("#myTab").offset().top;
+			var _header_height = $("header .navbar").height();
+			window.onscroll = function() {
+				if (window.pageYOffset > _top - _header_height) {
+					$("#myTab").addClass("sticky");
+				} else {
+					$("#myTab").removeClass("sticky");
+				}
+			};
+		}, 3000);
+	};
+
+	$('.custom-select').customselect({
+		search:true
+	});
 })(jQuery);
 
 

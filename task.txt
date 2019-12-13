@@ -1,75 +1,12 @@
-- htaccess:
-	diem-den/([0-9a-zA-Z\-]+) :	tour/block
-	tour/([0-9a-zA-Z\-]+)	:	tour/detail
-
-	chuyen-muc/([0-9a-zA-Z\-]+) : categories/block
-	bai-viet/([0-9a-zA-Z\-]+) : contents/detail
-
-
-time['name', ...]
-tour_price['name', ...]
-hobbit['name', ...]
-
-tour{
-	id, name, code, un_name, place_id, view, images, content, schedule, policy, price1, price2, starting_gate, days, vehicle, departure, number_of_holes, 
-}
-
-booking{
-	place_id, time, departure_day, tour, price, vehicle, number_of_holes, status, num_person, adults, children, baby, contact_info {fullname, phone, email, address}
-}
-
-place{
-	id, name, code, banner, par_id
-}
-
-- Quản lý place
-	list
-	active 	=> ok
-	delete 	=> ok
-	add 	=> ok
-	edit 	=> ok
-
-- Quản lý tour
-	list 	=> ok
-	active 	=> ok
-	delete 	=> ok
-	add 	=> ok
-	edit 	=> ok
-
-- Quản lý chuyên mục
-	list 	=> ok
-	active 	=> ok
-	delete 	=> ok
-	add 	=> ok
-	edit 	=> ok
-
-- Quản lý bài viết
-	list 	=> ok
-	active 	=> ok
-	delete 	=> ok
-	add 	=> ok
-	edit 	=> ok
-
-- Quản lý menu item
-	list 	=> ok
-	active 	=> ok
-	delete 	=> ok
-	add 	=> ok
-	edit 	=> ok
-	Thêm dữ liệu menu item => ok
-
-- Quản lý booking
-	Thêm viewtype = place
-
+ADMIN
 - Quản lý booking
 	list
 	active
 	add
 	edit
 
-- block tour
-- detail tour
-- page search
+WEBSITE
+- Responsive
 - form booking
 
 

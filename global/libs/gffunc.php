@@ -14,8 +14,6 @@ function paging($total_rows,$max_rows,$cur_page){
 
     if($cur_page >1){
         $paging.='<li class="page-item"><a class="page-link" href="javascript:gotopage('.($cur_page-1).')"> << </a></li>';
-    }else{
-        $paging.='<li class="page-item"><a class="page-link" href="javascript:void(0)"> « </a></li>';
     }
     if($max_pages>1){
         for($i=$start;$i<=$end;$i++)
@@ -213,7 +211,7 @@ function getThumb($urlThumb, $class='', $alt=''){
         return "<img src=".$urlThumb." class='".$class."' alt='".$alt."'>";
     }
     else{
-        return "<img src=".ROOTHOST.THUMB_DEFAULT." class='".$class."'>";
+        return "<img src=".ROOTHOST.BANNER_DEFAULT." class='".$class."'>";
     }
 }
 function test_input($data) {

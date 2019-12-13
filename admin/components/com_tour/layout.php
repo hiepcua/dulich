@@ -79,8 +79,8 @@ if(isset($_POST["cmdsave"])){
 	$UnCode 		= un_unicode($_POST['txt_name']);
 	$Intro 			= isset($_POST['txt_intro']) ? addslashes($_POST['txt_intro']) : '';
 	$Content 		= isset($_POST['txt_content']) ? addslashes($_POST['txt_content']) : '';
-	$Schedule 		= isset($_POST['txt_schedule']) ? addslashes($_POST['txt_content']) : '';
-	$Policy 		= isset($_POST['txt_content']) ? addslashes($_POST['txt_content']) : '';
+	$Schedule 		= isset($_POST['txt_schedule']) ? addslashes($_POST['txt_schedule']) : '';
+	$Policy 		= isset($_POST['txt_policy']) ? addslashes($_POST['txt_policy']) : '';
 	
 	$Code 			= isset($_POST['txt_code']) ? addslashes($_POST['txt_code']) : '';
 	$Price1 		= isset($_POST['txt_price1']) ? (int)$_POST['txt_price1'] : 0;

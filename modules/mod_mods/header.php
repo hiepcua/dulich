@@ -6,7 +6,7 @@ $objmysql1 = new CLS_MYSQL();
 		<div class="container">
 			<button class="navbar-toggler collapsed" type="button"><span></span></button>
 			<a class="navbar-brand" href="<?php echo ROOTHOST;?>" title="Trang chủ">
-				<img src="<?php echo ROOTHOST;?>images/logo/logo.png" class="img-responsive">
+				<img src="<?php echo ROOTHOST;?>images/logo/logo.jpg" class="img-responsive">
 			</a>
 			<div class="justify-content-center navbar-collapse collapse">
 				<nav id="main-menu">
