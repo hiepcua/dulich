@@ -48,6 +48,8 @@ global $tmp;global $conf;
 	<link rel="stylesheet" href="<?php echo ROOTHOST; ?>css/bootstrap.min.css" type="text/css" media="all" />
 	<link rel="stylesheet" href="<?php echo ROOTHOST; ?>css/font-awesome.min.css" type="text/css" media="all" >
 	<link rel="stylesheet" href="<?php echo ROOTHOST; ?>css/slick.css">
+	<link rel="stylesheet" href="<?php echo ROOTHOST; ?>css/datepicker.css">
+	<link rel="stylesheet" href="<?php echo ROOTHOST; ?>css/jquery-customselect-1.9.1.css">
 	<link rel="stylesheet" href="<?php echo ROOTHOST; ?>css/style.css" type="text/css" media="all">
 	<link rel="stylesheet" href="<?php echo ROOTHOST; ?>css/style-responsive.css" type="text/css" media="all">
 	<link rel="stylesheet" href="<?php echo ROOTHOST; ?>css/Roboto.css" type="text/css" media="all">
@@ -87,6 +89,7 @@ global $tmp;global $conf;
 		<?php include_once("modules/mod_mods/footer.php");?>
 	</div>
 	<script type="text/javascript" src="<?php echo ROOTHOST; ?>js/jquery-customselect-1.9.1.min.js"></script>
+	<script type="text/javascript" src="<?php echo ROOTHOST; ?>js/datepicker.js"></script>
 	<script type="text/javascript" src="<?php echo ROOTHOST; ?>js/main.js"></script>
 </body>
 </html>

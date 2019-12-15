@@ -114,18 +114,18 @@ if ($objmysql->Num_rows()>0) {
 									<h3 class="title">thông tin<span> tour</span></h3>
 								</div>
 								<div class="item-price">
-									<div class="new-price">3,299,000 đ</div>
-									<div class="old-price">Liên hệ</div>
+									<div class="new-price"><?php echo $row['price2']; ?></div>
+									<div class="old-price"><?php echo $row['price1']; ?></div>
 								</div>                            
 								<hr class="gaps">
 								<ul class="list-unstyled list-info-tour">
 									<li>
 										<i class="ico-map-marker-blue"></i>
-										Nơi khởi hành: <strong>Hà Nội</strong>
+										Nơi khởi hành: <strong><?php echo $row['starting_gate']; ?></strong>
 									</li>                                
 									<li>
 										<i class="ico-time-blue"></i>
-										Thời gian: <strong>4N/3Đ</strong>
+										Thời gian: <strong><?php echo $row['days']; ?></strong>
 									</li>                                
 									<li>
 										<i class="ico-calendar-blue"></i>
@@ -133,15 +133,15 @@ if ($objmysql->Num_rows()>0) {
 									</li>                                
 									<li>
 										<i class="ico-paper-plane-blue"></i>
-										Phương tiện: <strong>Ô tô, Máy bay</strong>
+										Phương tiện: <strong><?php echo $row['vehicle']; ?></strong>
 									</li>                                
 									<li>
 										<i class="ico-users-blue"></i>
-										Số chỗ: <strong>30</strong>
+										Số chỗ: <strong><?php echo $row['number_of_holes']; ?></strong>
 									</li>                            
 								</ul>                            
 								<div class="text-center">
-									<a class="btn btn-info" href="http://dulichdanko.com/booking/tour/da-nang-son-tra-hoi-an-cu-lao-cham-ba-na-1">Đặt ngay</a>
+									<a class="btn btn-info" href="<?php echo ROOTHOST.'booking/tour/'.$row['un_name']; ?>">Đặt ngay</a>
 								</div>                        
 							</div>                      
 						</div>
