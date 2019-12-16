@@ -1,5 +1,29 @@
 <?php
+$strWhere = '';
 $keywork = isset($_GET['q']) ? addslashes(trim($_GET['q'])) : '';
+
+// Handle post data
+$p_duration = isset($_GET['duration']) ? $_GET['duration'] : '';
+$date_depart = isset($_GET['date_depart']) ? date("d-m-Y", strtotime($_GET['date_depart'])) : '01-01-1970';
+$p_range = isset($_GET['price_range']) ? $_GET['price_range'] : '';
+$p_hobby = isset($_GET['hobby']) ? $_GET['hobby'] : '';
+
+if($keywork !== ''){
+	$strWhere.=" AND name LIKE='%".$keywork."%'";
+};
+if($p_duration !== ''){
+	$strWhere.=" AND days=".$p_duration;
+};
+if($date_depart !== '01-01-1970'){
+	$strWhere.=" AND departure=".time($date_depart);
+};
+if($p_range !== ''){
+	$strWhere.=" AND price_range=".$p_range;
+};
+if($p_hobby !== ''){
+	$strWhere.=" AND hobby=".$p_hobby;
+};
+
 
 // Begin pagging
 define('OBJ_PAGE','SEARCH');
@@ -10,18 +34,17 @@ if(isset($_POST['txtCurnpage'])){
 	$_SESSION['CUR_PAGE_'.OBJ_PAGE] = (int)$_POST['txtCurnpage'];
 }
 
-$sql_count = "SELECT COUNT(*) AS count FROM tbl_tour WHERE name LIKE '%".$keywork."%'";
+$sql_count = "SELECT COUNT(*) AS count FROM tbl_tour WHERE isactive=1 ".$strWhere;
 $objmysql->Query($sql_count);
 $row_count = $objmysql->Fetch_Assoc();
 $total_rows = $row_count['count'];
 
-$MAX_ROWS = 4;
+$MAX_ROWS = 16;
 if($_SESSION['CUR_PAGE_'.OBJ_PAGE] > ceil($total_rows/$MAX_ROWS)){
 	$_SESSION['CUR_PAGE_'.OBJ_PAGE] = ceil($total_rows/$MAX_ROWS);
 }
 $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAGE] : 1;
 // End pagging
-
 ?>
 <section class="page page-contents">
 	<!-- breadcrumb-light-->
@@ -39,14 +62,14 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
 
 	<div class="search-tour-home bg-light2">
 		<div class="container">
-			<form action="<?php echo ROOTHOST.'search';?>" method="post" id="target">
+			<form action="<?php echo ROOTHOST.'search';?>" method="get" id="target">
 				<section class="search-tour">
 					<div class="row">
 						<div class="col-lg-2 col-sm-6">
 							<div class="your-place">
 								<select class="custom-select" name="city_want_id">
 									<option value="">Nơi bạn muốn đến</option>
-									<option value="44">nhật bản</option>
+									<option value="44" selected="selected">nhật bản</option>
 									<option value="5">Đà Lạt</option>
 									<option value="9">Yên Bái</option>
 									<option value="46">hồng kong</option>
@@ -144,7 +167,11 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
 									<?php
 									$duration = unserialize(TOUR_TIME);
 									foreach ($duration as $key => $value) {
-										echo '<option value="'.$value.'">'.$value.'</option>';
+										if($key === $p_duration){
+											echo '<option value="'.$key.'" selected="selected">'.$value.'</option>';
+										}else{
+											echo '<option value="'.$key.'">'.$value.'</option>';
+										}
 									}
 									?>
 								</select>
@@ -153,7 +180,7 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
 
 						<div class="col-lg-2 col-sm-6">
 							<div class="date-tour">
-								<input value="" name="date_depart" class="form-control" data-toggle="datepicker" placeholder="Ngày khởi hành">
+								<input value="<?php if($date_depart!=='01-01-1970') echo $date_depart; ?>" name="date_depart" class="form-control" data-toggle="datepicker" placeholder="Ngày khởi hành">
 							</div>
 						</div>
 
@@ -164,7 +191,11 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
 									<?php
 									$price_range = unserialize(TOUR_PRICE);
 									foreach ($price_range as $key => $value) {
-										echo '<option value="'.$value.'">'.$value.'</option>';
+										if($key === $p_range){
+											echo '<option value="'.$key.'" selected="selected">'.$value.'</option>';
+										}else{
+											echo '<option value="'.$key.'">'.$value.'</option>';
+										}
 									}
 									?>
 								</select>
@@ -178,7 +209,11 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
 									<?php
 									$hobby = unserialize(TOUR_HOBBIT);
 									foreach ($hobby as $key => $value) {
-										echo '<option value="'.$value.'">'.$value.'</option>';
+										if($key === $p_hobby){
+											echo '<option value="'.$key.'" selected="selected">'.$value.$p_hobby.'</option>';
+										}else{
+											echo '<option value="'.$key.'">'.$value.'</option>';
+										}
 									}
 									?>
 								</select>
@@ -202,7 +237,8 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
 		<div class="container">
 			<div class="isotope row" id="iw-isotope-main">
 				<?php
-				$sql1="SELECT * FROM tbl_tour WHERE name LIKE '%".$keywork."%' ORDER BY cdate DESC";
+				$star = ($cur_page - 1) * $MAX_ROWS;
+				$sql1="SELECT * FROM tbl_tour WHERE isactive=1 ".$strWhere." ORDER BY cdate DESC LIMIT $star,".$MAX_ROWS;
 				$objmysql->Query($sql1);
 				while ($row1 = $objmysql->Fetch_Assoc()) {
 					$name = stripcslashes($row1['name']);

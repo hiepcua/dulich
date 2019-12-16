@@ -11,20 +11,6 @@
 			$('body').removeClass('fixed-header');
 		}
 	});
-	// var prevScrollpos = window.pageYOffset;
-	// window.onscroll = function() {
-	// 	var currentScrollPos = window.pageYOffset;
-	// 	if(currentScrollPos > 300){
-	// 		if (prevScrollpos > currentScrollPos) {
-	// 			document.getElementById("navbar").classList.add('position-fixed');
-	// 		} else {
-	// 			document.getElementById("navbar").classList.remove('position-fixed');
-	// 		}
-	// 		prevScrollpos = currentScrollPos;
-	// 	}else{
-	// 		document.getElementById("navbar").classList.remove('position-fixed');
-	// 	}
-	// }
 
 	$(".fa-caret-right").click(function () {
 		$(".social-top>ul").toggleClass("show-social-top");

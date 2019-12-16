@@ -79,7 +79,6 @@ global $tmp;global $conf;
 			<?php include_once("modules/mod_mods/banner-slide.php");?>
 			<?php $tmp->loadModule('box2') ;?>
 			<?php $tmp->loadModule('box3') ;?>
-			<?php //include_once("modules/mod_mods/home-body.php");?>
 			<?php $tmp->loadModule('box5') ;?>
 			<?php $tmp->loadModule('box4') ;?>
 			<?php $tmp->loadModule('box6') ;?>

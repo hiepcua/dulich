@@ -1,30 +1,10 @@
-*{
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-/* FONT-FACE ==== */
-@font-face {
-	font-family: 'Glyphicons Halflings';
-	src: url('../fonts/glyphicons-halflings-regular.eot');
-	src: url('../fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/glyphicons-halflings-regular.woff') format('woff'), url('../fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../fonts/glyphicons-halflings-regular.svg#glyphicons-halflingsregular') format('svg');
-}
-
 /* BUTTON CONTACT ====*/
 .w-100 {
 	width: 100%!important;
 }
-.text-ellipsis {
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-}
 .btn-info {
 	background-color: #1789c5;
 	border-color: #1789c5;
-}
-.mt-2, .my-2 {
-	margin-top: .5rem!important;
 }
 img.img-responsive {
 	max-width: 100%;
@@ -45,10 +25,6 @@ img.img-responsive {
 .position-fixed{
 	position: fixed !important;
 }
-.list-unstyled {
-	padding-left: 0;
-	list-style: none;
-}
 .rounded-circle {
 	border-radius: 50% !important;
 }
@@ -59,10 +35,10 @@ img.img-responsive {
 
 /*===== COMMON =====*/
 body {
-	font-size: 16px;
-	font-family: 'Roboto', sans-serif;
-	-webkit-text-size-adjust: none;
+	line-height: 1.6;
+	font-family: "Roboto", sans-serif;
 	color: #000;
+	font-size: 14px;
 }
 a {
 	color: #333;
@@ -148,7 +124,7 @@ header {
 	font-weight: 700;
 	line-height: 58px;
 	/* padding-left: 12px; */
-	/* background-image: url(../img/bg/hotline-header.jpg); */
+	/* background-image: url(../images/icons/bg/hotline-header.jpg); */
 	background-repeat: no-repeat;
 	background-position: top left;
 	background-size: auto 100%;
@@ -3372,6 +3348,149 @@ aside.module{
 	margin-right: 5px;
 	vertical-align: text-bottom;
 }
+.checkout {
+	padding-top: 15px;
+}
+
+.checkout .header-tour-detail {
+	margin-top: 6px;
+}
+
+.checkout .header-tour-detail h2 {
+	margin-bottom: 4px;
+}
+
+.checkout .header-tour-detail .list-info-tour {
+	margin-top: 20px;
+}
+.list-info-tour li {
+	position: relative;
+	padding-left: 37px;
+	margin-bottom: 16px;
+}
+.ico-eye-blue {
+	background-image: url("../images/icons/sprites.png");
+	background-position: 0 -75px;
+	background-repeat: no-repeat;
+	overflow: hidden;
+	height: 14px;
+	width: 21px;
+	display: inline-block;
+}
+
+.ico-map-marker-blue {
+	background-image: url("../images/icons/sprites.png");
+	background-position: 0 -225px;
+	background-repeat: no-repeat;
+	overflow: hidden;
+	height: 21px;
+	width: 13px;
+	display: inline-block;
+}
+
+.ico-time-blue {
+	background-image: url("../images/icons/sprites.png");
+	background-position: 0 -344px;
+	background-repeat: no-repeat;
+	overflow: hidden;
+	height: 20px;
+	width: 20px;
+	display: inline-block;
+}
+
+.ico-calendar-blue {
+	background-image: url("../images/icons/sprites.png");
+	background-position: 0 -25px;
+	background-repeat: no-repeat;
+	overflow: hidden;
+	height: 21px;
+	width: 21px;
+	display: inline-block;
+}
+
+.ico-paper-plane-blue {
+	background-image: url("../images/icons/sprites.png");
+	background-position: 0 -275px;
+	background-repeat: no-repeat;
+	overflow: hidden;
+	height: 19px;
+	width: 21px;
+	display: inline-block;
+}
+
+.ico-users-blue {
+	background-image: url("../images/icons/sprites.png");
+	background-position: 0 -658px;
+	background-repeat: no-repeat;
+	overflow: hidden;
+	height: 19px;
+	width: 27px;
+	display: inline-block;
+}
+
+.ico-map-marker-2 {
+	background-image: url("../images/icons/sprites.png");
+	background-position: 0 -201px;
+	background-repeat: no-repeat;
+	overflow: hidden;
+	height: 19px;
+	width: 12px;
+	display: inline-block;
+}
+
+.ico-time-blue-2 {
+	background-image: url("../images/icons/sprites.png");
+	background-position: 0 -322px;
+	background-repeat: no-repeat;
+	overflow: hidden;
+	height: 17px;
+	width: 17px;
+	display: inline-block;
+}
+
+.ico-time-green {
+	background-image: url("../images/icons/sprites.png");
+	background-position: 0 -369px;
+	background-repeat: no-repeat;
+	overflow: hidden;
+	height: 17px;
+	width: 17px;
+	display: inline-block;
+}
+
+.ico-home-blue {
+	background-image: url("../images/icons/sprites.png");
+	background-position: 0 -135px;
+	background-repeat: no-repeat;
+	overflow: hidden;
+	height: 17px;
+	width: 17px;
+	display: inline-block;
+}
+.list-info-tour li i {
+	color: #1789c5;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 27px;
+	text-align: center;
+	font-size: 20px;
+}
+.gaps {
+  border-top-color: #e0e0e0;
+  margin-top: 9px;
+  margin-bottom: 24px;
+}
+
+.gaps.gaps-2x {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.list-info-tour li i.fa-map-marker, .list-info-tour li i.fa-clock-o {
+	font-size: 24px;
+}
+
 .slider-nav {
 	margin-top: 11px;
 	margin-bottom: 37px;
@@ -3774,6 +3893,9 @@ aside.module{
 	padding-right: 15px;
 	position: relative;
 	z-index: 2;
+}
+.date-tour .form-control:focus {
+	box-shadow: none;
 }
 
 .date-tour .form-control::-webkit-input-placeholder {

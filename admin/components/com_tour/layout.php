@@ -94,6 +94,9 @@ if(isset($_POST["cmdsave"])){
 	$Author 		= $_SESSION[MD5($_SERVER['HTTP_HOST']).'_USERLOGIN']['username'];
 	$isActive 		= isset($_POST['opt_isactive']) ? (int)$_POST['opt_isactive'] : 0;
 	$isHot 			= isset($_POST['opt_ishot']) ? (int)$_POST['opt_ishot'] : 0;
+	$isHot 			= isset($_POST['opt_ishot']) ? (int)$_POST['opt_ishot'] : 0;
+	$tour_price 	= isset($_POST['txt_tour_price']) ? (int)$_POST['txt_tour_price'] : 0;
+	$hobby 			= isset($_POST['txt_hobby']) ? (int)$_POST['txt_hobby'] : 0;
 
 	$Cdate 			= time();
 	$Meta_title 	= isset($_POST['txt_metatitle']) ? addslashes(htmlentities($_POST['txt_metatitle'])) : '';
@@ -129,7 +132,10 @@ if(isset($_POST["cmdsave"])){
 		`mdate` 	= '".$Mdate."',
 		`author` 	= '".$Author."',
 		`ishot` 	= '".$isHot."',
-		`isactive` 	= '".$isActive."'
+		`isactive` 	= '".$isActive."',
+
+		`price_range` = '".$tour_price."',
+		`hobby` 	= '".$hobby."'
 		WHERE `id` 	= '".$ID."'";
 		$result = $objmysql->Exec($sql); 
 
@@ -150,10 +156,10 @@ if(isset($_POST["cmdsave"])){
 			$objmysql->Exec('ROLLBACK');
 	}else{
 		$objmysql->Exec("BEGIN");
-		$sql = "INSERT INTO tbl_tour (`name`, `un_name`, `code`, `place_id`, `intro`, `content`, `schedule`, `policy`, `images`, `price1`, `price2`, `starting_gate`, `departure`, `days`, `vehicle`, `number_of_holes`, `cdate`, `author`, `ishot`, `isactive`) 
+		$sql = "INSERT INTO tbl_tour (`name`, `un_name`, `code`, `place_id`, `intro`, `content`, `schedule`, `policy`, `images`, `price1`, `price2`, `starting_gate`, `departure`, `days`, `vehicle`, `number_of_holes`, `cdate`, `author`, `ishot`, `isactive`, `price_range`, `hobby`) 
 		VALUES ('".$Title."', '".$UnCode."', '".$Code."', '".$PlaceId."', '".$Intro."', '".$Content."', 
 		'".$Schedule."', '".$Policy."', '$Images', '".$Price1."','".$Price2."'
-		, '".$StartingGate."', '".$Departure."', '".$Days."', '".$Vehicle."', '".$NumberOfHoles."', '".$Cdate."', '".$Author."', '".$isHot."', '".$isActive."')";
+		, '".$StartingGate."', '".$Departure."', '".$Days."', '".$Vehicle."', '".$NumberOfHoles."', '".$Cdate."', '".$Author."', '".$isHot."', '".$isActive."', '".$price_range."', '".$hobby."')";
 		$result = $objmysql->Exec($sql); 
 
 		$sql2 = "INSERT INTO tbl_seo (`title`,`link`,`image`,`meta_title`,`meta_key`,`meta_desc`) 

@@ -188,7 +188,7 @@ defined("ISHOME") or die("Can't acess this page, please come back!");
                             <?php
                             $days = unserialize(TOUR_TIME);
                             foreach ($days as $key => $value) {
-                                echo '<option value="'.$value.'">'.$value.'</option>';
+                                echo '<option value="'.$key.'">'.$value.'</option>';
                             }
                             ?>
                         </select>
@@ -200,7 +200,31 @@ defined("ISHOME") or die("Can't acess this page, please come back!");
                             <?php
                             $vehicle = unserialize(TOUR_VEHICLE);
                             foreach ($vehicle as $key => $value) {
-                                echo '<option value="'.$value.'">'.$value.'</option>';
+                                echo '<option value="'.$key.'">'.$value.'</option>';
+                            }
+                            ?>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Khoảng giá</label>
+                        <select class="form-control" id="txt_tour_price" name="txt_tour_price" style="width: 100%" required>
+                            <?php
+                            $tour_price = unserialize(TOUR_PRICE);
+                            foreach ($tour_price as $key => $value) {
+                                echo '<option value="'.$key.'">'.$value.'</option>';
+                            }
+                            ?>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Sở thích</label>
+                        <select class="form-control" id="txt_hobby" name="txt_hobby" style="width: 100%" required>
+                            <?php
+                            $hobby = unserialize(TOUR_HOBBIT);
+                            foreach ($hobby as $key => $value) {
+                                echo '<option value="'.$key.'">'.$value.'</option>';
                             }
                             ?>
                         </select>
@@ -276,6 +300,8 @@ defined("ISHOME") or die("Can't acess this page, please come back!");
         $("#cbo_cata").select2();
         $("#cbo_place").select2();
         $("#cbo_days").select2();
+        $("#txt_tour_price").select2();
+        $("#txt_hobby").select2();
     })
 
     function images_delete_item(attr){
