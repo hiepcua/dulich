@@ -357,7 +357,7 @@ function html2text($Document) {
 }
 
 function page404(){
-    echo 'trang không tồn tại';
+    echo "<script language=\"javascript\">window.location='".ROOTHOST.'404.html'."'</script>";
 }
 
 function convert_date($int_date){

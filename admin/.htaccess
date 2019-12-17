@@ -46,6 +46,15 @@ RewriteRule ^tour/active/([0-9]+)?$ 			index.php?com=tour&task=active&id=$1
 RewriteRule ^tour/delete/([0-9]+)?$ 			index.php?com=tour&task=delete&id=$1
 RewriteRule ^tour/category/([0-9]+)?$ 			index.php?com=tour&task=list&cate=$1
 
+# Booking
+RewriteRule ^booking/?$ 							index.php?com=booking 	[QSA]
+RewriteRule ^booking/add?$ 						index.php?com=booking&task=add
+RewriteRule ^booking/edit/([0-9]+)?$ 				index.php?com=booking&task=edit&id=$1
+RewriteRule ^booking/ishot/([0-9]+)?$ 				index.php?com=booking&task=ishot&id=$1
+RewriteRule ^booking/active/([0-9]+)?$ 			index.php?com=booking&task=active&id=$1
+RewriteRule ^booking/delete/([0-9]+)?$ 			index.php?com=booking&task=delete&id=$1
+RewriteRule ^booking/category/([0-9]+)?$ 			index.php?com=booking&task=list&cate=$1
+
 
 #Category
 RewriteRule ^category/?$ 							index.php?com=category 	[QSA]

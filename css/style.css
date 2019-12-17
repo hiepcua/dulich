@@ -32,6 +32,11 @@ img.img-responsive {
 	padding-top: 38px;
 	padding-bottom: 36px;
 }
+span.hotline {
+    font-size: 26px;
+    color: #1789c5;
+    font-weight: 600;
+}
 
 /*===== COMMON =====*/
 body {

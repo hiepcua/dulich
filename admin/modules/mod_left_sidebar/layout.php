@@ -14,6 +14,14 @@ $objmysql = new CLS_MYSQL();
 		</li>
 
 		<li>
+			<div class="title"><i class="fa fa-list" aria-hidden="true"></i> <span>Booking tour</span></div>
+			<ul class="sub">
+				<li><a href="<?php echo ROOTHOST_ADMIN;?>booking/add" title="Đặt tour"><i class="fa fa-plus" aria-hidden="true"></i> <span>Đặt tour</span></a></li>
+				<li><a href="<?php echo ROOTHOST_ADMIN;?>booking" title="Ds đặt tour"><i class="fa fa-bars" aria-hidden="true"></i> <span>Ds đặt tour</span></a></li>
+			</ul>
+		</li>
+
+		<li>
 			<div class="title"><i class="fa fa-list" aria-hidden="true"></i> <span>Quản lý tour</span></div>
 			<ul class="sub">
 				<li><a href="<?php echo ROOTHOST_ADMIN;?>tour/add" title="Thêm bài viết"><i class="fa fa-plus" aria-hidden="true"></i> <span>Thêm tin đất đai</span></a></li>

@@ -3,12 +3,18 @@ RewriteRule ^trang-chu/?$ index.php
 RewriteRule ^admin/?$ admin/index.php
 RewriteRule ^lien-he/?$ index.php?com=contact
 
+RewriteRule ^404.html/?$ 404.html
+
 # Tour
 RewriteRule ^tim-kiem/?$ 	           					index.php?com=tour&viewtype=search [QSA]
 RewriteRule ^search/?$ 	           						index.php?com=tour&viewtype=search [QSA]
 RewriteRule ^tour/([0-9a-zA-Z\-]+)/?$                   index.php?com=tour&viewtype=detail&code=$1 [QSA]
 RewriteRule ^diem-den/([0-9a-zA-Z\-]+)?$   				index.php?com=tour&viewtype=block&code=$1 [QSA]
 RewriteRule ^booking/tour/([0-9a-zA-Z\-]+)?$   			index.php?com=tour&viewtype=booking&code=$1 [QSA]
+RewriteRule ^booking/tour/booking/step2?$				index.php?com=tour&viewtype=booking_step-2
+RewriteRule ^booking/tour/booking/([0-9a-zA-Z\-]+)/step2?$				index.php?com=tour&viewtype=booking_now&code=$1
+RewriteRule ^booking/success?$				   			index.php?com=tour&viewtype=success
+RewriteRule ^booking/error?$				   			index.php?com=tour&viewtype=error
 
 # Contents
 RewriteRule ^chuyen-muc/([0-9a-zA-Z\-]+)/?$             index.php?com=categories&viewtype=block&code=$1 [QSA]
