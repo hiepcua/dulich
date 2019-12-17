@@ -83,6 +83,44 @@
         monthsShort: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12']
     });
 
+	$('.toggle-h4').click(function(){
+		$(this).parent().toggleClass('open');
+	});
+
+	$('.slidebar-menu i.fa-angle-down').click(function(){
+		$(this).parent().toggleClass('open');
+	});
+
+	// $('.mm-btn_next').click(function(){
+	// 	var id_block = $(this).attr('href');    
+	// 	$('.menu-panel').addClass('hidden').removeClass('opened');
+	// 	$(id_block).removeClass('hidden').addClass('opened');        
+
+	// 	$('.mm-btn_prev').removeClass('hidden');
+
+	// 	var content = $(this).parent().find('.nav-link').text();
+	// 	console.log(content);
+	// 	$('<span class="mm-separator">/</span><span>' + content + '</span>').insertAfter('.navbar-breadcrum span:last-child');
+	// 	return false;
+	// });
+
+	// $('.mm-btn_prev').click(function(){
+	// 	var id_current = $('.menu-panel.opened').attr('id');
+	// 	$('.menu-panel').addClass('hidden').removeClass('opened');
+	// 	$('.menu-panel .mm-btn_next').each(function(){
+	// 		if ($(this).attr('href') == ('#'+id_current)){
+	// 			$(this).parents('.menu-panel').addClass('opened').removeClass('hidden');
+
+	// 			if ($(this).parents('.menu-panel').hasClass('menu-main')){
+	// 				$('.mm-btn_prev').addClass('hidden');
+	// 			}
+	// 			$('.navbar-breadcrum span:last-child').remove()
+	// 			$('.navbar-breadcrum span:last-child').remove()
+	// 		}          
+	// 	});
+
+	// });
+
 })(jQuery);
 
 

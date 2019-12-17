@@ -24,7 +24,7 @@ $objmysql = new CLS_MYSQL();
 		<li>
 			<div class="title"><i class="fa fa-list" aria-hidden="true"></i> <span>Quản lý tour</span></div>
 			<ul class="sub">
-				<li><a href="<?php echo ROOTHOST_ADMIN;?>tour/add" title="Thêm bài viết"><i class="fa fa-plus" aria-hidden="true"></i> <span>Thêm tin đất đai</span></a></li>
+				<li><a href="<?php echo ROOTHOST_ADMIN;?>tour/add" title="Thêm bài viết"><i class="fa fa-plus" aria-hidden="true"></i> <span>Thêm tour</span></a></li>
 				<li><a href="<?php echo ROOTHOST_ADMIN;?>tour" title="Ds bài viết"><i class="fa fa-bars" aria-hidden="true"></i> <span>Ds tour</span></a></li>
 				<li><a href="<?php echo ROOTHOST_ADMIN;?>place" title="Ds điểm đến"><i class="fa fa-bars" aria-hidden="true"></i> <span>Ds điểm đến</span></a></li>
 			</ul>

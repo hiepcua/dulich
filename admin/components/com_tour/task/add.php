@@ -164,12 +164,12 @@ defined("ISHOME") or die("Can't acess this page, please come back!");
 
                     <div class="form-group">
                         <label>Giá ban đầu</label>
-                        <input type="number" name="txt_price1" id="txt_price1" class="form-control" min="0" placeholder="Giá chưa khuyến mãi">
+                        <input type="text" name="txt_price1" id="txt_price1" class="form-control" min="0" placeholder="Giá chưa khuyến mãi">
                     </div>
 
                     <div class="form-group">
                         <label>Giá khuyến mãi</label>
-                        <input type="number" name="txt_price2" id="txt_price2" class="form-control" min="0" placeholder="Giá khuyến mãi">
+                        <input type="text" name="txt_price2" id="txt_price2" class="form-control" min="0" placeholder="Giá khuyến mãi">
                     </div>
 
                     <div class='form-group'>
@@ -302,7 +302,25 @@ defined("ISHOME") or die("Can't acess this page, please come back!");
         $("#cbo_days").select2();
         $("#txt_tour_price").select2();
         $("#txt_hobby").select2();
-    })
+
+        // Change price
+        $('#txt_price1, #txt_price2').change(function(){
+            var val = addCommas($(this).val());
+            $(this).val(val);
+        })
+    });
+
+    function addCommas(nStr){
+        nStr += '';
+        x = nStr.split('.');
+        x1 = x[0];
+        x2 = x.length > 1 ? '.' + x[1] : '';
+        var rgx = /(\d+)(\d{3})/;
+        while (rgx.test(x1)) {
+            x1 = x1.replace(rgx, '$1' + ',' + '$2');
+        }
+        return x1 + x2;
+    }
 
     function images_delete_item(attr){
         var del=confirm("Bạn có chắc muốn xóa ảnh này?");

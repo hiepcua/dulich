@@ -14,7 +14,7 @@ $row = $objmysql->Fetch_Assoc();
 		?>
 		<div class="col-md-4">
 			<div class="links-toggle">
-				<h4 class="toggle-h4"><a href="<?php echo ROOTHOST.'diem-den/'.$row2['code']; ?>" title="<?php echo $row2['name']; ?>"><?php echo $row2['name']; ?><i class="fa fa-angle-down d-md-none"></i></a></h4>
+				<h4 class="toggle-h4"><?php echo $row2['name']; ?><i class="fa fa-angle-down d-md-none"></i></h4>
 				<ul class="list-unstyled">
 					<?php
 					$sql3="SELECT * FROM tbl_place WHERE isactive=1 AND par_id=".$row2['id']." LIMIT 0,7";

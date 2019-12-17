@@ -10,9 +10,7 @@ $total = $objmysql->Num_rows();
 	while($row = $objmysql->Fetch_Assoc()) {
 		$thumb = stripcslashes($row['thumb']);
 		?>
-		<div class="banner-item">
-			<img src="<?= $thumb ?>" alt="" class="img">
-		</div>
+		<div class="banner-item item slide-bg-image" data-background-img="<?= $thumb ?>" style="background-image: url(<?= $thumb ?>); background-position: center center; width: 100%; display: inline-block;"></div>
 	<?php } ?>
 </div>
 <script type="text/javascript">

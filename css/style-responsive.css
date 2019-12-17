@@ -773,8 +773,12 @@
 		max-width: 1170px;
 	}
 	#main-banner{
-		height: 460px;
 		overflow: hidden;
+	}
+	.slide-bg-image {
+		background-repeat: no-repeat;
+		background-size: cover;
+		height: 460px;
 	}
 }
 @media (min-width: 992px){
@@ -815,6 +819,9 @@
 	}
 	.navbar-main .dropdown.megamenu .dropdown-menu .col-sm-6:last-child .megamenu-submenu ul {
 		border-right: none;
+	}
+	.d-lg-block {
+	    display: block!important;
 	}
 }
 /*========= menu mobile ============*/
@@ -907,7 +914,7 @@
 		display: none;
 	}
 	/* End Top header */
-	/* Search header*/
+	/* Header */
 	#search #search-input, #search .hint {
 		padding-left: 20px;
 		padding-right: 40px;
@@ -916,15 +923,11 @@
 	.form-search-header{
 		width: 220px;
 	}
-	/* End Search header*/
 	#nav .nav_wrapper{
 		position: absolute;
 		display: none;
 		top: 0px;
 		width: 80%;
-	}
-	header.active{
-		padding: 0px;
 	}
 	.navbar-toggle .icon-bar{
 		background-color: #664d2f;
@@ -974,6 +977,14 @@
 	#header .navbar-collapse{
 		border-top: 1px solid #fa7901c2; 
 	}
+	.navbar-brand{
+		margin: auto;
+	}
+	.navbar-brand>img{
+		height: 60px;
+    	padding: 5px 0;
+	}
+	/* End Header */
 	#slide-hot-news .box-thumb {height:auto}
 	#slide-follow{position:relative}
 	#slide-follow .owl-nav  {display: block; position:absolute; top:-40px; right:0}
@@ -992,7 +1003,7 @@
 		margin-top: 0px;
 	}
 	#main-banner{
-		margin-top: 51px;
+		height: auto;
 	}
 	#main-banner .item .content .title{
 		font-size: 26px;
@@ -1034,10 +1045,6 @@
 	}
 
 	/*Feed back*/
-	.section-6 .item1{
-		width: 100%;
-	}
-
 	aside.module {
 		margin-bottom: 30px;
 		display: inline-block;
@@ -1051,6 +1058,71 @@
 		clear: both;
 	}
 	.list-images ul li {  margin-right: 2px;}
+	.links-toggle ul{
+		display: none;
+	}
+	.links-toggle h4 i{
+		margin-left: 10px;
+	}
+	.links-toggle.open ul {
+	    display: block;
+	}
+	.links-toggle.open h4 i {
+	    transform: rotate(180deg);
+	}
+	.navbar-toggler {
+	    display: inline-block;
+	    width: 30px;
+	    height: 30px;
+	    position: relative;
+	}
+	.navbar-toggler:before, .navbar-toggler:after {
+	    background: #000;
+	    content: '';
+	    height: 2px;
+	    left: 0;
+	    margin: auto;
+	    position: absolute;
+	    right: 0;
+	    width: 26px;
+	    transition: all 0.3s ease;
+	}
+	.navbar-toggler span {
+	    background: #000;
+	    bottom: 0;
+	    display: block;
+	    height: 2px;
+	    left: 0;
+	    margin: auto;
+	    position: absolute;
+	    right: 0;
+	    top: 0;
+	    width: 26px;
+	    transition: all 0.3s ease;
+	}
+	.navbar-toggler:before {
+	    top: 20%;
+	    transform-origin: top left;
+	}
+	.navbar-toggler:after {
+	    bottom: 20%;
+	    transform-origin: bottom left;
+	}
+	.header-search {
+	    display: none;
+	}
+	#navbarToggle>ul>li {
+		display: none;
+	}
+	.slide-bg-image {
+		background-repeat: no-repeat;
+		background-size: cover;
+		height: 146.6px !important;
+	}
+	.social-top {
+	    display: none;
+	}
+
 }
 @media (max-width: 600px) {
 	/* Section category */

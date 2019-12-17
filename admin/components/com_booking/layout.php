@@ -11,6 +11,7 @@ if(isset($_POST['cmdsave']) && (int)$_POST['tour'] !== 0){
 	$objmysql->Query($sql0);
 	$row = $objmysql->Fetch_Assoc();
 
+	$p_tour_id = $row['id'];
 	$p_place_id = $row['place_id'];
 	$p_name = $row['name'];
 	$p_code = $row['code'];
@@ -69,7 +70,7 @@ if(isset($_POST['cmdsave']) && (int)$_POST['tour'] !== 0){
 		$sql="INSERT INTO tbl_booking (`tour_id`, `place_id`, `name`, `code`, `price1`, `price2`, `starting_gate`, `start_date`, `days`, `vehicle`, `number_of_holes`, `price_range`, `hobby`, `cdate`, `adult`, `child`, `baby`, `fullname`, `email`, `phone`, `address`, `status`) VALUES ('".$p_tour_id."', '".$p_place_id."', '".$p_name."', '".$p_code."', '".$p_price1."', '".$p_price2."', '".$p_starting_gate."', '".$p_start_date."', '".$p_days."', '".$p_vehicle."', '".$p_number_of_holes."', '".$p_price_range."', '".$p_hobby."', '".$p_cdate."', '".$p_adult."', '".$p_child."', '".$p_baby."', '".$p_fullname."', '".$p_email."', '".$p_phone."', '".$p_address."', '".$p_status."')";
 		$result = $objmysql->Exec($sql);
 	}
-	echo "<script language=\"javascript\">window.location.href='".ROOTHOST_ADMIN.COMS."'</script>";
+	// echo "<script language=\"javascript\">window.location.href='".ROOTHOST_ADMIN.COMS."'</script>";
 }
 
 if(isset($_POST["txtaction"]) && $_POST["txtaction"]!=""){

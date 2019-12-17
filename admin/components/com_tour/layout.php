@@ -6,6 +6,7 @@ require_once('libs/cls.place.php');
 require_once('extensions/cls.upload.php');
 $obj_place 	= new CLS_PLACE();
 $objmysql 	= new CLS_MYSQL();
+$objdata 	= new CLS_MYSQL();
 $objmedia 	= new CLS_UPLOAD();
 $cur_dir 	= '../images/';
 
@@ -83,8 +84,8 @@ if(isset($_POST["cmdsave"])){
 	$Policy 		= isset($_POST['txt_policy']) ? addslashes($_POST['txt_policy']) : '';
 	
 	$Code 			= isset($_POST['txt_code']) ? addslashes($_POST['txt_code']) : '';
-	$Price1 		= isset($_POST['txt_price1']) ? (int)$_POST['txt_price1'] : 0;
-	$Price2 		= isset($_POST['txt_price2']) ? (int)$_POST['txt_price2'] : 0;
+	$Price1 		= isset($_POST['txt_price1']) ? (int)str_replace(',','', $_POST['txt_price1']) : 0;
+	$Price2 		= isset($_POST['txt_price2']) ? (int)str_replace(',','', $_POST['txt_price2']) : 0;
 	$PlaceId 		= isset($_POST['cbo_place']) ? (int)$_POST['cbo_place'] : 0;
 	$Days 			= isset($_POST['cbo_days']) ? addslashes($_POST['cbo_days']) : '';
 	$Vehicle		= isset($_POST['txt_vehicle']) ? addslashes($_POST['txt_vehicle']) : '';
@@ -159,7 +160,7 @@ if(isset($_POST["cmdsave"])){
 		$sql = "INSERT INTO tbl_tour (`name`, `un_name`, `code`, `place_id`, `intro`, `content`, `schedule`, `policy`, `images`, `price1`, `price2`, `starting_gate`, `departure`, `days`, `vehicle`, `number_of_holes`, `cdate`, `author`, `ishot`, `isactive`, `price_range`, `hobby`) 
 		VALUES ('".$Title."', '".$UnCode."', '".$Code."', '".$PlaceId."', '".$Intro."', '".$Content."', 
 		'".$Schedule."', '".$Policy."', '$Images', '".$Price1."','".$Price2."'
-		, '".$StartingGate."', '".$Departure."', '".$Days."', '".$Vehicle."', '".$NumberOfHoles."', '".$Cdate."', '".$Author."', '".$isHot."', '".$isActive."', '".$price_range."', '".$hobby."')";
+		, '".$StartingGate."', '".$Departure."', '".$Days."', '".$Vehicle."', '".$NumberOfHoles."', '".$Cdate."', '".$Author."', '".$isHot."', '".$isActive."', '".$tour_price."', '".$hobby."')";
 		$result = $objmysql->Exec($sql); 
 
 		$sql2 = "INSERT INTO tbl_seo (`title`,`link`,`image`,`meta_title`,`meta_key`,`meta_desc`) 
