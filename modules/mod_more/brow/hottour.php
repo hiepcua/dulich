@@ -28,7 +28,7 @@
 							<?php if((int)$row['price1'] !== 0 && (int)$row['price2'] !== 0){ ?>
 								<span class="sale-off"><?php echo round((($row['price1'] - $row['price2'])/$row['price1'])*100); ?>%</span>
 							<?php } ?>
-							<span class="btn btn-info" href="http://dulichdanko.com/tour/chuong-trinh-xem-bong-da-vong-loai-wc-2020">Chi tiết</span>
+							<span class="btn btn-info" href="<?php echo $link; ?>">Chi tiết</span>
 						</a>
 
 						<div class="card-body">
@@ -36,29 +36,27 @@
 							<h5 class="cart-title">
 								<a href="<?php echo $link; ?>" title="<?php echo $name; ?>"><?php echo $name; ?></a>
 							</h5>
-							<?php if($row['departure'] !== 0){ ?>
-								<div class="card-text">Khởi hành: <?php echo date('d/m/Y', $row['departure']); ?></div>
-							<?php }else{ ?>
-								<div class="card-text">Khởi hành: Hàng ngày</div>
-							<?php } ?>
-
-							<?php if((int)$row['price1'] !== 0){ 
-								if((int)$row['price2'] !== 0){
-									?>
-									<div class="item-price">
-										<span class="new-price"><?php echo number_format($row['price2']); ?> đ</span><span class="old-price"><?php echo number_format($row['price1']); ?> đ</span>
-									</div>
-								<?php }else{
-									?>
-									<div class="item-price">
-										<span class="new-price"><?php echo number_format($row['price1']); ?> đ</span>
-									</div>
-									<?php
-								}
-							}else{ ?>
-								<div>Liên hệ</div>
-							<?php } ?>
-
+							<div class="card-text">
+								<?php
+								if($row['departure'] > 0){
+									echo 'Khởi hành: <strong>'.date('d-m-Y', $row['departure']).'</strong>';
+								}else{
+									echo 'Khởi hành: <strong>Hàng ngày</strong>';
+								}?>
+							</div>
+							<div class="item-price">
+								<?php
+								$price1 = (int)$row['price1'];
+								$price2 = (int)$row['price2'];
+								if($price1 !== 0 && $price2 !== 0){
+									echo '<span class="new-price">'.number_format($price2).' đ</span>';
+									echo '<span class="old-price">'.number_format($price1).' đ</span>';
+								}else if($price1 === 0 && $price2 === 0){
+									echo '<span>Liên hệ: <a href="tel:'.$GLOBALS['conf']->Phone.'" class="hotline">'.$GLOBALS['conf']->Phone.'</a></span>';
+								}else if($price1 !== 0 && $price2 === 0){
+									echo '<span class="new-price">'.number_format($price1).' đ</span>';
+								}?>
+							</div>
 						</div>
 
 					</div>

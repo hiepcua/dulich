@@ -821,7 +821,13 @@
 		border-right: none;
 	}
 	.d-lg-block {
-	    display: block!important;
+		display: block!important;
+	}
+	.slider-nav .item img{
+		height: 80px;
+	}
+	.slider-nav .slick-current img{
+		border: 2px solid #2892c9;
 	}
 }
 /*========= menu mobile ============*/
@@ -835,6 +841,10 @@
 	#main-banner{
 		height: 440px;
 		overflow: hidden;
+	}
+	.search-tour .btn{
+		margin: 0 -20px 0 -5px;
+		width: calc(100% + 10px);
 	}
 }
 
@@ -982,7 +992,7 @@
 	}
 	.navbar-brand>img{
 		height: 60px;
-    	padding: 5px 0;
+		padding: 5px 0;
 	}
 	/* End Header */
 	#slide-hot-news .box-thumb {height:auto}
@@ -1065,51 +1075,51 @@
 		margin-left: 10px;
 	}
 	.links-toggle.open ul {
-	    display: block;
+		display: block;
 	}
 	.links-toggle.open h4 i {
-	    transform: rotate(180deg);
+		transform: rotate(180deg);
 	}
 	.navbar-toggler {
-	    display: inline-block;
-	    width: 30px;
-	    height: 30px;
-	    position: relative;
+		display: inline-block;
+		width: 30px;
+		height: 30px;
+		position: relative;
 	}
 	.navbar-toggler:before, .navbar-toggler:after {
-	    background: #000;
-	    content: '';
-	    height: 2px;
-	    left: 0;
-	    margin: auto;
-	    position: absolute;
-	    right: 0;
-	    width: 26px;
-	    transition: all 0.3s ease;
+		background: #000;
+		content: '';
+		height: 2px;
+		left: 0;
+		margin: auto;
+		position: absolute;
+		right: 0;
+		width: 26px;
+		transition: all 0.3s ease;
 	}
 	.navbar-toggler span {
-	    background: #000;
-	    bottom: 0;
-	    display: block;
-	    height: 2px;
-	    left: 0;
-	    margin: auto;
-	    position: absolute;
-	    right: 0;
-	    top: 0;
-	    width: 26px;
-	    transition: all 0.3s ease;
+		background: #000;
+		bottom: 0;
+		display: block;
+		height: 2px;
+		left: 0;
+		margin: auto;
+		position: absolute;
+		right: 0;
+		top: 0;
+		width: 26px;
+		transition: all 0.3s ease;
 	}
 	.navbar-toggler:before {
-	    top: 20%;
-	    transform-origin: top left;
+		top: 20%;
+		transform-origin: top left;
 	}
 	.navbar-toggler:after {
-	    bottom: 20%;
-	    transform-origin: bottom left;
+		bottom: 20%;
+		transform-origin: bottom left;
 	}
 	.header-search {
-	    display: none;
+		display: none;
 	}
 	#navbarToggle>ul>li {
 		display: none;
@@ -1120,7 +1130,10 @@
 		height: 146.6px !important;
 	}
 	.social-top {
-	    display: none;
+		display: none;
+	}
+	.sticky{
+		top: 60px;
 	}
 
 }

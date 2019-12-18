@@ -159,8 +159,8 @@ $mmenu=array();
 					<i class="fa fa-search"></i>
 				</div>
 				<div id="check" class="dropdown-menu-right">
-					<form action="<?php echo ROOTHOST; ?>tim-kiem" method="post" id="header-search" class="form-inline">
-						<input name="keyword" type="text" class="form-control" placeholder="Tìm Kiếm">
+					<form action="<?php echo ROOTHOST; ?>tim-kiem" method="get" id="header-search" class="form-inline">
+						<input name="q" type="text" class="form-control" placeholder="Tìm Kiếm" minlength="3" required>
 						<button type="submit" class="btn btn-default">
 							<span class="fa fa-search"></span>
 						</button>
@@ -183,13 +183,17 @@ $mmenu=array();
 
 <div class="slidebar-menu">
 	<div class="navbar-search">
-		<input type="text" placeholder="Tìm kiếm...">
+		<form action="<?php echo ROOTHOST; ?>tim-kiem" method="get" class="form-inline">
+			<input name="q" type="text" class="form-control" placeholder="Tìm Kiếm" minlength="3" required>
+			<button type="submit" class="btn btn-default">
+				<span class="fa fa-search"></span>
+			</button>
+		</form>
 		<div class="close-menu"></div>
 	</div>
 
 	<ul class="menu-main menu-panel opened">
 		<?php
-		var_dump($arr_menuitem[3]);
 		// Loop print childrent lever 0
 		foreach ($arr_menuitem as $k0 => $val0) {
 			$childs1 = $val0['childs'];
@@ -206,8 +210,10 @@ $mmenu=array();
 				foreach ($childs1 as $k1 => $val1) {
 					$childs2 = $val1['childs2'];
 					$cChild2 = count($childs2);
+					echo '<div class="item">';
 					echo '<h5 class="dropdown-heading"><a href="'.$val1['link_lv1'].'" title="'.$val1['name'].'">'.$val1['name'].'</a></h5>';
 					if($cChild2 > 0){
+						echo '<i class="fa fa-angle-down"></i>';
 						echo '<ul class="list-unstyled">';
 						// Loop print childrent lever 2
 						foreach ($childs2 as $k2 => $val2) {
@@ -215,6 +221,7 @@ $mmenu=array();
 						}
 						echo '</ul>';
 					}
+					echo '</div>';
 				}
 				echo '</div>';
 				echo '</div>';

@@ -9,7 +9,7 @@ $p_range = isset($_GET['price_range']) ? $_GET['price_range'] : '';
 $p_hobby = isset($_GET['hobby']) ? $_GET['hobby'] : '';
 
 if($keywork !== ''){
-	$strWhere.=" AND name LIKE='%".$keywork."%'";
+	$strWhere.=" AND name LIKE '%".$keywork."%'";
 };
 if($p_duration !== ''){
 	$strWhere.=" AND days=".$p_duration;
@@ -237,6 +237,7 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
 		<div class="container">
 			<div class="isotope row" id="iw-isotope-main">
 				<?php
+				$t_days = unserialize(TOUR_TIME);
 				$star = ($cur_page - 1) * $MAX_ROWS;
 				$sql1="SELECT * FROM tbl_tour WHERE isactive=1 ".$strWhere." ORDER BY cdate DESC LIMIT $star,".$MAX_ROWS;
 				$objmysql->Query($sql1);
@@ -245,9 +246,7 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
 					$link = ROOTHOST.'tour/'.$row1['un_name'];
 					$images = json_decode($row1['images']);
 					$thumb = getThumb($images[0]->url, 'card-img-top rounded', $images[0]->alt);
-					$days = stripcslashes($row1['days']);
-					$price1 = number_format($row1['price1']);
-					$price2 = number_format($row1['price2']);
+					$days = (int)$row1['days'];
 					$num_of_holes = (int)$row1['number_of_holes'];
 					?>
 					<div class="col-lg-3 col-md-4 col-sm-6  other element-item">
@@ -256,7 +255,7 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
 								<?php echo $thumb; ?>
 								<div class="extra rounded-bottom">
 									<span class="availability">Số chỗ: <?php echo $num_of_holes; ?></span>
-									<span class="timer"><?php echo $days; ?></span>
+									<span class="timer"><?php echo $t_days[$days]; ?></span>
 								</div>
 								<span class="btn btn-info">Đặt ngay</span>
 							</a>
@@ -264,10 +263,27 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
 								<h5 class="cart-title">
 									<a href="<?php echo $link; ?>"><?php echo $name; ?></a>
 								</h5>
-								<div class="card-text">Khởi hành: Hàng ngày</div>
+								<div class="card-text">
+									<?php
+									if($row1['departure'] > 0){
+										echo 'Khởi hành: <strong>'.date('d-m-Y', $row1['departure']).'</strong>';
+									}else{
+										echo 'Khởi hành: <strong>Hàng ngày</strong>';
+									}?>
+								</div>
 								<div class="item-price">
-									<span class="new-price"><?php echo $price2; ?> đ</span>
-									<span class="old-price"><?php echo $price1; ?> đ</span>
+									<?php
+									$price1 = (int)$row1['price1'];
+									$price2 = (int)$row1['price2'];
+									if($price1 !== 0 && $price2 !== 0){
+										echo '<span class="new-price">'.number_format($price2).' đ</span>';
+										echo '<span class="old-price">'.number_format($price1).' đ</span>';
+									}else if($price1 === 0 && $price2 === 0){
+										echo '<span>Liên hệ: <a href="tel:'.$GLOBALS['conf']->Phone.'" class="hotline">'.$GLOBALS['conf']->Phone.'</a></span>';
+									}else if($price1 !== 0 && $price2 === 0){
+										echo '<span class="new-price">'.number_format($price1).' đ</span>';
+									}
+									?>
 								</div>
 							</div>
 						</div>
