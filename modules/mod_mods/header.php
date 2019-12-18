@@ -1,6 +1,5 @@
 <?php
 $objmysql1 = new CLS_MYSQL();
-$mmenu=array();
 ?>
 <header id="header">
 	<nav id="navbar" class="wrap-menu navbar navbar-expand-lg" role="navigation">
@@ -82,8 +81,6 @@ $mmenu=array();
 									break;
 								}
 
-								$arr_menuitem[$key]['link_lv0'] = $link;
-
 								$cChild = count($value['childs']); // Count child lever 1
 								$class = "";
 								$aToggle = "nav-link";
@@ -99,24 +96,18 @@ $mmenu=array();
 										<div aria-labelledby="megamneu_<?php echo $value['id']; ?>" class="dropdown-menu">
 											<div class="container-fluid">
 												<div class="row">
-													<?php foreach ($value['childs'] as $kc1 => $vc1) { 
-														$link_kc1 = ROOTHOST.'diem-den/'.$vc1['code'];
-														$arr_menuitem[$key]['childs'][$kc1]['link_lv1'] = $link_kc1;
-														?>
+													<?php foreach ($value['childs'] as $kc1 => $vc1) { ?>
 														<div class="col-sm-6 col-md-2">
 															<div class="megamenu-submenu">
 																<h5 class="dropdown-heading">
-																	<a href="<?php echo $link_kc1 ?>"><?php echo $vc1['name']; ?></a>
+																	<a href="<?php echo ROOTHOST.'diem-den/'.$vc1['code']; ?>"><?php echo $vc1['name']; ?></a>
 																</h5>
 																<?php
 																$cChild2 = count($vc1['childs2']);
 																if($cChild2 > 0){
 																	echo '<ul class="list-unstyled">';
-																	foreach ($vc1['childs2'] as $kc2 => $vc2) {
-																		$link_kc2 = ROOTHOST.'diem-den/'.$vc2['code'];;
-																		$arr_menuitem[$key]['childs'][$kc1]['childs2'][$kc2]['link_lv2'] = $link_kc2;
-																		?>
-																		<li><a href="<?php echo $link_kc2; ?>"><?php echo $vc2['name']; ?></a></li>
+																	foreach ($vc1['childs2'] as $kc2 => $vc2) {?>
+																		<li><a href="<?php echo ROOTHOST.'diem-den/'.$vc2['code']; ?>"><?php echo $vc2['name']; ?></a></li>
 																	<?php }
 																	echo '</ul>';
 																}
@@ -131,11 +122,8 @@ $mmenu=array();
 										<div aria-labelledby="megamneu_<?php echo $value['id']; ?>" class="dropdown-menu">
 											<div class="megamenu-submenu">
 												<ul class="list-unstyled">
-													<?php foreach ($value['childs'] as $kc1 => $vc1) { 
-														$link_kc1 = ROOTHOST.'chuyen-muc/'.$vc1['code'];
-														$arr_menuitem[$key][$kc1]['link_lv1'] = $link_kc1;
-														?>
-														<li><a href="<?php echo $link_kc1; ?>"><?php echo $vc1['name']; ?></a></li>
+													<?php foreach ($value['childs'] as $kc1 => $vc1) { ?>
+														<li><a href="<?php echo ROOTHOST.'chuyen-muc/'.$vc1['code']; ?>"><?php echo $vc1['name']; ?></a></li>
 													<?php } ?>
 												</ul>
 											</div>
@@ -180,56 +168,3 @@ $mmenu=array();
 		<i class="fa fa-caret-right"></i>
 	</div>
 </header>
-
-<div class="slidebar-menu">
-	<div class="navbar-search">
-		<input type="text" placeholder="Tìm kiếm...">
-		<div class="close-menu"></div>
-	</div>
-
-	<ul class="menu-main menu-panel opened">
-		<?php
-		var_dump($arr_menuitem[3]);
-		// Loop print childrent lever 0
-		foreach ($arr_menuitem as $k0 => $val0) {
-			$childs1 = $val0['childs'];
-			$cChild1 = count($childs1);
-			$viewtype = $val0['viewtype'];
-
-			echo '<li class="nav-item">';
-			echo '<a href="'.$val0['link_lv0'].'" title="'.$val0['name'].'">'.$val0['name'].'</a>';
-			if($cChild1 > 0 && $viewtype == 'place') {
-				echo '<i class="fa fa-angle-down"></i>';
-				echo '<div class="dropdown-menu">';
-				echo '<div class="megamenu-submenu">';
-				// Loop print childrent lever 1
-				foreach ($childs1 as $k1 => $val1) {
-					$childs2 = $val1['childs2'];
-					$cChild2 = count($childs2);
-					echo '<h5 class="dropdown-heading"><a href="'.$val1['link_lv1'].'" title="'.$val1['name'].'">'.$val1['name'].'</a></h5>';
-					if($cChild2 > 0){
-						echo '<ul class="list-unstyled">';
-						// Loop print childrent lever 2
-						foreach ($childs2 as $k2 => $val2) {
-							echo '<li><a href="'.$val2['link_lv2'].'" title="'.$val2['name'].'">'.$val2['name'].'</a></li>';
-						}
-						echo '</ul>';
-					}
-				}
-				echo '</div>';
-				echo '</div>';
-			}else if($cChild1 > 0 && $viewtype !== 'place'){
-				echo '<i class="fa fa-angle-down"></i>';
-				echo '<div class="dropdown-menu">';
-					echo '<ul class="list-unstyled">';
-						foreach ($childs1 as $k1 => $val1) {
-							echo '<li><a href="'.$val1['link_lv1'].'" title="'.$val1['name'].'">'.$val1['name'].'</a></li>';
-						}
-					echo '</ul>';
-				echo '</div>';
-			}
-			echo '</li>';
-		}
-		?>
-	</ul>
-</div>
