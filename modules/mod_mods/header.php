@@ -147,8 +147,8 @@ $objmysql1 = new CLS_MYSQL();
 					<i class="fa fa-search"></i>
 				</div>
 				<div id="check" class="dropdown-menu-right">
-					<form action="<?php echo ROOTHOST; ?>tim-kiem" method="post" id="header-search" class="form-inline">
-						<input name="keyword" type="text" class="form-control" placeholder="Tìm Kiếm">
+					<form action="<?php echo ROOTHOST; ?>tim-kiem" method="get" id="header-search" class="form-inline">
+						<input name="q" type="text" class="form-control" placeholder="Tìm Kiếm" minlength="3" required>
 						<button type="submit" class="btn btn-default">
 							<span class="fa fa-search"></span>
 						</button>
@@ -168,3 +168,64 @@ $objmysql1 = new CLS_MYSQL();
 		<i class="fa fa-caret-right"></i>
 	</div>
 </header>
+
+<div class="slidebar-menu">
+	<div class="navbar-search">
+		<form action="<?php echo ROOTHOST; ?>tim-kiem" method="get" class="form-inline">
+			<input name="q" type="text" class="form-control" placeholder="Tìm Kiếm" minlength="3" required>
+			<button type="submit" class="btn btn-default">
+				<span class="fa fa-search"></span>
+			</button>
+		</form>
+		<div class="close-menu"></div>
+	</div>
+
+	<ul class="menu-main menu-panel opened">
+		<?php
+		// Loop print childrent lever 0
+		foreach ($arr_menuitem as $k0 => $val0) {
+			$childs1 = $val0['childs'];
+			$cChild1 = count($childs1);
+			$viewtype = $val0['viewtype'];
+
+			echo '<li class="nav-item">';
+			echo '<a href="'.$val0['link_lv0'].'" title="'.$val0['name'].'">'.$val0['name'].'</a>';
+			if($cChild1 > 0 && $viewtype == 'place') {
+				echo '<i class="fa fa-angle-down"></i>';
+				echo '<div class="dropdown-menu">';
+				echo '<div class="megamenu-submenu">';
+				// Loop print childrent lever 1
+				foreach ($childs1 as $k1 => $val1) {
+					$childs2 = $val1['childs2'];
+					$cChild2 = count($childs2);
+					echo '<div class="item">';
+					echo '<h5 class="dropdown-heading"><a href="'.$val1['link_lv1'].'" title="'.$val1['name'].'">'.$val1['name'].'</a></h5>';
+					if($cChild2 > 0){
+						echo '<i class="fa fa-angle-down"></i>';
+						echo '<ul class="list-unstyled">';
+						// Loop print childrent lever 2
+						foreach ($childs2 as $k2 => $val2) {
+							echo '<li><a href="'.$val2['link_lv2'].'" title="'.$val2['name'].'">'.$val2['name'].'</a></li>';
+						}
+						echo '</ul>';
+					}
+					echo '</div>';
+				}
+				echo '</div>';
+				echo '</div>';
+			}else if($cChild1 > 0 && $viewtype !== 'place'){
+				echo '<i class="fa fa-angle-down"></i>';
+				echo '<div class="dropdown-menu">';
+					echo '<ul class="list-unstyled">';
+						foreach ($childs1 as $k1 => $val1) {
+							echo '<li><a href="'.$val1['link_lv1'].'" title="'.$val1['name'].'">'.$val1['name'].'</a></li>';
+						}
+					echo '</ul>';
+				echo '</div>';
+			}
+			echo '</li>';
+		}
+		?>
+	</ul>
+</div>
+>>>>>>> 476603479dac1556705abdc528119788c7dfddde

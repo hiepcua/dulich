@@ -66,7 +66,7 @@ if ($objmysql->Num_rows()>0) {
 							<div class="slider-for slick-slider">
 								<?php
 								foreach ($images as $key => $value) {
-									echo '<div class="item"><img src="'.$value->url.'" alt="'.$value->alt.'"></div>';
+									echo '<div class="item"><img class="img-responsive" src="'.$value->url.'" alt="'.$value->alt.'"></div>';
 								}
 								?>
 							</div>
@@ -114,8 +114,18 @@ if ($objmysql->Num_rows()>0) {
 									<h3 class="title">thông tin<span> tour</span></h3>
 								</div>
 								<div class="item-price">
-									<div class="new-price"><?php echo $row['price2']; ?></div>
-									<div class="old-price"><?php echo $row['price1']; ?></div>
+									<?php
+									$price1 = (int)$row['price1'];
+									$price2 = (int)$row['price2'];
+									if($price1 !== 0 && $price2 !== 0){
+										echo '<span class="new-price">'.number_format($price2).' đ</span>';
+										echo '<span class="old-price">'.number_format($price1).' đ</span>';
+									}else if($price1 === 0 && $price2 === 0){
+										echo '<span>Liên hệ: <a href="tel:'.$GLOBALS['conf']->Phone.'" class="hotline">'.$GLOBALS['conf']->Phone.'</a></span>';
+									}else if($price1 !== 0 && $price2 === 0){
+										echo '<span class="new-price">'.number_format($price1).' đ</span>';
+									}
+									?>
 								</div>                            
 								<hr class="gaps">
 								<ul class="list-unstyled list-info-tour">
@@ -125,11 +135,19 @@ if ($objmysql->Num_rows()>0) {
 									</li>                                
 									<li>
 										<i class="ico-time-blue"></i>
-										Thời gian: <strong><?php echo $row['days']; ?></strong>
+										<?php
+										$t_days = unserialize(TOUR_TIME);
+										echo 'Thời gian: <strong>'.$t_days[(int)$row['days']].'</strong>';
+										?>
 									</li>                                
 									<li>
 										<i class="ico-calendar-blue"></i>
-										Khởi hành: <strong>Hàng ngày</strong>
+										<?php
+										if($row['departure'] > 0){
+											echo 'Khởi hành: <strong>'.date('d-m-Y', $row['departure']).'</strong>';
+										}else{
+											echo 'Khởi hành: <strong>Hàng ngày</strong>';
+										}?>
 									</li>                                
 									<li>
 										<i class="ico-paper-plane-blue"></i>
@@ -167,8 +185,6 @@ if ($objmysql->Num_rows()>0) {
 							$rlease_link = ROOTHOST.'tour/'.$row_rlease['un_name'];
 							$rlease_images = json_decode($row_rlease['images']);
 							$rlease_thumb = getThumb($rlease_images[0]->url, 'rounded w-100', $rlease_images[0]->alt);
-							$rlease_price1 = number_format($row_rlease['price1']);
-							$rlease_price2 = number_format($row_rlease['price2']);
 							?>
 							<div class="item">
 								<div class="card card-1 rounded-bottom">
@@ -184,10 +200,27 @@ if ($objmysql->Num_rows()>0) {
 										<h5 class="cart-title">
 											<a href="<?php echo $rlease_link; ?>" title="<?php echo $rlease_name; ?>"><?php echo $rlease_name; ?></a>
 										</h5>                               
-										<div class="card-text">Khởi hành: Hàng ngày</div>                          
+										<div class="card-text">
+											<?php
+											if($row_rlease['departure'] > 0){
+												echo 'Khởi hành: <strong>'.date('d-m-Y', $row_rlease['departure']).'</strong>';
+											}else{
+												echo 'Khởi hành: <strong>Hàng ngày</strong>';
+											}?>
+										</div>                          
 										<div class="item-price">
-											<span class="new-price"><?php echo $rlease_price2; ?> đ</span>
-											<span class="old-price"><?php echo $rlease_price1; ?> đ</span>
+											<?php
+											$price1 = (int)$row_rlease['price1'];
+											$price2 = (int)$row_rlease['price2'];
+											if($price1 !== 0 && $price2 !== 0){
+												echo '<span class="new-price">'.number_format($price2).' đ</span>';
+												echo '<span class="old-price">'.number_format($price1).' đ</span>';
+											}else if($price1 === 0 && $price2 === 0){
+												echo '<span>Liên hệ: <a href="tel:'.$GLOBALS['conf']->Phone.'" class="hotline">'.$GLOBALS['conf']->Phone.'</a></span>';
+											}else if($price1 !== 0 && $price2 === 0){
+												echo '<span class="new-price">'.number_format($price1).' đ</span>';
+											}
+											?>
 										</div>
 									</div>
 								</div>

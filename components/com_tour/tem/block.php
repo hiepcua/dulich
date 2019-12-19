@@ -86,8 +86,6 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
 					$images = json_decode($row1['images']);
 					$thumb = getThumb($images[0]->url, 'card-img-top rounded', $images[0]->alt);
 					$days = stripcslashes($row1['days']);
-					$price1 = number_format($row1['price1']);
-					$price2 = number_format($row1['price2']);
 					$num_of_holes = (int)$row1['number_of_holes'];
 					?>
 					<div class="col-lg-3 col-md-4 col-sm-6">
@@ -104,10 +102,27 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
 								<h5 class="cart-title">
 									<a href="<?php echo $link; ?>"><?php echo $name; ?></a>
 								</h5>
-								<div class="card-text">Khởi hành: Hàng ngày</div>
+								<div class="card-text">
+									<?php
+									if($row1['departure'] > 0){
+										echo 'Khởi hành: <strong>'.date('d-m-Y', $row1['departure']).'</strong>';
+									}else{
+										echo 'Khởi hành: <strong>Hàng ngày</strong>';
+									}?>
+								</div>
 								<div class="item-price">
-									<span class="new-price"><?php echo $price2; ?> đ</span>
-									<span class="old-price"><?php echo $price1; ?> đ</span>
+									<?php
+									$price1 = (int)$row1['price1'];
+									$price2 = (int)$row1['price2'];
+									if($price1 !== 0 && $price2 !== 0){
+										echo '<span class="new-price">'.number_format($price2).' đ</span>';
+										echo '<span class="old-price">'.number_format($price1).' đ</span>';
+									}else if($price1 === 0 && $price2 === 0){
+										echo '<span>Liên hệ: <a href="tel:'.$GLOBALS['conf']->Phone.'" class="hotline">'.$GLOBALS['conf']->Phone.'</a></span>';
+									}else if($price1 !== 0 && $price2 === 0){
+										echo '<span class="new-price">'.number_format($price1).' đ</span>';
+									}
+									?>
 								</div>
 							</div>
 						</div>

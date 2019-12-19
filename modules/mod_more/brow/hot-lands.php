@@ -15,8 +15,6 @@
 				$images = json_decode($row['images']);
 				$thumb = getThumb($images[0]->url, 'expire-img w-100 rounded', $title);
 				$link = ROOTHOST.'tour/'.$row['un_name'];
-				$price2 = number_format($row['price2']);
-				$price1 = number_format($row['price1']);
 				?>
 				<div class="item expire-item">
 					<a class="expire-link effect-more shadow-bottom" href="<?php echo $link; ?>">
@@ -25,8 +23,18 @@
 							<div class="expire-info-wrap">
 								<h3 class="tour-name"><?php echo $title; ?></h3>
 								<div class="item-price">
-									<span class="new-price"><?php echo $price2; ?> đ</span>
-									<span class="old-price"><?php echo $price1; ?> đ</span>
+									<?php
+									$price1 = (int)$row['price1'];
+									$price2 = (int)$row['price2'];
+									if($price1 !== 0 && $price2 !== 0){
+										echo '<span class="new-price">'.number_format($price2).' đ</span>';
+										echo '<span class="old-price">'.number_format($price1).' đ</span>';
+									}else if($price1 === 0 && $price2 === 0){
+										echo '<span>Liên hệ: <span href="tel:'.$GLOBALS['conf']->Phone.'" class="hotline">'.$GLOBALS['conf']->Phone.'</span></span>';
+									}else if($price1 !== 0 && $price2 === 0){
+										echo '<span class="new-price">'.number_format($price1).' đ</span>';
+									}
+									?>
 								</div>
 							</div>
 						</div>

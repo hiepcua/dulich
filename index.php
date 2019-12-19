@@ -28,6 +28,7 @@ $obj_mnuitems = new CLS_MENUITEM();
 $conf = new CLS_CONFIG();
 $conf->load_config();
 global $tmp;global $conf;
+$GLOBALS['conf'] = $conf;
 ?>
 <!DOCTYPE html>
 <html language='vi'>
