@@ -1,6 +1,5 @@
 <?php
 $objmysql1 = new CLS_MYSQL();
-$mmenu=array();
 ?>
 <header id="header">
 	<nav id="navbar" class="wrap-menu navbar navbar-expand-lg" role="navigation">
@@ -82,8 +81,6 @@ $mmenu=array();
 									break;
 								}
 
-								$arr_menuitem[$key]['link_lv0'] = $link;
-
 								$cChild = count($value['childs']); // Count child lever 1
 								$class = "";
 								$aToggle = "nav-link";
@@ -99,24 +96,18 @@ $mmenu=array();
 										<div aria-labelledby="megamneu_<?php echo $value['id']; ?>" class="dropdown-menu">
 											<div class="container-fluid">
 												<div class="row">
-													<?php foreach ($value['childs'] as $kc1 => $vc1) { 
-														$link_kc1 = ROOTHOST.'diem-den/'.$vc1['code'];
-														$arr_menuitem[$key]['childs'][$kc1]['link_lv1'] = $link_kc1;
-														?>
+													<?php foreach ($value['childs'] as $kc1 => $vc1) { ?>
 														<div class="col-sm-6 col-md-2">
 															<div class="megamenu-submenu">
 																<h5 class="dropdown-heading">
-																	<a href="<?php echo $link_kc1 ?>"><?php echo $vc1['name']; ?></a>
+																	<a href="<?php echo ROOTHOST.'diem-den/'.$vc1['code']; ?>"><?php echo $vc1['name']; ?></a>
 																</h5>
 																<?php
 																$cChild2 = count($vc1['childs2']);
 																if($cChild2 > 0){
 																	echo '<ul class="list-unstyled">';
-																	foreach ($vc1['childs2'] as $kc2 => $vc2) {
-																		$link_kc2 = ROOTHOST.'diem-den/'.$vc2['code'];;
-																		$arr_menuitem[$key]['childs'][$kc1]['childs2'][$kc2]['link_lv2'] = $link_kc2;
-																		?>
-																		<li><a href="<?php echo $link_kc2; ?>"><?php echo $vc2['name']; ?></a></li>
+																	foreach ($vc1['childs2'] as $kc2 => $vc2) {?>
+																		<li><a href="<?php echo ROOTHOST.'diem-den/'.$vc2['code']; ?>"><?php echo $vc2['name']; ?></a></li>
 																	<?php }
 																	echo '</ul>';
 																}
@@ -131,11 +122,8 @@ $mmenu=array();
 										<div aria-labelledby="megamneu_<?php echo $value['id']; ?>" class="dropdown-menu">
 											<div class="megamenu-submenu">
 												<ul class="list-unstyled">
-													<?php foreach ($value['childs'] as $kc1 => $vc1) { 
-														$link_kc1 = ROOTHOST.'chuyen-muc/'.$vc1['code'];
-														$arr_menuitem[$key][$kc1]['link_lv1'] = $link_kc1;
-														?>
-														<li><a href="<?php echo $link_kc1; ?>"><?php echo $vc1['name']; ?></a></li>
+													<?php foreach ($value['childs'] as $kc1 => $vc1) { ?>
+														<li><a href="<?php echo ROOTHOST.'chuyen-muc/'.$vc1['code']; ?>"><?php echo $vc1['name']; ?></a></li>
 													<?php } ?>
 												</ul>
 											</div>
@@ -240,3 +228,4 @@ $mmenu=array();
 		?>
 	</ul>
 </div>
+>>>>>>> 476603479dac1556705abdc528119788c7dfddde
