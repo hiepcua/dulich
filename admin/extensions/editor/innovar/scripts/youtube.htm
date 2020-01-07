@@ -378,7 +378,7 @@
         }
 
         function selectVideo(Id) {
-            var sUrl = "https://www.youtube.com/watch?v=" + Id;
+            var sUrl = "http://www.youtube.com/watch?v=" + Id;
             $('#inpURL').val(sUrl);
 
             for (var i = 0; i < document.getElementById("videos").childNodes.length; i++) {
@@ -454,14 +454,14 @@
         }
 
         function embedUrl(){
-            var inputUrl = $('#inpURL').val(); console.log(inputUrl);
+            var inputUrl = $('#inpURL').val();
             var youRegex = /^http[s]?:\/\/(((www.youtube.com\/watch\?(feature=player_detailpage&)?)v=)|(youtu.be\/))([^#\&\?]*)/;
             var vimeoRegex = /^.*(vimeo\.com\/)((channels\/[A-z]+\/)|(groups\/[A-z]+\/videos\/)|(video\/))?([0-9]+)\/?/;
             var youRegexMatches = youRegex.exec(inputUrl);
             var vimeoRegexMatches = vimeoRegex.exec(inputUrl);
             if (youRegexMatches != null && youRegexMatches.length >= 7) {
                 var youMatch = youRegexMatches[6];
-                var youUrl = 'https://www.youtube.com/embed/' + youMatch;
+                var youUrl = 'http://www.youtube.com/embed/' + youMatch;
                 return youUrl;
             }
             if (vimeoRegexMatches != null && vimeoRegexMatches.length >= 7) {

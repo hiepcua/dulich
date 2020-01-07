@@ -6,6 +6,8 @@ $objmysql = new CLS_MYSQL();
 
 $check_permission = $UserLogin->Permission(COMS);
 if($check_permission==false) die($GLOBALS['MSG_PERMIS']);
+$msg        = new \Plasticbrain\FlashMessages\FlashMessages();
+if(!isset($_SESSION['flash'.'com_'.COMS])) $_SESSION['flash'.'com_'.COMS] = 2;
 
 $flag=false;
 if(!isset($UserLogin)) $UserLogin=new CLS_USERS;
@@ -25,12 +27,16 @@ if(isset($_POST['cmdsave'])){
     if(isset($_POST['txtid'])){
         $ID=(int)$_POST['txtid'];
         $sql="UPDATE `tbl_menus` SET `code`='".$Code."',`desc`='".$Desc."',`name`='".$Name."',`isactive`='".$isActive."' WHERE `id`='".$ID."'";
-        $objmysql->Exec($sql);
+        $result = $objmysql->Exec($sql);
+        if($result) $_SESSION['flash'.'com_'.COMS] = 1;
+        else $_SESSION['flash'.'com_'.COMS] = 0;
     }else{
         $sql="INSERT INTO `tbl_menus`(`name`,`code`,`desc`,`isactive`) VALUES ('".$Name."','".$Code."','".$Desc."','".$isActive."') ";
-        $objmysql->Exec($sql);
+        $result = $objmysql->Exec($sql);
+        if($result) $_SESSION['flash'.'com_'.COMS] = 1;
+        else $_SESSION['flash'.'com_'.COMS] = 0;
     }
-    echo '<script language="javascript">window.location="'.ROOTHOST_ADMIN.COMS.'"</script>';
+    // echo '<script language="javascript">window.location="'.ROOTHOST_ADMIN.COMS.'"</script>';
 }
 
 if(isset($_POST["txtaction"]) && $_POST["txtaction"]!=""){

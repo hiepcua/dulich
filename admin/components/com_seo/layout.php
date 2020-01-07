@@ -4,6 +4,8 @@ define('COMS','seo');
 define('THIS_COM_PATH',COM_PATH.'com_'.COMS.'/');
 
 $objmysql 	= new CLS_MYSQL();
+$msg 		= new \Plasticbrain\FlashMessages\FlashMessages();
+if(!isset($_SESSION['flash'.'com_'.COMS])) $_SESSION['flash'.'com_'.COMS] = 2;
 
 if(isset($_POST['cmdsave'])){
 	$Title 			= isset($_POST['txt_name']) ? addslashes($_POST['txt_name']) : '';
@@ -25,12 +27,16 @@ if(isset($_POST['cmdsave'])){
 		`meta_key` = '".$Meta_key."',
 		`meta_desc` = '".$Meta_desc."'
 		WHERE `id` = '".$ID."'";
-		$sql = $objmysql->Exec($sql);
+		$result = $objmysql->Exec($sql);
+        if($result) $_SESSION['flash'.'com_'.COMS] = 1;
+        else $_SESSION['flash'.'com_'.COMS] = 0;
 	}else{
 		$sql = "INSERT INTO tbl_seo (`title`,`link`,`image`,`meta_title`,`meta_key`,`meta_desc`) VALUES ('".$Title."','".$Link."','".$Image."','".$Meta_title."','".$Meta_key."','".$Meta_desc."')";
-		$objmysql->Exec($sql);
+		$result = $objmysql->Exec($sql);
+        if($result) $_SESSION['flash'.'com_'.COMS] = 1;
+        else $_SESSION['flash'.'com_'.COMS] = 0;
 	}
-	echo "<script language=\"javascript\">window.location.href='".ROOTHOST_ADMIN.COMS."'</script>";
+	// echo "<script language=\"javascript\">window.location.href='".ROOTHOST_ADMIN.COMS."'</script>";
 }
 
 if(isset($_POST["txtaction"]) && $_POST["txtaction"]!=""){

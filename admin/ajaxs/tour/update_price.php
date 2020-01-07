@@ -2,7 +2,7 @@
 session_start();
 require_once("../../../global/libs/gfinit.php");
 require_once("../../../global/libs/gfconfig.php");
-require_once("../../libs/cls.mysql.php");
+require_once("../../libs/cls.mysqli.php");
 
 $objdata = new CLS_MYSQL;
 $id = isset($_POST['id']) ? (float)$_POST['id'] : 0;

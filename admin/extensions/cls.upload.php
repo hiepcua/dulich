@@ -82,10 +82,6 @@ class CLS_UPLOAD{
 		move_uploaded_file($this->file_temp,$this->_path.$name);
 	}
 
-	function SaveFile1(){
-		move_uploaded_file($this->file_temp,$this->_path.$this->file_name);
-	}
-
 	function ReName($name){
 		$un_name="";
 		$un_name = str_replace(".","_",$name);

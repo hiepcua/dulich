@@ -1,13 +1,13 @@
 ADMIN
 WEBSITE
-- Responsive
+- Responsive => ok
 - form search tour
 	.	select nơi bạn muốn đến
-- Tour có giá
-	.	Có giá gốc không có giá khuyến mại
-	.	Có giá khuyến mại không có giá gốc
-- Tour không có giá
+- Tour có giá => ok
+	.	Có giá gốc không có giá khuyến mại => ok
+	.	Có giá khuyến mại không có giá gốc => ok
+- Tour không có giá => ok
 - Thêm form search tour vào các nơi khác trên web (home, ...)
-- Check lại TOUR_TIME ....
+- Check lại TOUR_TIME .... => ok
 	
 

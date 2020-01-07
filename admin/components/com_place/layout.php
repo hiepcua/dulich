@@ -9,6 +9,8 @@ $objmysql 	= new CLS_MYSQL();
 $obj 		= new CLS_PLACE();
 $objmedia 	= new CLS_UPLOAD();
 $cur_dir 	= '../images/';
+$msg 		= new \Plasticbrain\FlashMessages\FlashMessages();
+if(!isset($_SESSION['flash'.'com_'.COMS])) $_SESSION['flash'.'com_'.COMS] = 2;
 
 function createFolder($path){
     if(!is_dir($path)){
@@ -76,6 +78,9 @@ if(isset($_POST['cmdsave'])){
 	}
 
 	$Par_Id 		= isset($_POST['cbo_par']) ? (int)$_POST['cbo_par'] : 0;
+	$Country_id 	= isset($_POST['cbo_country']) ? json_encode($_POST['cbo_country']) : '["0"]';
+	$City_Id 		= isset($_POST['cbo_city']) ? json_encode($_POST['cbo_city']) : '["0"]';
+	$Cbo_district 	= isset($_POST['cbo_district']) ? json_encode($_POST['cbo_district']) : '["0"]';
 	$Name 			= isset($_POST['txt_name']) ? addslashes($_POST['txt_name']) : '';
 	$Code 			= un_unicode(addslashes($_POST['txt_name']));
 	$Intro 			= isset($_POST['txtintro']) ? addslashes($_POST['txtintro']) : '';
@@ -91,6 +96,9 @@ if(isset($_POST['cmdsave'])){
 		$objmysql->Query("BEGIN");
 		$sql = "UPDATE tbl_place SET 
         `par_id`='".$Par_Id."',
+        `country_id`='".$Country_id."',
+        `city_id`='".$City_Id."',
+        `district_id`='".$Cbo_district."',
         `name`='".$Name."',
         `code`='".$Code."',
         `images`='".$Images."',
@@ -110,13 +118,16 @@ if(isset($_POST['cmdsave'])){
 
 		if($result && $result2){
 			$objmysql->Exec('COMMIT');
+			$_SESSION['flash'.'com_'.COMS] = 1;
 		}
-		else
+		else{
 			$objmysql->Exec('ROLLBACK');
+			$_SESSION['flash'.'com_'.COMS] = 0;
+		}
 	}else{
 		$objmysql->Exec("BEGIN");
-		$sql="INSERT INTO `tbl_place`(`par_id`,`name`,`code`,`images`,`intro`) 
-		VALUES ('".$Par_Id."','".$Name."','".$Code."','".$Images."','".$Intro."')";
+		$sql="INSERT INTO `tbl_place`(`par_id`,`country_id`,`city_id`,`district_id`,`name`,`code`,`images`,`intro`) 
+		VALUES ('".$Par_Id."','".$Country_id."','".$City_Id."','".$Cbo_district."','".$Name."','".$Code."','".$Images."','".$Intro."')";
 		$result = $objmysql->Exec($sql);
 
 		$sql2 = "INSERT INTO tbl_seo (`title`,`link`,`image`,`meta_title`,`meta_key`,`meta_desc`) VALUES ('".$Name."','".$Link."','".$firstImage."','".$Meta_title."','".$Meta_key."','".$Meta_desc."')";
@@ -124,11 +135,13 @@ if(isset($_POST['cmdsave'])){
 
 		if($result && $result2){
 			$objmysql->Exec('COMMIT');
+			$_SESSION['flash'.'com_'.COMS] = 1;
 		}else{
 			$objmysql->Exec('ROLLBACK');
+			$_SESSION['flash'.'com_'.COMS] = 0;
 		}
 	}
-	echo "<script language=\"javascript\">window.location.href='".ROOTHOST_ADMIN.COMS."'</script>";
+	// echo "<script language=\"javascript\">window.location.href='".ROOTHOST_ADMIN.COMS."'</script>";
 }
 
 if(isset($_POST["txtaction"]) && $_POST["txtaction"]!=""){

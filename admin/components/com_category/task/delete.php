@@ -4,7 +4,23 @@
 	if(isset($_GET['id']))
 		$id=(int)$_GET['id'];
 
-	$sql_del = "DELETE FROM `tbl_categories` WHERE `id` in ('$id')";
-	$objmysql->Exec($sql_del);
+	$sql = "SELECT * FROM tbl_categories WHERE id = ".$id;
+	$objmysql->Query($sql);
+	$row = $objmysql->Fetch_Assoc();
+	$seo_link   = ROOTHOST.$row['code'];
+	
+	$objmysql->Query("BEGIN");
+	$sql_del1 	= "DELETE FROM `tbl_seo` WHERE `link` = '".$seo_link."'";
+	$result 	= $objmysql->Exec($sql_del1);
+
+	$sql_del 	= "DELETE FROM `tbl_categories` WHERE `id` in ('$id')";
+	$result2 	= $objmysql->Exec($sql_del);
+
+	if($result && $result2){
+		$objmysql->Exec('COMMIT');
+	}
+	else
+		$objmysql->Exec('ROLLBACK');
+
 	echo "<script language=\"javascript\">window.location='".ROOTHOST_ADMIN.COMS."'</script>";
 ?>

@@ -57,33 +57,40 @@ class CLS_CATEGORY{
         }
     }
 
-    public function listTable($strwhere="",$parid=0,$level=0,$rowcount){
-        $sql="SELECT * FROM tbl_categories WHERE 1=1 $strwhere AND par_id=$parid ORDER BY `order` ASC";
+    public function listTable($strwhere="",$parid=0,$level=0,$rowcount, $search=0){
+        if($search == 0){
+            $sql="SELECT * FROM tbl_categories WHERE 1=1 $strwhere AND par_id=$parid ORDER BY `order` ASC";
+        }else{
+            $sql="SELECT * FROM tbl_categories WHERE 1=1 $strwhere ORDER BY `order` ASC";
+        }
         $objdata=new CLS_MYSQL();
         $objdata->Query($sql);
         $str_space="";
         if($level!=0){  
-			$str_space.="|";
+            $str_space.="|";
             for($i=0;$i<$level;$i++)
                 $str_space.="--- "; 
         }
         while($rows=$objdata->Fetch_Assoc()){
-            $rowcount++;
+            if($level == 0) $rowcount++; 
+            else $rowcount = '';
+
             $ids=$rows['id'];
             $title=Substring(stripslashes($rows['name']),0,10);
-			if($rows['isactive']==1) 
-                $icon_active="<i class='fa fa-check cgreen' aria-hidden='true'></i>";
-            else $icon_active='<i class="fa fa-times-circle-o cred" aria-hidden="true"></i>';
-			
+
+            if($rows['isactive'] == 1) 
+                $icon_active    = "<i class=\"fas fa-toggle-on cgreen\"></i>";
+            else $icon_active   = '<i class="fa fa-toggle-off cgray" aria-hidden="true"></i>';
+
             echo "<tr name=\"trow\">";
             echo "<td width=\"30\" align=\"center\">$rowcount</td>";
             echo "<td width=\"30\" align=\"center\"><label>";
-            echo "<input type=\"checkbox\" name=\"chk\" id=\"chk\"   onclick=\"docheckonce('chk');\" value=\"$ids\" />";
+            echo "<input type=\"checkbox\" name=\"chk\" onclick=\"docheckonce('chk');\" value=\"$ids\" />";
             echo "</label></td>";
-			echo "<td align='center' width='10'><a href='".ROOTHOST_ADMIN.COMS."/delete/$ids' onclick=\" return confirm('Bạn có chắc muốn xóa ?')\"><i class='fa fa-trash cgray red' aria-hidden='true'></i></a></td>";
+            echo "<td align='center' width='10'><a href='".ROOTHOST_ADMIN.COMS."/delete/$ids' onclick=\" return confirm('Bạn có chắc muốn xóa ?')\"><i class='fa fa-trash cgray red' aria-hidden='true'></i></a></td>";
             echo "<td title=''>$str_space$title</td>";
             $order=$rows['order'];
-            echo "<td width=\"50\" align=\"center\"><input type=\"text\" name=\"txt_order\" id=\"txt_order\" value=\"$order\" size=\"4\" class=\"order\"></td>";
+            echo "<td width=\"50\" align=\"center\"><input type=\"text\" name=\"txt_order\" value=\"$order\" size=\"4\" class=\"order\"></td>";
             echo "<td align=\"center\">";
             echo "<a href=\"".ROOTHOST_ADMIN."category/active/$ids\">";
             echo $icon_active;

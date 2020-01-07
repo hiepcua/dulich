@@ -63,193 +63,182 @@ $row_menu = $objmysql->Fetch_Assoc();
 	}
 </script>
 <?php
-$viewtype="place";
+$viewtype="block";
 if(isset($_POST["txt_viewtype"]))
 	$viewtype=$_POST["txt_viewtype"];
 ?>
 
-<div id="path">
-	<ol class="breadcrumb">
-		<li><a href="<?php echo ROOTHOST_ADMIN;?>">Admin</a></li>
-		<li><a href="<?php echo ROOTHOST_ADMIN.COMS.'/'.$row_menu['id'];?>">Quản lý <?php echo $row_menu['name'];?></a></li>
-		<li class="active">Thêm mới <?php echo $row_menu['name'];?> chi tiết</li>
-	</ol>
+<!-- Content Header (Page header) -->
+<div class="content-header">
+	<div class="container-fluid">
+		<div class="row mb-2">
+			<div class="col-sm-6">
+				<h1 class="m-0 text-dark">Thêm mới <?php echo $row_menu['name'];?></h1>
+			</div><!-- /.col -->
+			<div class="col-sm-6">
+				<ol class="breadcrumb float-sm-right">
+					<li class="breadcrumb-item"><a href="<?php echo ROOTHOST_ADMIN;?>">Home</a></li>
+					<li class="breadcrumb-item"><a href="<?php echo ROOTHOST_ADMIN.COMS.'/'.$row_menu['id'];?>">Quản lý <?php echo $row_menu['name'];?></a></li>
+					<li class="breadcrumb-item active">Thêm mới <?php echo $row_menu['name'];?> chi tiết</li>
+				</ol>
+			</div><!-- /.col -->
+		</div><!-- /.row -->
+	</div><!-- /.container-fluid -->
 </div>
+<!-- /.content-header -->
+<!-- Main content -->
+<section class="content">
+	<div class="container-fluid">
+		<?php
+        if (isset($_SESSION['flash'.'com_'.COMS])) {
+            if($_SESSION['flash'.'com_'.COMS] == 1){
+                $msg->success('Thêm mới thành công.');
+                echo $msg->display();
+            }else if($_SESSION['flash'.'com_'.COMS] == 0){
+                $msg->error('Có lỗi trong quá trình thêm.');
+                echo $msg->display();
+            }
+            unset($_SESSION['flash'.'com_'.COMS]);
+        }
+        ?>
+		<form id="frm_type" name="frm_type" method="post" action="" style="display:none;">
+			<input type="text" name="txt_viewtype" id="txt_viewtype" />
+		</form>
 
-<div class="com_header color" style="margin-bottom: 0px;">
-	<h1>Thêm mới <?php echo $row_menu['name'];?></h1>
-	<div class="pull-right">
-		<form id="frm_menu" name="frm_menu" method="post" action="">
-			<input type="hidden" name="txtorders" id="txtorders" />
-			<input type="hidden" name="txtids" id="txtids" />
-			<input type="hidden" name="txtaction" id="txtaction" />
+		<form id="frm_action" class="" name="frm_action" method="post" action="">
+			<p>Những mục đánh dấu <font color="red">*</font> là yêu cầu bắt buộc.</p>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="form-group">
+						<label>Kiểu hiển thị<small class="cred"> (*)</small><span id="err_viewtype" class="mes-error"></span></label>
+						<select name="cbo_viewtype" id="cbo_viewtype" class="form-control" onchange="select_type();">
+							<option value="link" selected="selected">Links</option>
+							<option value="block">Nhóm tin</option>
+							<option value="article">Bài viết</option>
+							<script language="javascript">
+								cbo_Selected('cbo_viewtype','<?php echo $viewtype;?>');
+							</script>
+						</select>
+					</div>
+				</div>
 
-			<ul class="list-inline">
-				<li><a class="save btn btn-success" href="#" onclick="dosubmitAction('frm_action','save');" title="Lưu"><i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</a></li>
-				<li><a class="btn btn-default"  href="<?php echo ROOTHOST_ADMIN.COMS.'/'.$row_menu['id'];;?>" title="Đóng"><i class="fa fa-sign-out" aria-hidden="true"></i> Đóng</a></li>
-			</ul>
+				<?php if($viewtype=="block"){?>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>Nhóm tin<small class="cred"> (*)</small><span id="err_cate" class="mes-error"></span></label>
+							<select name="cbo_cate" id="cbo_cate" class="form-control" style="width:100%;">
+								<option value="0" title="Top">Chọn một nhóm tin</option>
+								<?php $obj_cate->getListCate(0,0); ?>
+							</select>
+							<script type="text/javascript">
+								$(document).ready(function() {
+									$("#cbo_cate").select2();
+								});
+							</script>
+						</div>
+					</div>
+				<?php } else if($viewtype=="article"){?>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>Bài viết<small class="cred"> (*)</small><span id="err_article" class="mes-error"></span></label>
+							<select name="cbo_article" id="cbo_article" class="form-control" style="width: 100%;">
+								<option value="0" title="N/A">Chọn một bài viết</option>
+								<?php
+								$sql_con = "SELECT * FROM `tbl_contents` WHERE  isactive = '1'";
+								$objmysql->Query($sql_con);
+								while($r_con = $objmysql->Fetch_Assoc()){
+									$id 	= $r_con['id'];
+									$title 	= $r_con['title'];
+									echo "<option value=\"$id\">$title</option>";
+								}
+								?>
+							</select>
+							<script type="text/javascript">
+								$(document).ready(function() {
+									$("#cbo_article").select2();
+								});
+							</script>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+				<?php } else { ?>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>Link<small class="cred"> (*)</small><span id="err_link" class="mes-error"></span></label>
+							<input name="txtlink" type="text" id="txtlink" class="form-control" value="" placeholder="http://"/>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+				<?php }?>
+			</div>
+
+			<div class="row">
+				<div class="col-md-6">
+					<div class="form-group">
+						<label>Tên<small class="cred"> (*)</small><span id="err_name" class="mes-error"></span></label>
+						<input name="txtname" type="text" id="txtname" class="form-control" placeholder="Tên menu item">
+						<div class="clearfix"></div>
+					</div>
+				</div>
+
+				<div class="col-md-6">
+					<div class="form-group">
+						<label>Danh mục cha</label>
+						<select name="cbo_parid" id="cbo_parid" class="form-control" style="width: 100%;">
+							<option value="0">Top</option>
+							<?php echo $obj->getListMenuItem($mnuid,0,0); ?>
+						</select>
+						<script type="text/javascript">
+							$(document).ready(function() {
+								$("#cbo_parid").select2();
+							});
+						</script>
+						<div class="clearfix"></div>
+					</div>
+				</div>
+
+				<div class="col-md-6">
+					<div class="form-group">
+						<label>Biểu tượng (Icon)</label>
+						<input type="text" name="txticon" id="txticon" class="form-control"/>
+						<div class="clearfix"></div>
+					</div>
+				</div>
+
+				<div class="col-md-6">
+					<div class="form-group">
+						<label>Class</label>
+						<input type="text" name="txtclass" id="txtclass" class="form-control"/>
+						<div class="clearfix"></div>
+					</div>
+				</div>
+
+				<div class="col-md-6">
+					<div class="form-group">
+						<label>Hiển thị</label>
+						<div>
+							<label class="radio-inline"><input type="radio" value="1" name="optactive" checked>Có</label>
+							<label class="radio-inline"><input type="radio" value="0" name="optactive">Không</label>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+				</div>
+
+				<div class="col-sm-12">
+					<div class="form-group">
+						<label>Sapo:</label>
+						<textarea name="txtdesc" id="txtdesc" cols="45" rows="5"></textarea>
+					</div>
+				</div>
+			</div>
+			<input type="submit" name="cmdsave" id="cmdsave" value="Submit" style="display:none;">
+			<div class="text-center toolbar">
+				<div style="height: 20px;"></div>
+				<a class="save btn btn-success" href="#" onclick="dosubmitAction('frm_action','save');" title="Lưu thông tin"><i class="fas fa-save"></i>Lưu thông tin</a>
+			</div>
 		</form>
 	</div>
-</div>
-<div class="clearfix"></div>
-
-<form id="frm_type" name="frm_type" method="post" action="" style="display:none;">
-	<input type="text" name="txt_viewtype" id="txt_viewtype" />
-</form>
-
-<form id="frm_action" class="" name="frm_action" method="post" action="">
-	<p>Những mục đánh dấu <font color="red">*</font> là yêu cầu bắt buộc.</p>
-	<div class="row">
-		<div class="form-group">
-			<div class="col-md-6">
-				<label>Kiểu hiển thị<small class="cred"> (*)</small><span id="err_viewtype" class="mes-error"></span></label>
-				<select name="cbo_viewtype" id="cbo_viewtype" class="form-control" onchange="select_type();">
-					<option value="link" selected="selected">Links</option>
-					<option value="place">Địa điểm du lịch</option>
-					<option value="block">Nhóm tin</option>
-					<option value="article">Tin đất đai</option>
-					<script language="javascript">
-						cbo_Selected('cbo_viewtype','<?php echo $viewtype;?>');
-					</script>
-				</select>
-			</div>
-
-			<?php if($viewtype=="block"){?>
-				<div class="col-md-6">
-					<label>Nhóm tin<small class="cred"> (*)</small><span id="err_cate" class="mes-error"></span></label>
-					<select name="cbo_cate" id="cbo_cate" class="form-control" style="width:100%;">
-						<option value="0" title="Top">Chọn một nhóm tin</option>
-						<?php $obj_cate->getListCate(0,0); ?>
-					</select>
-					<script type="text/javascript">
-						$(document).ready(function() {
-							$("#cbo_cate").select2();
-						});
-					</script>
-				</div>
-			<?php } else if($viewtype=="type_of_land"){?>
-				<div class="col-md-6">
-					<label>Ds loại đất đai<small class="cred"> (*)</small><span id="err_cate" class="mes-error"></span></label>
-					<select name="cbo_type_of_land" id="cbo_type_of_land" class="form-control" style="width:100%;">
-						<option value="0" title="Top">-- Chọn một --</option>
-						<?php
-						$sql_tol = "SELECT * FROM tbl_type_of_land WHERE isactive = 1";
-						$objmysql->Query($sql_tol);
-						while ($row_tol = $objmysql->Fetch_Assoc()) {
-							echo '<option value="'.$row_tol['id'].'">'.$row_tol['title'].'</option>';
-						}
-						?>
-					</select>
-					<script type="text/javascript">
-						$(document).ready(function() {
-							$("#cbo_type_of_land").select2();
-						});
-					</script>
-				</div>
-			<?php } else if($viewtype=="place"){?>
-				<div class="col-md-6">
-					<label>Ds địa điểm<small class="cred"> (*)</small><span id="err_cate" class="mes-error"></span></label>
-					<select name="cbo_place" id="cbo_place" class="form-control" style="width:100%;">
-						<option value="0" title="Top">-- Chọn một --</option>
-						<?php $obj_place->getListCate();?>
-					</select>
-					<script type="text/javascript">
-						$(document).ready(function() {
-							$("#cbo_place").select2();
-						});
-					</script>
-				</div>
-			<?php } else if($viewtype=="article"){?>
-				<div class="col-md-6">
-					<label>Bài viết<small class="cred"> (*)</small><span id="err_article" class="mes-error"></span></label>
-					<select name="cbo_article" id="cbo_article" class="form-control" style="width: 100%;">
-						<option value="0" title="N/A">Chọn một bài viết</option>
-						<?php
-						$sql_con = "SELECT * FROM `tbl_contents` WHERE  isactive = '1'";
-						$objmysql->Query($sql_con);
-						while($r_con = $objmysql->Fetch_Assoc()){
-							$id 	= $r_con['id'];
-							$title 	= $r_con['title'];
-							echo "<option value=\"$id\">$title</option>";
-						}
-						?>
-					</select>
-					<script type="text/javascript">
-						$(document).ready(function() {
-							$("#cbo_article").select2();
-						});
-					</script>
-					<div class="clearfix"></div>
-				</div>
-			<?php } else { ?>
-				<div class="col-md-6">
-					<label>Link<small class="cred"> (*)</small><span id="err_link" class="mes-error"></span></label>
-					<input name="txtlink" type="text" id="txtlink" class="form-control" value="" placeholder="http://"/>
-					<div class="clearfix"></div>
-				</div>
-			<?php }?>
-		</div>
-
-		<div class="form-group">
-			<div class="col-md-6">
-				<label>Tên<small class="cred"> (*)</small><span id="err_name" class="mes-error"></span></label>
-				<input name="txtname" type="text" id="txtname" class="form-control" placeholder="Tên menu item">
-				<div class="clearfix"></div>
-			</div>
-
-			<div class="col-md-6">
-				<label>Danh mục cha</label>
-				<select name="cbo_parid" id="cbo_parid" class="form-control" style="width: 100%;">
-					<option value="0">Top</option>
-					<?php echo $obj->getListMenuItem($mnuid,0,0); ?>
-				</select>
-				<script type="text/javascript">
-					$(document).ready(function() {
-						$("#cbo_parid").select2();
-					});
-				</script>
-				<div class="clearfix"></div>
-			</div>
-		</div>
-
-		<div class="form-group">
-			<div class="col-md-6">
-				<label>Biểu tượng (Icon)</label>
-				<input type="text" name="txticon" id="txticon" class="form-control"/>
-				<div class="clearfix"></div>
-			</div>
-
-			<div class="col-md-6">
-				<label>Class</label>
-				<input type="text" name="txtclass" id="txtclass" class="form-control"/>
-				<div class="clearfix"></div>
-			</div>
-		</div>
-
-		<div class="form-group">
-			<div class="col-md-6">
-				<label>Hiển thị</label>
-				<div>
-					<label class="radio-inline"><input type="radio" value="1" name="optactive" checked>Có</label>
-					<label class="radio-inline"><input type="radio" value="0" name="optactive">Không</label>
-				</div>
-				<div class="clearfix"></div>
-			</div>
-		</div>
-
-		<div class="form-group">
-			<div class="col-xs-12">
-				<label>Sapo:</label>
-				<textarea name="txtdesc" id="txtdesc" cols="45" rows="5"></textarea>
-			</div>
-		</div>
-	</div>
-	<input type="submit" name="cmdsave" id="cmdsave" value="Submit" style="display:none;">
-	<div class="text-center toolbar">
-		<div style="height: 20px;"></div>
-		<a class="save btn btn-success" href="#" onclick="dosubmitAction('frm_action','save');" title="Lưu thông tin"><i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu thông tin</a>
-	</div>
-</form>
+</section>
 <script type="text/javascript">
 	$(document).ready(function(){
 		$('#txtdesc').summernote({
@@ -265,7 +254,7 @@ if(isset($_POST["txt_viewtype"]))
             ['height', ['height']],
             ['table', ['table']],
             ['insert', ['link', 'picture', 'video', 'hr']],
-            ['view', ['codeview']]
+            ['view', ['fullscreen', 'codeview', 'help']],
             ],
         });
 	});

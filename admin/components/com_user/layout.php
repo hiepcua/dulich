@@ -2,15 +2,15 @@
 defined("ISHOME") or die("Can not acess this page, please come back!");
 define("COMS","user");
 define('THIS_COM_PATH',COM_PATH.'com_'.COMS.'/');
-$objmysql = new CLS_MYSQL();
+require_once('libs/cls.user_group.php');
+require_once('extensions/cls.upload.php');
 
-$title_manager = 'Quản lý người dùng';
-if(isset($_GET['task']) && $_GET['task']=='add')
-	$title_manager = 'Thêm mới người dùng';
-if(isset($_GET['task']) && $_GET['task']=='edit')
-	$title_manager = 'Sửa thông tin người dùng';
-if(isset($_GET['task']) && $_GET['task']=='changepass')
-	$title_manager = 'Đổi mật khẩu';
+$objmysql 	= new CLS_MYSQL();
+$obj 		= new CLS_USER();
+$obj_guser 	= new CLS_USER_GROUP();
+$obj_upload = new CLS_UPLOAD();
+$msg 		= new \Plasticbrain\FlashMessages\FlashMessages();
+if(!isset($_SESSION['flash'.'com_'.COMS])) $_SESSION['flash'.'com_'.COMS] = 2;
 
 if(isset($_POST["cmd_save"])){
 	$username 		= isset($_POST['txt_username']) ? addslashes(trim($_POST['txt_username'])) : '';
@@ -25,6 +25,8 @@ if(isset($_POST["cmd_save"])){
 	$organ 			= addslashes($_POST['txt_organ']);
 	$address 		= isset($_POST['txt_address']) ? addslashes($_POST['txt_address']):'';
 	$date 			= date('Y-m-d H:i:s');
+	$isactive 		= isset($_POST['opt_isactive']) ? (int)$_POST['opt_isactive'] : 0;
+	$date			= date('Y-m-d H:i:s');
 
 	if(isset($_POST['txtid'])){
 		$ID = (int)$_POST['txtid'];
@@ -39,14 +41,17 @@ if(isset($_POST["cmd_save"])){
 		`email`='".$email."',
 		`gid`='".$gid."'";
 		$sql.=" WHERE `id`='".$ID."'";
-		$objmysql->Query($sql);
+		$result = $objmysql->Exec($sql);
+        if($result) $_SESSION['flash'.'com_'.COMS] = 1;
+        else $_SESSION['flash'.'com_'.COMS] = 0;
 	}else{
 		$cdate = $date;
-		$sql="INSERT INTO `tbl_user` (`username`,`password`,`firstname`,`lastname`,`birthday`,`gender`,`address`,
-		`phone`,`email`,`joindate`,`gid`,`isactive`) VALUES ('".$username."','".$password."','".$first_name."','".$last_name."','".$birthday."','".$gender."','".$address."','".$phone."','".$email."','".$cdate."','".$gid."','1') ";
-		return $objmysql->Query($sql);
+		$sql="INSERT INTO `tbl_user` (`username`,`password`,`firstname`,`lastname`,`birthday`,`gender`,`address`,`phone`,`email`,`joindate`,`gid`,`isactive`) VALUES ('".$username."','".md5(sha1(trim($password)))."','".$first_name."','".$last_name."','".$birthday."','".$gender."','".$address."','".$phone."','".$email."','".$cdate."','".$gid."','".$isactive."') ";
+		$result = $objmysql->Exec($sql);
+        if($result) $_SESSION['flash'.'com_'.COMS] = 1;
+        else $_SESSION['flash'.'com_'.COMS] = 0;
 	}
-	echo "<script language=\"javascript\">window.location='".ROOTHOST_ADMIN.COMS."'</script>";
+	// echo "<script language=\"javascript\">window.location='".ROOTHOST_ADMIN.COMS."'</script>";
 }
 
 if(isset($_POST["txtaction"]) && $_POST["txtaction"]!=""){

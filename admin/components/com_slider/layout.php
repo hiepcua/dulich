@@ -4,11 +4,11 @@ define('COMS','slider');
 define('THIS_COM_PATH',COM_PATH.'com_'.COMS.'/');
 
 // Begin Toolbar
-require_once('libs/cls.slider.php');
 include_once(EXT_PATH.'cls.upload.php');
 $objmysql = new CLS_MYSQL();
-$obj = new CLS_SLIDER();
 $objUpload = new CLS_UPLOAD();
+$msg 		= new \Plasticbrain\FlashMessages\FlashMessages();
+if(!isset($_SESSION['flash'.'com_'.COMS])) $_SESSION['flash'.'com_'.COMS] = 2;
 
 // End toolbar
 if(isset($_POST["cmdsave"])){		
@@ -26,11 +26,16 @@ if(isset($_POST["cmdsave"])){
 		`thumb`='".$Thumb."',
 		`link`='".$Link."'
 		WHERE `id`='".$ID."'";
-		$objmysql->Exec($sql);
+		$result = $objmysql->Exec($sql);
+        if($result) $_SESSION['flash'.'com_'.COMS] = 1;
+        else $_SESSION['flash'.'com_'.COMS] = 0;
 	}else{
 		$sql="INSERT INTO `tbl_slider` ( `slogan`, `intro`, `thumb`,`link`, `isactive`) VALUES ('".$Slogan."','".$Intro."','".$Thumb."','".$Link."','".$isActive."')";
+		$result = $objmysql->Exec($sql);
+        if($result) $_SESSION['flash'.'com_'.COMS] = 1;
+        else $_SESSION['flash'.'com_'.COMS] = 0;
 	}
-	echo "<script language=\"javascript\">window.location='".ROOTHOST_ADMIN.COMS."'</script>";
+	// echo "<script language=\"javascript\">window.location='".ROOTHOST_ADMIN.COMS."'</script>";
 }
 
 if(isset($_POST["txtaction"]) && $_POST["txtaction"]!=""){

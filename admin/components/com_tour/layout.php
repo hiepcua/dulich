@@ -9,6 +9,8 @@ $objmysql 	= new CLS_MYSQL();
 $objdata 	= new CLS_MYSQL();
 $objmedia 	= new CLS_UPLOAD();
 $cur_dir 	= '../images/';
+$msg 		= new \Plasticbrain\FlashMessages\FlashMessages();
+if(!isset($_SESSION['flash'.'com_'.COMS])) $_SESSION['flash'.'com_'.COMS] = 2;
 
 
 function createFolder($path){
@@ -152,9 +154,12 @@ if(isset($_POST["cmdsave"])){
 
 		if($result && $result2){
 			$objmysql->Exec('COMMIT');
+			$_SESSION['flash'.'com_'.COMS] = 1;
 		}
-		else
+		else{
 			$objmysql->Exec('ROLLBACK');
+			$_SESSION['flash'.'com_'.COMS] = 0;
+		}
 	}else{
 		$objmysql->Exec("BEGIN");
 		$sql = "INSERT INTO tbl_tour (`name`, `un_name`, `code`, `place_id`, `intro`, `content`, `schedule`, `policy`, `images`, `price1`, `price2`, `starting_gate`, `departure`, `days`, `vehicle`, `number_of_holes`, `cdate`, `author`, `ishot`, `isactive`, `price_range`, `hobby`) 
@@ -169,11 +174,13 @@ if(isset($_POST["cmdsave"])){
 
 		if($result && $result2){
 			$objmysql->Exec('COMMIT');
+			$_SESSION['flash'.'com_'.COMS] = 1;
 		}else{
 			$objmysql->Exec('ROLLBACK');
+			$_SESSION['flash'.'com_'.COMS] = 0;
 		}
 	}
-	echo "<script language=\"javascript\">window.location='".ROOTHOST_ADMIN.COMS."'</script>";
+	// echo "<script language=\"javascript\">window.location='".ROOTHOST_ADMIN.COMS."'</script>";
 }
 
 if(isset($_POST["txtaction"]) && $_POST["txtaction"]!=""){

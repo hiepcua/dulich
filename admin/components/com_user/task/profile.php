@@ -1,124 +1,237 @@
 <?php
 defined('ISHOME') or die('Can not acess this page, please come back!');
-$msg='';
+$msg=''; $msg2=''; $file='';
 $check_permission = $UserLogin->Permission('user');
 $id=$obj->getInfo('id');
 if(isset($_GET['memid'])) $id=(int)$_GET['memid'];
 
-if(isset($_POST['cmdsave']))
-{	$obj->ID=$id;
-	$obj->UserName=addslashes($_POST['txtusername']);
-	$obj->FirstName=addslashes($_POST['txtfirstname']);
-	$obj->LastName=addslashes($_POST['txtlastname']);
-	
-	$txtjoindate = addslashes($_POST['txtbirthday']);
-	//$joindate = mktime(0,0,0,substr($txtjoindate,3,2),substr($txtjoindate,0,2),substr($txtjoindate,6,4));
-	$obj->Birthday=date('Y-m-d',strtotime($txtjoindate));
-		
-	$obj->Gender=addslashes($_POST['optgender']);
-	$obj->Address=addslashes($_POST['txtaddress']);
-	$obj->Mobile=addslashes($_POST['txtmobile']);
-	$obj->Email=addslashes($_POST['txtemail']);
-	$obj->Gid=(int)$_POST['cbo_gmember'];
-	if($obj->Update()) $msg="Cập nhật thành công";
+function base64_to_jpeg($base64_string, $output_file) {
+    // open the output file for writing
+    $ifp = fopen( $output_file, 'wb' ); 
+
+    // split the string on commas
+    // $data[ 0 ] == "data:image/png;base64"
+    // $data[ 1 ] == <actual base64 string>
+    $data = explode( ',', $base64_string );
+
+    // we could add validation here with ensuring count( $data ) > 1
+    fwrite( $ifp, base64_decode( $data[ 1 ] ) );
+
+    // clean up the file resource
+    fclose( $ifp ); 
+
+    return $output_file; 
+}
+
+if(isset($_POST['cmdsave_tab1'])){
+	$ID = $id;
+	$FirstName 	= isset($_POST['txtfirstname']) ? trim(addslashes($_POST['txtfirstname'])) : '';
+	$LastName 	= isset($_POST['txtlastname']) ? trim(addslashes($_POST['txtlastname'])) : '';
+	$Address 	= isset($_POST['txtaddress']) ? trim(addslashes($_POST['txtaddress'])) : '';
+	$Mobile 	= isset($_POST['txtmobile']) ? trim(addslashes($_POST['txtmobile'])) : '';
+	$Email 		= isset($_POST['txtemail']) ? trim(addslashes($_POST['txtemail'])) : '';
+	$Gender 	= isset($_POST['optgender']) ? (int)$_POST['txtlastname'] : 0;
+	$Gid 		= isset($_POST['cbo_gmember']) ? (int)$_POST['cbo_gmember'] : '';
+	$Birthday 	= strtotime($_POST['txtbirthday']);
+
+	if(isset($_FILES)){
+		$save_path 	= "images/avatar/";
+		$obj_upload->setPath($save_path);
+		$file = $obj_upload->UploadFile("txt_avatar", $save_path);
+	}
+
+	$sql="UPDATE `tbl_user` SET `firstname`='".$FirstName."',
+	`lastname`='".$LastName."',
+	`birthday`='".$Birthday."',
+	`gender`='".$Gender."',
+	`address`='".$Address."',
+	`phone`='".$Mobile."',
+	`email`='".$Email."',
+	`avatar`='".ROOTHOST_ADMIN.$file."',
+	`gid`='".$Gid."'";
+	$sql.=" WHERE `id`='".$ID."'";
+	if($objmysql->Query($sql)) {
+		$msg="Cập nhật thành công";
+	}
 	else $msg="Cập nhật lỗi!";
 }
-	
-$obj->getList(' AND id='.$id);
-$row=$obj->Fetch_Assoc();
 
-?>
-<script language='javascript'>
-function checkinput(){
-	 return true;
+if(isset($_POST['cmdsave_tab2'])){	
+	$ID = $id;
+	$Cur_password 	= isset($_POST['current_password']) ? trim(addslashes($_POST['current_password'])) : '';
+	$New_password 	= isset($_POST['new_password']) ? trim(addslashes($_POST['new_password'])) : '';
+	$Re_password 	= isset($_POST['re_password']) ? trim(addslashes($_POST['re_password'])) : '';
+	$pass 			= md5(sha1(trim($Cur_password)));
+
+	$sql="SELECT `password` FROM tbl_user WHERE id =".$ID;
+	$objmysql->Query($sql);
+	$r_user = $objmysql->Fetch_Assoc();
+	
+	if($pass == $r_user['password']){
+		$sql="UPDATE `tbl_user` SET `password`='".md5(sha1(trim($New_password)))."' WHERE `id`='".$ID."'";
+		if($objmysql->Query($sql)) $msg="Cập nhật thành công";
+		else $msg2="Cập nhật thành công!";
+	}else{
+		$msg2="Cập nhật lỗi!";
+	}
 }
-</script>
-<div class="body">
-	<div class="com_header color">
-		<i class="fa fa-pencil-square" aria-hidden="true"></i>  Cập nhật thành viên quản trị
-	</div>
-	<div class="col-md-12">
-	<form id="frm_action" name="frm_action" method="post" action="">
-		<div class="row form-group">
-			<label class="col-md-2"></label>
-			<div class="col-md-8"><span class='msg'><?php echo $msg;?></span></div>
-		</div>
-		<div class="row form-group">
-			<label class="col-md-2 control-label">Tên đăng nhập <span class="star">*</span></label>
-			<div class="col-md-3">
-				<input class="form-control" id="txtusername" name="txtusername" value="<?php echo $row['username'];?>" type="text" required readonly>
-			</div>
-		</div>
-		<div class="row form-group">
-			<label class="col-md-2 control-label">Họ & đệm <span class="star">*</span></label>
-			<div class="col-md-3">
-				<input class="form-control" id="txtfirstname" name="txtfirstname" value="<?php echo $row['firstname'];?>" type="text" required>
-			</div>
-			<label class="col-md-2 control-label text-right">Tên <span class="star">*</span></label>
-			<div class="col-md-3">
-				<input class="form-control" id="txtlastname" name="txtlastname" value="<?php echo $row['lastname'];?>" type="text" required>
-			</div>
-		</div>
-		<div class="row form-group">
-			<label class="col-md-2 control-label">Ngày sinh</label>
-			<div class="col-md-3">
-				<input class="form-control" name="txtbirthday" type="date" id="txtbirthday" value="<?php echo $row['birthday'];?>"/>
-			</div>
-			<label class="col-md-2 control-label text-right">Giới tính</label>
-			<div class="col-md-3">
-				<input name="optgender" type="radio" value="0" <?php if($row['gender']==0) echo'checked';?>/> Nam
-				<input name="optgender" type="radio" value="1" <?php if($row['gender']==1) echo'checked';?>/> Nữ
-			</div>
-			<div class="col-md-2"></div>
-		</div>
-		<div class="row form-group">
-			<label class="col-md-2 control-label">Địa chỉ</label>
-			<div class="col-md-8">
-				<input class="form-control" id="txtaddress" name="txtaddress" value="<?php echo $row['address'];?>" type="text">
-			</div>
-			<div class="col-md-2"></div>
-		</div>
-		<div class="row form-group">
-			<label class="col-md-2 control-label">Điện thoại</label>
-			<div class="col-md-3">
-				<input class="form-control" name="txtmobile" type="tel" id="txtmobile" value="<?php echo $row['mobile'];?>"/>
-			</div>
-			<label class="col-md-2 control-label text-right">Email</label>
-			<div class="col-md-3">
-				<input class="form-control" name="txtemail" type="email" id="txtemail" value="<?php echo $row['email'];?>"/>
-			</div>
-			<div class="col-md-2"></div>
-		</div>
-		<?php if($check_permission==true) {?>
-		<div class="row form-group">
-			<label class="col-md-2 control-label">Nhóm quản trị <span class="star">*</span></label>
-			<div class="col-md-3">
-				<select name="cbo_gmember" id="cbo_gmember" class="form-control" required>
-					<option value="0" style="font-weight:bold; background-color:#cccccc">Chọn nhóm quyền</option>
-					<?php			
-					if(!isset($obju)) $obju = new CLS_GUSER();
-					$obju->getList(" AND gmem_id=".$row['gmem_id']); 
-					$r=$obju->Fetch_Assoc();
-					echo "<option value='".$r['gmem_id']."'>".$r['name']."</option>";
-					unset($obju);
-					?>
-				</select>
-				<script language="javascript">
-				  cbo_Selected('cbo_gmember',<?php echo $row['gmem_id'];?>);
-				  </script>
-			</div>
-			<div class="col-md-2"></div>
-		</div>
-		<?php } else { ?>
-		<input type="hidden" name="cbo_gmember" id="cbo_gmember" value="<?php echo $row['gid'];?>"/>
-		<?php } ?>
-		<div class="row form-group">
-			<div class="col-md-2"></div>
-			<div class="col-md-8">
-				<input type="submit" name="cmdsave" id="cmdsave" value="Lưu lại" class="btn btn-primary">
-			</div>
-			<div class="col-md-2"></div>
-		</div>
-	</form></div>
+
+$obj->getList(' AND id='.$id);
+$row = $obj->Fetch_Assoc();
+$avatar = getThumb($row['avatar'], 'avatar img-circle img-thumbnail', '');
+
+// Get info group user
+$permistion_name = $obj_guser->getNameById($row['gid']);
+?>
+<!-- Content Header (Page header) -->
+<div class="content-header">
+	<div class="container-fluid">
+		<div class="row mb-2">
+			<div class="col-sm-6">
+				<h1 class="m-0 text-dark">CẬP NHẬT THÔNG TIN CÁ NHÂN</h1>
+			</div><!-- /.col -->
+			<div class="col-sm-6">
+				<ol class="breadcrumb float-sm-right">
+					<li class="breadcrumb-item"><a href="<?php echo ROOTHOST_ADMIN;?>">Home</a></li>
+					<li class="breadcrumb-item active">Cập nhật thông tin cá nhân</li>
+				</ol>
+			</div><!-- /.col -->
+		</div><!-- /.row -->
+	</div><!-- /.container-fluid -->
 </div>
-<?php unset($obj); ?>
+<!-- /.content-header -->
+<!-- Main content -->
+<section id="profile" class="content">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-3 col-lg-2">
+				<div class="text-center">
+					<div class="wrap-avatar">
+						<?php echo $avatar;?>
+					</div>
+				</div>
+
+				<ul class="list-group">
+					<li class="list-group-item"><strong>Username:</strong> <?php echo $row['username'];?></li>
+					<li class="list-group-item"><span class="pull-left"><strong>Permistion:</strong></span> <?php echo $permistion_name;?></li>
+					<li class="list-group-item"><span class="pull-left"><strong>Join:</strong></span> <?php echo date('d-m-Y', $row['joindate']);?></li>
+				</ul>
+			</div>
+
+			<div class="col-sm-9 col-lg-10">
+				<div class="box-tabs">
+					<!-- Nav tabs -->
+					<ul class="nav nav-tabs">
+						<li class="nav-item">
+							<a class="nav-link active" data-toggle="tab" href="#info">Thông tin cá nhân</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" data-toggle="tab" href="#seo">Đổi mật khẩu</a>
+						</li>
+					</ul>
+				</div>
+
+				<div class="tab-content card">
+					<div class="tab-pane container-fluid active" id="info">
+						<form id="frm_action" class="form" action="" method="post" enctype="multipart/form-data">
+							<p><span class='msg'><?php echo $msg;?></span></p>
+							<div class="row">
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label>Họ & đệm<small class="cred"> (*)</small><span id="err_firstname" class="mes-error"></span></label>
+										<input class="form-control" id="txtfirstname" name="txtfirstname" value="<?php echo $row['firstname'];?>" type="text" required>
+									</div>
+								</div>
+
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label>Tên<small class="cred"> (*)</small><span id="err_firstname" class="mes-error"></span></label>
+										<input class="form-control" id="txtlastname" name="txtlastname" value="<?php echo $row['lastname'];?>" type="text" required>
+									</div>
+								</div>
+
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label>Ngày sinh</label>
+										<input class="form-control" name="txtbirthday" type="date" id="txtbirthday" value="<?php echo date('Y-m-d', $row['birthday']);?>"/>
+									</div>
+								</div>
+
+								<div class="col-sm-6">
+									<div class="form-group">
+										<h6>Upload a different photo...</h6>
+										<input type="file" name="txt_avatar" value="<?php echo $row['avatar'];?>" class="file-upload">
+									</div>
+								</div>
+
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label>Điện thoại</label>
+										<input class="form-control" name="txtmobile" type="tel" id="txtmobile" value="<?php echo $row['phone'];?>"/>
+									</div>
+								</div>
+
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label>Email</label>
+										<input class="form-control" name="txtemail" type="email" id="txtemail" value="<?php echo $row['email'];?>"/>
+									</div>
+								</div>
+
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label>Giới tính</label>
+										<div>
+											<ul class="list-inline">
+												<li class="list-inline-item">
+													<input name="optgender" type="radio" value="0" <?php if($row['gender']==0) echo'checked';?>/> Nam
+												</li>
+												<li class="list-inline-item">
+													<input name="optgender" type="radio" value="1" <?php if($row['gender']==1) echo'checked';?>/> Nữ
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="text-center toolbar">
+								<input type="submit" name="cmdsave_tab1" id="cmdsave_tab1" class="save btn btn-success" value="Lưu thông tin" class="btn btn-primary">
+							</div>
+						</form>
+					</div>
+
+					<div class="tab-pane container-fluid fade" id="seo">
+						<form class="form" action="" method="post">
+							<p><span class='msg'><?php echo $msg2;?></span></p>
+							<div class="form-group">
+								<div class="col-xs-6">
+									<label>Mật khẩu hiện tại</label>
+									<input type="password" class="form-control" name="current_password" id="current_password" placeholder="Mật khẩu hiện tại" title="Mật khẩu hiện tại">
+								</div>
+							</div>
+
+							<div class="form-group">
+								<div class="col-xs-6">
+									<label>Mật khẩu mới</label>
+									<input type="password" class="form-control" name="new_password" id="new_password" placeholder="Mật khẩu mới" title="Mật khẩu mới">
+								</div>
+							</div>
+
+							<div class="form-group">
+								<div class="col-xs-6">
+									<label>Gõ lại mật khẩu mới</label>
+									<input type="password" class="form-control" name="re_password" id="re_password" placeholder="Gõ lại mật khẩu mới" title="Gõ lại mật khẩu mới">
+								</div>
+							</div>
+
+							<div class="text-center toolbar">
+								<input type="submit" name="cmdsave_tab2" id="cmdsave_tab2" class="save btn btn-success" value="Lưu mật khẩu" class="btn btn-primary">
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

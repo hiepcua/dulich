@@ -212,7 +212,7 @@ function InnovaEditor(oName)
 	this.buttonMap=["Save","FullScreen","Preview","Print","Search","SpellCheck",
 		"Cut","Copy","Paste","PasteWord","PasteText","|","Undo","Redo","|",
 		"ForeColor","BackColor","|","Bookmark","Hyperlink",
-		"Image","Flash","Media","Youtube","ContentBlock","InternalLink","CustomObject","|",
+		"Image","Flash","Media","ContentBlock","InternalLink","CustomObject","|",
 		"Table","Guidelines","Absolute","|","Characters","Line",
 		"Form","RemoveFormat","HTMLFullSource","HTMLSource","XHTMLFullSource",
 		"XHTMLSource","ClearAll","BRK", 
@@ -227,14 +227,14 @@ function InnovaEditor(oName)
     this.btnSpellCheck=false;this.btnTextFormatting=true;
     this.btnListFormatting=true;this.btnBoxFormatting=true;this.btnParagraphFormatting=true;this.btnCssText=true;this.btnCssBuilder=false;
     this.btnStyles=false;this.btnParagraph=true;this.btnFontName=true;this.btnFontSize=true;
-    this.btnCut=true;this.btnCopy=true;this.btnPaste=true;this.btnPasteText=true;this.btnUndo=true;this.btnRedo=true;
+    this.btnCut=true;this.btnCopy=true;this.btnPaste=true;this.btnPasteText=false;this.btnUndo=true;this.btnRedo=true;
     this.btnBold=true;this.btnItalic=true;this.btnUnderline=true;
     this.btnStrikethrough=false;this.btnSuperscript=false;this.btnSubscript=false;
     this.btnJustifyLeft=true;this.btnJustifyCenter=true;this.btnJustifyRight=true;this.btnJustifyFull=true;
     this.btnNumbering=true;this.btnBullets=true;this.btnIndent=true;this.btnOutdent=true;
     this.btnLTR=false;this.btnRTL=false;this.btnForeColor=true;this.btnBackColor=true;
     this.btnHyperlink=true;this.btnBookmark=true;this.btnCharacters=true;this.btnCustomTag=false;
-    this.btnImage=true;this.btnFlash=false;this.btnMedia=true;this.btnYoutube=true;
+    this.btnImage=true;this.btnFlash=false;this.btnMedia=false;
     this.btnTable=true;this.btnGuidelines=true;
     this.btnAbsolute=true;this.btnPasteWord=true;this.btnLine=true;
     this.btnForm=true;this.btnRemoveFormat=true;
@@ -344,8 +344,7 @@ function saveForUndo()
     for(var i=20;i>1;i--)obj.arrUndoList[i-1]=obj.arrUndoList[i-2];
     obj.focus();
     var oSel=oEditor.getSelection();
-	var range;
-	if(oSel) range = oSel.getRangeAt(0);
+    var range = oSel.getRangeAt(0);
     obj.arrUndoList[0]=[oEditor.document.body.innerHTML, range.cloneRange()];
 
     this.arrRedoList=[];//clear redo list
@@ -370,8 +369,7 @@ function doUndoRedo(listA, listB)
 
     for(var i=20;i>1;i--)listB[i-1]=listB[i-2];
     var oSel=oEditor.getSelection();
-    var range;
-	if(oSel) range = oSel.getRangeAt(0);
+    var range = oSel.getRangeAt(0);
     listB[0]=[oEditor.document.body.innerHTML, range.cloneRange()];
 
     sHTML=listA[0][0];
@@ -817,9 +815,6 @@ function RENDER(sPreloadHTML)
                 break;
             case "Media":
                 if(this.btnMedia)sHTMLIcons+=this.writeIconStandard("btnMediah"+this.oName,"modelessDialogShow('"+this.scriptPath+"media.htm',420,232)","btnMedia.gif",getTxt("Media"));
-                break;
-			case "Youtube":
-                if(this.btnYoutube)sHTMLIcons+=this.writeIconStandard("btnYoutube"+this.oName,"modelessDialogShow('"+this.scriptPath+"youtube1.htm',420,232)","btnYoutube.gif",getTxt("Youtube"));
                 break;
             case "ContentBlock":
                 if(this.btnContentBlock)sHTMLIcons+=this.writeIconStandard("btnContentBlock"+this.oName,this.cmdContentBlock,"btnContentBlock.gif",getTxt("Content Block"));
@@ -1863,7 +1858,7 @@ function applySpanStyle(arrStyles,sClassName, blockTag)
 	var oElement;
 	if (!isTextSelected(oSel)) 
 		{ //if not text selection
-		if(oSel) range = oSel.getRangeAt(0);
+		range = oSel.getRangeAt(0);
 		oElement = getSelectedElement(oSel);
 		if(oElement.nodeName==useBlock) return oElement;
 		return;
@@ -2016,8 +2011,7 @@ function replaceWithSpan(oEditor, arrStyles, sClassName, blockTag)
 	var oSel = oEditor.getSelection();
 
 	//mark selection start font and selection end font.
-	var range;
-	if(oSel) range = oSel.getRangeAt(0);
+	var range = oSel.getRangeAt(0);
 	var startFont = GetElement(range.startContainer, "FONT");
 	if (startFont == null) startFont = range.startContainer.nextSibling;
 	startFont.setAttribute("startcont", "this");
@@ -2580,8 +2574,7 @@ function removeTag()
             break;
         default:
             oSel = oEditor.getSelection();
-            var range;
-			if(oSel) range = oSel.getRangeAt(0);
+            var range = oSel.getRangeAt(0);
             var docFrag = range.createContextualFragment(element.innerHTML);
             range.deleteContents();
             range.insertNode(docFrag);
@@ -2783,8 +2776,7 @@ function expandSelection()
     {
     var oEditor=document.getElementById("idContent"+this.oName).contentWindow;
     var oSel=oEditor.getSelection();
-    var range;
-	if(oSel) range = oSel.getRangeAt(0);
+    var range = oSel.getRangeAt(0);
     if (range.startContainer.nodeType == Node.TEXT_NODE) 
         {
         if (range.toString() == "") 
@@ -2848,8 +2840,7 @@ function insertHTML(sHTML)
     {
     var oEditor=document.getElementById("idContent"+this.oName).contentWindow;
     var oSel=oEditor.getSelection();
-    var range;
-	if(oSel) range = oSel.getRangeAt(0);
+    var range = oSel.getRangeAt(0);
     
     this.saveForUndo();
     
@@ -2872,8 +2863,7 @@ function insertLink(url,title,target)
     {
     var oEditor=document.getElementById("idContent"+this.oName).contentWindow;
     var oSel=oEditor.getSelection();
-    var range;
-	if(oSel) range = oSel.getRangeAt(0);
+    var range = oSel.getRangeAt(0);
     
     this.saveForUndo();
 
@@ -2898,7 +2888,7 @@ function insertLink(url,title,target)
     oEditor.document.execCommand("CreateLink", false, url);
     
     oSel = oEditor.getSelection();
-    if(oSel) range = oSel.getRangeAt(0);
+    range = oSel.getRangeAt(0);
 
         //get A element
         if (range.startContainer.nodeType == Node.TEXT_NODE) {
@@ -2940,7 +2930,7 @@ function applySpan(blockTag)
     var oElement;
     var sHTML;
     if (!isTextSelected(oSel)) { //if not text selection
-        if(oSel) range = oSel.getRangeAt(0);
+        range = oSel.getRangeAt(0);
         oElement = getSelectedElement(oSel);
         if(oElement.nodeName==useBlock) return oElement;
         return;
@@ -3060,8 +3050,7 @@ function doClick_TabCreate(el)
     sHTML+="</table>";
     
     var oSel=oEditor.getSelection();
-    var range;
-	if(oSel) range = oSel.getRangeAt(0);
+    var range = oSel.getRangeAt(0);
     range.collapse(true);
     
     var docFrag = range.createContextualFragment(sHTML);
@@ -3404,6 +3393,7 @@ function recur(oEl,sTab)
           }         
         
         sHTML+=s;       
+          
         /*** tabs ***/
         if(sTagName!="TEXTAREA")sHTML+= lineBreak1(sTagName)[1];
         if(sTagName!="TEXTAREA")if(lineBreak1(sTagName)[1] !="") sHTML+= sT;//If new line, use base Tabs

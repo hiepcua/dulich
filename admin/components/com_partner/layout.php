@@ -3,6 +3,8 @@ defined('ISHOME') or die('Can not acess this page, please come back!');
 define('COMS','partner');
 define('THIS_COM_PATH',COM_PATH.'com_'.COMS.'/');
 $objmysql = new CLS_MYSQL();
+$msg 		= new \Plasticbrain\FlashMessages\FlashMessages();
+if(!isset($_SESSION['flash'.'com_'.COMS])) $_SESSION['flash'.'com_'.COMS] = 2;
 
 if(isset($_POST['cmdsave'])){
 	$Name 		= addslashes(htmlentities($_POST['txt_name']));
@@ -12,12 +14,16 @@ if(isset($_POST['cmdsave'])){
 	if(isset($_POST['txtid'])){
 		$ID = (int)$_POST['txtid'];
 		$sql = "UPDATE tbl_partner SET `name`='".$Name."', `images`='".$Images."', `link`='".$Link."' WHERE id='".$ID."'";
-        $objmysql->Exec($sql);
+        $result = $objmysql->Exec($sql);
+        if($result) $_SESSION['flash'.'com_'.COMS] = 1;
+        else $_SESSION['flash'.'com_'.COMS] = 0;
 	}else{
 		$sql = "INSERT INTO `tbl_partner`(`name`,`images`,`link`) VALUES ('".$Name."','".$Images."','".$Link."','".$isActive."')";
-		$objmysql->Exec($sql);
+		$result = $objmysql->Exec($sql);
+        if($result) $_SESSION['flash'.'com_'.COMS] = 1;
+        else $_SESSION['flash'.'com_'.COMS] = 0;
 	}
-	echo "<script language=\"javascript\">window.location.href='".ROOTHOST_ADMIN.COMS."'</script>";
+	// echo "<script language=\"javascript\">window.location.href='".ROOTHOST_ADMIN.COMS."'</script>";
 }
 
 

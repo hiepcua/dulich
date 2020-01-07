@@ -4,6 +4,8 @@ define('COMS','booking');
 define('THIS_COM_PATH',COM_PATH.'com_'.COMS.'/');
 
 $objmysql 	= new CLS_MYSQL();
+$msg 		= new \Plasticbrain\FlashMessages\FlashMessages();
+if(!isset($_SESSION['flash'.'com_'.COMS])) $_SESSION['flash'.'com_'.COMS] = 2;
 
 if(isset($_POST['cmdsave']) && (int)$_POST['tour'] !== 0){
 	// Get tour info by un_name
@@ -37,38 +39,17 @@ if(isset($_POST['cmdsave']) && (int)$_POST['tour'] !== 0){
 
 	if(isset($_POST['txtid'])){
 		$ID = (int)$_POST['txtid'];
-		// $sql = "UPDATE tbl_booking SET 
-  //       `tour_id`='".$p_tour_id."',
-  //       `place_id`='".$p_place_id."',
-  //       `name`='".$p_name."',
-  //       `code`='".$p_code."',
-  //       `price1`='".$p_price1."',
-  //       `price2`='".$p_price2."',
-  //       `starting_gate`='".$p_starting_gate."',
-  //       `start_date`='".$p_start_date."',
-  //       `days`='".$p_days."',
-  //       `vehicle`='".$p_vehicle."',
-  //       `number_of_holes`='".$p_number_of_holes."',
-  //       `price_range`='".$p_price_range."',
-  //       `hobby`='".$p_hobby."',
-  //       `cdate`='".$p_cdate."',
-  //       `adult`='".$p_adult."',
-  //       `child`='".$p_child."',
-  //       `baby`='".$p_baby."',
-  //       `fullname`='".$p_fullname."',
-  //       `email`='".$p_email."',
-  //       `phone`='".$p_phone."',
-  //       `address`='".$p_address."',
-  //       `status`='".$p_status."'
-  //       WHERE id='".$ID."'";
 		$sql = "UPDATE tbl_booking SET 
         `status`='".$p_status."'
         WHERE id='".$ID."'";
         $result = $objmysql->Exec($sql);
-
+        if($result) $_SESSION['flash'.'com_'.COMS] = 1;
+        else $_SESSION['flash'.'com_'.COMS] = 0;
 	}else{
 		$sql="INSERT INTO tbl_booking (`tour_id`, `place_id`, `name`, `code`, `price1`, `price2`, `starting_gate`, `start_date`, `days`, `vehicle`, `number_of_holes`, `price_range`, `hobby`, `cdate`, `adult`, `child`, `baby`, `fullname`, `email`, `phone`, `address`, `status`) VALUES ('".$p_tour_id."', '".$p_place_id."', '".$p_name."', '".$p_code."', '".$p_price1."', '".$p_price2."', '".$p_starting_gate."', '".$p_start_date."', '".$p_days."', '".$p_vehicle."', '".$p_number_of_holes."', '".$p_price_range."', '".$p_hobby."', '".$p_cdate."', '".$p_adult."', '".$p_child."', '".$p_baby."', '".$p_fullname."', '".$p_email."', '".$p_phone."', '".$p_address."', '".$p_status."')";
 		$result = $objmysql->Exec($sql);
+		if($result) $_SESSION['flash'.'com_'.COMS] = 1;
+        else $_SESSION['flash'.'com_'.COMS] = 0;
 	}
 	// echo "<script language=\"javascript\">window.location.href='".ROOTHOST_ADMIN.COMS."'</script>";
 }

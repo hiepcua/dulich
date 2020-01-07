@@ -15,7 +15,7 @@ $actual_link = "http://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
 require_once "global/libs/gfinit.php";
 require_once "global/libs/gfconfig.php";
 require_once "global/libs/gffunc.php";
-require_once 'libs/cls.mysql.php';
+require_once 'libs/cls.mysqli.php';
 require_once 'libs/cls.template.php';
 require_once 'libs/cls.menuitem.php';
 require_once 'libs/cls.module.php';

@@ -31,140 +31,216 @@ if(is_dir('../images/'.$row['code'])){
         return true;
     }
 </script>
-<div id="path">
-    <ol class="breadcrumb">
-        <li><a href="<?php echo ROOTHOST_ADMIN;?>">Admin</a></li>
-        <li><a href="<?php echo ROOTHOST_ADMIN.COMS;?>">Danh sách địa điểm du lịch</a></li>
-        <li class="active">Sửa danh địa điểm</li>
-    </ol>
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">CẬP NHẬT ĐỊA ĐIỂM</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="<?php echo ROOTHOST_ADMIN;?>">Home</a></li>
+                    <li class="breadcrumb-item"><a href="<?php echo ROOTHOST_ADMIN.COMS;?>">Danh sách địa điểm</a></li>
+                    <li class="breadcrumb-item active">Cập nhật địa điểm</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
 </div>
-
-<div class="com_header color">
-    <h1>Cập nhật thông tin địa điểm</h1>
-    <div class="pull-right">
-        <form id="frm_menu" name="frm_menu" method="post" action="">
-            <input type="hidden" name="txtorders" id="txtorders" />
-            <input type="hidden" name="txtids" id="txtids" />
-            <input type="hidden" name="txtaction" id="txtaction" />
-
-            <ul class="list-inline">
-                <li><a class="save btn btn-success" href="#" onclick="dosubmitAction('frm_action','save');" title="Lưu"><i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</a></li>
-                <li><a class="btn btn-default"  href="<?php echo ROOTHOST_ADMIN.COMS;?>" title="Đóng"><i class="fa fa-sign-out" aria-hidden="true"></i> Đóng</a></li>
+<!-- /.content-header -->
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <?php
+        if (isset($_SESSION['flash'.'com_'.COMS])) {
+            if($_SESSION['flash'.'com_'.COMS] == 1){
+                $msg->success('Cập nhật thành công.');
+                echo $msg->display();
+            }else if($_SESSION['flash'.'com_'.COMS] == 0){
+                $msg->error('Có lỗi trong quá trình cập nhật.');
+                echo $msg->display();
+            }
+            unset($_SESSION['flash'.'com_'.COMS]);
+        }
+        ?>
+        <div class="box-tabs">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#info">Thông tin</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#seo">Meta SEO</a>
+                </li>
             </ul>
-        </form>
-    </div>
-</div>
-<div class="clearfix"></div>
+        </div>
 
-<div class="box-tabs">
-    <ul class="nav nav-tabs" role="tablist">
-        <li class="active">
-            <a href="#info" role="tab" data-toggle="tab">
-                Thông tin
-            </a>
-        </li>
-        <li>
-            <a href="#seo" role="tab" data-toggle="tab">
-                Meta header
-            </a>
-        </li>
-    </ul><br>
-    <form id="frm_action" class="form-horizontal" name="frm_action" method="post" enctype="multipart/form-data">
-        <div class="tab-content">
-            <div class="tab-pane fade active in" id="info">
-                <input type="hidden" name="txtid" value="<?php echo $row['id'];?>">
-                <input type="hidden" name="txt_seo_link" value="<?php echo $seo_link;?>">
-				<div class="form-group">
-                    <div class="col-md-6 col-sm-6">
-                        <label>Tênc<small class="cred"> (*)</small><span id="txt_name_err" class="mes-error"></span></label>
-                        <input type="text" name="txt_name" class="form-control" id="txt_name" placeholder="Tên địa điểm" value="<?php echo $row['name'];?>" required>
-                    </div>
-                    <div class="col-md-6 col-sm-6">
-                        <label>Cha</label>
-                        <select name="cbo_par" class="form-control" id="cbo_par" style="width: 100%;">
-                            <option value="0" title="Top">Root</option>
-                            <?php $obj->getListCate(0,0); ?>
-                        </select>
-                        <script type="text/javascript">
-                            $(document).ready(function() {
-                                cbo_Selected('cbo_par','<?php echo $row['par_id'];?>');
-                            });
-                        </script>
+        <form id="frm_action" class="form-horizontal" name="frm_action" method="post" enctype="multipart/form-data">
+            <div class="tab-content card">
+                <div class="tab-pane container-fluid active" id="info">
+                    <input type="hidden" name="txtid" value="<?php echo $row['id'];?>">
+                    <input type="hidden" name="txt_seo_link" value="<?php echo $seo_link;?>">
+                    <div class="row">
+                        <div class="col-md-9 col-sm-8">
+                            <div class="form-group">
+                                <label>Tên<small class="cred"> (*)</small><span id="txt_name_err" class="mes-error"></span></label>
+                                <input type="text" name="txt_name" class="form-control" id="txt_name" placeholder="Tên địa điểm" value="<?php echo $row['name'];?>" required>
+                            </div>
+
+                            <div class='form-group'>
+                                <label>Chọn thêm ảnh<span id="err_images" class="mes-error"></span></label>
+                                <div id="response_img">
+                                    <?php
+                                    $images = $row['images']; 
+                                    if($images !== '[]' || $images !== ''){
+                                        $images = json_decode($images, true);
+
+                                        if(count($images)>0) {
+                                            foreach ($images as $k => $val) {
+                                                $order = isset($val['order']) ? (int)$val['order'] : 0;
+                                                echo '<div class="info-item" data-number="'. $k .'">
+                                                <input type="hidden" name="txt_images[]" value="'.$val['url'].'"/>
+                                                <input type="hidden" name="txt_alt[]" value="'.$val['alt'].'"/>
+                                                <img class="thumb" src="'.$val['url'].'" width="150px">
+                                                <div class="name">'.$val['alt'].'</div>
+                                                <div class="wrap-item-info">
+                                                <div class="del-item" onclick="images_delete_item(this);" title="Xóa"></div>
+                                                <div class="edit-item" data-number="'. $k .'" data-url="'.$val['url'].'" data-alt="'.$val['alt'].'" onclick="images_edit_item(this);" title="Đổi tên"></div>
+                                                <input type="text" name="image_order[]" class="image_order" value="'.$order.'" size="4" class="order">
+                                                </div>
+                                                </div>';
+                                            } 
+                                        }
+                                    }else{
+                                        echo '<input type="hidden" name="txt_images[]" value=""/>';
+                                    }
+                                    ?>
+                                    <div class="default">
+                                        <img src="<?php echo ROOTHOST_ADMIN;?>images/images.png" class="thumb-default" onclick="OpenPopup('<?php echo ROOTHOST_ADMIN;?>extensions/upload_images.php');">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-control-label">Intro</label>
+                                <textarea name="txtintro" id="txtintro" rows="5"><?php echo $row['intro'];?></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-4">
+                            <div class="form-group">
+                                <label>Cha</label>
+                                <select name="cbo_par" class="form-control" id="cbo_par" style="width: 100%;">
+                                    <option value="0" title="Top">Root</option>
+                                    <?php $obj->getListCate(0,0); ?>
+                                </select>
+                                <script type="text/javascript">
+                                    $(document).ready(function() {
+                                        cbo_Selected('cbo_par','<?php echo (int)$row['par_id'];?>');
+                                    });
+                                </script>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Quốc gia</label>
+                                <select name="cbo_country[]" id="cbo_country" class="form-control" onchange="change_country()" multiple="multiple">
+                                    <option value="0">-- Chọn một --</option>
+                                    <?php
+                                    $sql_country="SELECT * FROM tbl_country WHERE isactive=1";
+                                    $objmysql->Query($sql_country);
+                                    while ($row_country = $objmysql->Fetch_Assoc()) {
+                                        echo '<option value="'.$row_country['id'].'">'.$row_country['name'].'</option>';
+                                    }
+                                    ?>
+                                </select>
+                                <script type="text/javascript">
+                                    $(document).ready(function() {
+                                        var json_encode_arr_country = '<?php echo $row['country_id'];?>';
+                                        cbo_SelectedInArray('cbo_country', json_encode_arr_country);
+                                    });
+                                </script>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Tỉnh/ Thành phố</label>
+                                <select name="cbo_city[]" class="form-control" id="cbo_city" onchange="change_city()" multiple="multiple">
+                                    <option value="0">-- Chọn một --</option>
+                                    <?php
+                                    $str_country = implode(',', json_decode($row['country_id']));
+                                    $sql_city="SELECT * FROM tbl_city WHERE isactive=1 AND country IN (".$str_country.")";
+                                    $objmysql->Query($sql_city);
+                                    while ($row_city = $objmysql->Fetch_Assoc()) {
+                                        echo '<option value="'.$row_city['id'].'">'.$row_city['name'].'</option>';
+                                    }
+                                    ?>
+                                </select>
+                                <script type="text/javascript">
+                                    $(document).ready(function() {
+                                        var json_encode_arr_city = '<?php echo $row['city_id'];?>';
+                                        cbo_SelectedInArray('cbo_city', json_encode_arr_city);
+                                    });
+                                </script>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Quận/ Huyện</label>
+                                <select name="cbo_district[]" class="form-control" id="cbo_district" multiple="multiple">
+                                    <option value="0">-- Chọn một --</option>
+                                    <?php
+                                    $str_district = implode(',', json_decode($row['city_id']));
+                                    $sql_district="SELECT * FROM tbl_district WHERE isactive=1 AND city_id IN (".$str_district.")";
+                                    $objmysql->Query($sql_district);
+                                    while ($row_district = $objmysql->Fetch_Assoc()) {
+                                        echo '<option value="'.$row_district['id'].'">'.$row_district['name'].'</option>';
+                                    }
+                                    ?>
+                                </select>
+                                <script type="text/javascript">
+                                    $(document).ready(function() {
+                                        var json_encode_arr_district = '<?php echo $row['district_id'];?>';
+                                        cbo_SelectedInArray('cbo_district', json_encode_arr_district);
+                                    });
+                                </script>
+                            </div>
+                        </div>
+                        
                     </div>
                 </div>
-                <div class='form-group col-sm-12'>
-                    <label>Chọn thêm ảnh<span id="err_images" class="mes-error"></span></label>
-                    <div id="response_img">
-                        <?php
-                        $images = $row['images']; 
-                        if($images !== '[]' || $images !== ''){
-                            $images = json_decode($images, true);
 
-                            if(count($images)>0) {
-                                foreach ($images as $k => $val) {
-                                    $order = isset($val['order']) ? (int)$val['order'] : 0;
-                                    echo '<div class="info-item" data-number="'. $k .'">
-                                    <input type="hidden" name="txt_images[]" value="'.$val['url'].'"/>
-                                    <input type="hidden" name="txt_alt[]" value="'.$val['alt'].'"/>
-                                    <img class="thumb" src="'.$val['url'].'" width="150px">
-                                    <div class="name">'.$val['alt'].'</div>
-                                    <div class="wrap-item-info">
-                                    <div class="del-item" onclick="images_delete_item(this);" title="Xóa"></div>
-                                    <div class="edit-item" data-number="'. $k .'" data-url="'.$val['url'].'" data-alt="'.$val['alt'].'" onclick="images_edit_item(this);" title="Đổi tên"></div>
-                                    <input type="text" name="image_order[]" class="image_order" value="'.$order.'" size="4" class="order">
-                                    </div>
-                                    </div>';
-                                } 
-                            }
-                        }else{
-                            echo '<input type="hidden" name="txt_images[]" value=""/>';
-                        }
-                        ?>
-                        <div class="default">
-                            <img src="<?php echo ROOTHOST_ADMIN;?>images/images.png" class="thumb-default" onclick="OpenPopup('<?php echo ROOTHOST_ADMIN;?>extensions/upload_images.php');">
+                <div class="tab-pane container-fluid fade" id="seo">
+                    <div class="row">
+                        <div class='col-md-12 form-group'>
+                            <label><strong>Meta Title</strong></label>
+                            <input name="txt_metatitle" type="text" id="txt_metatitle" class='form-control' value="<?php echo $row_seo['meta_title'];?>" placeholder='' />
+                        </div>
+
+                        <div class='col-md-12 form-group'>
+                            <label><strong>Meta Keyword</strong></label>
+                            <textarea class="form-control" name="txt_metakey" id="txt_metakey" rows="3"><?php echo $row_seo['meta_key'];?></textarea>
+                        </div>
+
+                        <div class='col-md-12 form-group'>
+                            <label><strong>Meta Description</strong></label>
+                            <textarea class="form-control" name="txt_metadesc" id="txt_metadesc" rows="5"><?php echo $row_seo['meta_desc'];?></textarea>
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="col-md-12">
-                        <label class="form-control-label">Intro</label>
-                        <textarea name="txtintro" id="txtintro" rows="5"><?php echo $row['intro'];?></textarea>
-                    </div>
-                </div>
             </div>
 
-            <div class="tab-pane fade" id="seo">
-                <div class="col-xs-12">
-                    <div class='form-group'>
-                        <label><strong>Meta Title</strong></label>
-                        <input name="txt_metatitle" type="text" id="txt_metatitle" class='form-control' value="<?php echo $row_seo['meta_title'];?>" placeholder='' />
-                    </div>
-
-                    <div class='form-group'>
-                        <label><strong>Meta Keyword</strong></label>
-                        <textarea class="form-control" name="txt_metakey" id="txt_metakey" rows="3"><?php echo $row_seo['meta_key'];?></textarea>
-                    </div>
-
-                    <div class='form-group'>
-                        <label><strong>Meta Description</strong></label>
-                        <textarea class="form-control" name="txt_metadesc" id="txt_metadesc" rows="5"><?php echo $row_seo['meta_desc'];?></textarea>
-                    </div>
-                </div>
+            <input type="submit" name="cmdsave" id="cmdsave" value="Submit" style="display:none;" />
+            <div class="text-center toolbar">
+                <a class="save btn btn-success" href="#" onclick="dosubmitAction('frm_action','save');" title="Lưu thông tin"><i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu thông tin</a>
             </div>
-        </div>
-
-        <input type="submit" name="cmdsave" id="cmdsave" value="Submit" style="display:none;" />
-        <div class="text-center toolbar">
-            <div style="height: 20px;"></div>
-            <a class="save btn btn-success" href="#" onclick="dosubmitAction('frm_action','save');" title="Lưu thông tin"><i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu thông tin</a>
-        </div>
-    </form>
-</div>
-
+        </form>
+    </div>
+</section>
 
 <script type="text/javascript">
     $(document).ready(function(){
         $("#cbo_par").select2();
+        $("#cbo_country").select2();
+        $("#cbo_city").select2();
+        $("#cbo_district").select2();
         $('#txtintro').summernote({
             placeholder: 'Mô tả ...',
             height: 300,
@@ -235,5 +311,39 @@ if(is_dir('../images/'.$row['code'])){
             }
         }
         $('#myModalPopup').modal('hide');
+    }
+
+    function change_country(){
+        var ids = $('#cbo_country').val();
+        var str_id = JSON.stringify(ids);
+        $.ajax({
+            url : '<?php echo ROOTHOST_ADMIN.'ajaxs/tour/getCity.php' ?>',
+            type : 'GET',
+            data : {
+                'ids' : str_id,
+            },
+            cache: false,
+            success: function (res) {
+                $('#cbo_city').empty();
+                $('#cbo_city').append(res);
+            }
+        })
+    }
+
+    function change_city(){
+        var ids = $('#cbo_city').val();
+        var str_id = JSON.stringify(ids);
+        $.ajax({
+            url : '<?php echo ROOTHOST_ADMIN.'ajaxs/tour/getDistrict.php' ?>',
+            type : 'GET',
+            data : {
+                'ids' : str_id,
+            },
+            cache: false,
+            success: function (res) {
+                $('#cbo_district').empty();
+                $('#cbo_district').append(res);
+            }
+        })
     }
 </script>

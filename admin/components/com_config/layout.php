@@ -13,7 +13,9 @@
 </script>
 <?php
 define('COMS','config');
-$objmysql = new CLS_MYSQL();
+$objmysql 	= new CLS_MYSQL();
+$msg 		= new \Plasticbrain\FlashMessages\FlashMessages();
+if(!isset($_SESSION['flash'.'com_'.COMS])) $_SESSION['flash'.'com_'.COMS] = 2;
 
 $check_permission = $UserLogin->Permission(COMS);
 if($check_permission==false) die($GLOBALS['MSG_PERMIS']);
@@ -35,6 +37,7 @@ if(isset($_POST['web_title']) && $_POST['web_title']!='') {
 	$Gplus 			= isset($_POST['txtgplus']) ? addslashes($_POST['txtgplus']) : '';
 	$Facebook 		= isset($_POST['txtfacebook']) ? addslashes($_POST['txtfacebook']) : '';
 	$Youtube 		= isset($_POST['txtyoutube']) ? addslashes($_POST['txtyoutube']) : '';
+	$Work_time 		= isset($_POST['txt_work_time']) ? addslashes($_POST['txt_work_time']) : '';
 
 	$sql = "UPDATE tbl_configsite SET ";
 	$sql .="title='".$Title."',";
@@ -44,13 +47,16 @@ if(isset($_POST['web_title']) && $_POST['web_title']!='') {
 	$sql .="fax='".$Fax."',";
 	$sql .="email='".$Email."',";
 	$sql .="address='".$Address."',";
+	$sql .="work_time='".$Work_time."',";
 	$sql .="meta_keyword='".$Meta_keyword."',";
 	$sql .="twitter='".$Twitter."',";
 	$sql .="gplus='".$Gplus."',";
 	$sql .="facebook='".$Facebook."',";
 	$sql .="youtube='".$Youtube."',";
 	$sql .="meta_descript='".$Meta_descript."' WHERE config_id=1";
-	$objmysql->Query($sql);
+	$result = $objmysql->Query($sql);
+	if($result) $_SESSION['flash'.'com_'.COMS] = 1;
+	else $_SESSION['flash'.'com_'.COMS] = 0;
 }
 
 $sql="SELECT * FROM `tbl_configsite` WHERE `config_id`=1";
@@ -58,8 +64,7 @@ $objmysql->Query($sql);
 
 if($objmysql->Num_rows()<=0) {
 	echo 'Dữ liệu trống.';
-}
-else{
+}else{
 	$row = $objmysql->Fetch_Assoc();
 	$title          = stripslashes($row['title']);
 	$company_name   = stripslashes($row['company_name']);
@@ -74,136 +79,145 @@ else{
 	$youtube        = stripslashes($row['youtube']);
 	$gplus          = stripslashes($row['gplus']);
 	$twitter        = stripslashes($row['twitter']);
+	$work_time       = stripslashes($row['work_time']);
 }
 unset($objmysql);
 ?>
-<div class="com_header color">
-	<i class="fa fa-cog" aria-hidden="true"></i> THÔNG TIN CẤU HÌNH WEBSITE
-	<div class="pull-right">
-		<form id="frm_menu" name="frm_menu" method="post" action="">
-			<input type="hidden" name="txtorders" id="txtorders" />
-			<input type="hidden" name="txtids" id="txtids" />
-			<input type="hidden" name="txtaction" id="txtaction" />
-
-			<ul class="list-inline">
-				<li><a class="save btn btn-success" href="#" onclick="dosubmitAction('frm_action','save');" title="Lưu"><i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</a></li>
-
-				<li><a class="btn btn-default"  href="<?php echo ROOTHOST_ADMIN;?>" title="Đóng"><i class="fa fa-sign-out" aria-hidden="true"></i> Đóng</a></li>
-			</ul>
-		</form>
-	</div>
-</div><br>
-<div id='action' class="col-md-12">
-	<form name="frm_action" id="frm_action" action="" method="post">
-		<div><b>THÔNG TIN TRANG</b></div><hr size="1" style="margin:10px 0 20px;">
-		<div class="form-group">
-			<label class="col-sm-3 col-md-2 control-label">Tên website<font color="red"><font color="red">*</font></font></label>
-			<div class="col-md-9">
-				<input type="text" name="web_title" class="form-control" id="web_title" value="<?php echo $title;?>" placeholder="">
-				<div id="txt_name_err" class="mes-error"></div>
-			</div>
-			<div class="clearfix"></div>
-		</div>
-		<div class="form-group">
-			<label class="col-sm-3 col-md-2 control-label">Tên công ty</label>
-			<div class="col-md-9">
-				<input type="text" name="company_name" class="form-control" value="<?php echo $company_name;?>" placeholder="">
-			</div>
-			<div class="clearfix"></div>
-		</div>
-		<div class="form-group">
-			<label class="col-sm-3 col-md-2 control-label">Mô tả website<font color="red"><font color="red">*</font></font></label>
-			<div class="col-md-9">
-				<input type="text" name="web_desc" class="form-control" id="web_desc" value="<?php echo $desc;?>" placeholder="">
-				<div id="txt_name_err" class="mes-error"></div>
-			</div>
-			<div class="clearfix"></div>
-		</div>
-		<div class="form-group">
-			<label class="col-sm-3 col-md-2 control-label">Từ khóa<font color="red">*</font></label>
-			<div class="col-md-9">
-				<input type="text" name="web_keywords" class="form-control" id="web_keywords" value="<?php echo $key;?>" placeholder="">
-				<div id="txt_name_err" class="mes-error"></div>
-			</div>
-			<div class="clearfix"></div>
-		</div>
-		<div><b>THÔNG TIN LIÊN HỆ</b></div><hr size="1" style="margin:10px 0 20px;">
-		<div class="form-group">
-			<label class="col-sm-3 col-md-2 control-label">Email liên hệ<font color="red">*</font></label>
-			<div class="col-md-9">
-				<input type="text" name="email_contact" class="form-control" id="email_contact" value="<?php echo $email_contact;?>" placeholder="">
-				<div id="txt_name_err" class="mes-error"></div>
-			</div>
-			<div class="clearfix"></div>
-		</div>
-		<div class="form-group">
-			<label class="col-sm-3 col-md-2 control-label">Số điện thoại</label>
-			<div class="col-md-9">
-				<input type="text" name="txtphone" class="form-control" id="txtphone" value="<?php echo $phone;?>" placeholder="">
-				<div id="txt_name_err" class="mes-error"></div>
-			</div>
-			<div class="clearfix"></div>
-		</div>
-		<div class="form-group">
-			<label class="col-sm-3 col-md-2 control-label">Di động</label>
-			<div class="col-md-9">
-				<input type="text" name="txttel" class="form-control" id="txttel" value="<?php echo $tel;?>" placeholder="Di động">
-				<div id="txt_name_err" class="mes-error"></div>
-			</div>
-			<div class="clearfix"></div>
-		</div>
-		<div class="form-group">
-			<label class="col-sm-3 col-md-2 control-label">Fax</label>
-			<div class="col-md-9">
-				<input type="text" name="txtfax" class="form-control" id="txtfax" value="<?php echo $fax;?>" placeholder="Fax">
-				<div id="txt_name_err" class="mes-error"></div>
-			</div>
-			<div class="clearfix"></div>
-		</div>
-		<div class="form-group">
-			<label class="col-sm-3 col-md-2 control-label">Địa chỉ</label>
-			<div class="col-md-9">
-				<input type="text" name="address" class="form-control" id="address" value="<?php echo $address;?>" placeholder="Địa chỉ">
-				<div id="txt_name_err" class="mes-error"></div>
-			</div>
-			<div class="clearfix"></div>
-		</div>
-		<div><b>MẠNG XÃ HỘI</b></div><hr size="1" style="margin:10px 0 20px;">
-		<div class="form-group">
-			<label class="col-sm-3 col-md-2 control-label">Facebook</label>
-			<div class="col-md-9">
-				<input type="text" name="txtfacebook" class="form-control" id="txtfacebook" value="<?php echo $facebook;?>" placeholder="Link Facebook của bạn">
-				<div id="txt_name_err" class="mes-error"></div>
-			</div>
-			<div class="clearfix"></div>
-		</div>
-		<div class="form-group">
-			<label class="col-sm-3 col-md-2 control-label">G+</label>
-			<div class="col-md-9">
-				<input type="text" name="txtgplus" class="form-control" id="txtgplus" value="<?php echo $gplus;?>"placeholder="Link G+ của bạn">
-				<div id="txt_name_err" class="mes-error"></div>
-			</div>
-			<div class="clearfix"></div>
-		</div>
-		<div class="form-group">
-			<label class="col-sm-3 col-md-2 control-label">Twitter</label>
-			<div class="col-md-9">
-				<input type="text" name="txttwitter" class="form-control" id="txttwitter" value="<?php echo $twitter;?>" placeholder="Link Twitter của bạn">
-				<div id="txt_name_err" class="mes-error"></div>
-			</div>
-			<div class="clearfix"></div>
-		</div>
-		<div class="form-group">
-			<label class="col-sm-3 col-md-2 control-label">Youtube</label>
-			<div class="col-md-9">
-				<input type="text" name="txtyoutube" class="form-control" id="txtyoutube" value="<?php echo $youtube;?>" placeholder="Link Youtube của bạn">
-				<div id="txt_name_err" class="mes-error"></div>
-			</div>
-			<div class="clearfix"></div>
-		</div>
-		<input type="submit" name="cmdsave" id="cmdsave" value="Submit" style="display:none;" />
-		<div class="text-center toolbar">
-	        <a class="save btn btn-success" href="#" onclick="dosubmitAction('frm_action','save');" title="Lưu thông tin"><i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu thông tin</a>
-	    </div>
-	</form>
+<!-- Content Header (Page header) -->
+<div class="content-header">
+	<div class="container-fluid">
+		<div class="row mb-2">
+			<div class="col-sm-6">
+				<h1 class="m-0 text-dark">THÔNG TIN CẤU HÌNH WEBSITE</h1>
+			</div><!-- /.col -->
+			<div class="col-sm-6">
+				<ol class="breadcrumb float-sm-right">
+					<li class="breadcrumb-item"><a href="<?php echo ROOTHOST_ADMIN;?>">Home</a></li>
+					<li class="breadcrumb-item active">Cấu hình website</li>
+				</ol>
+			</div><!-- /.col -->
+		</div><!-- /.row -->
+	</div><!-- /.container-fluid -->
 </div>
+<!-- /.content-header -->
+<!-- Main content -->
+<section class="content">
+	<div class="container-fluid">
+		<?php
+        if (isset($_SESSION['flash'.'com_'.COMS])) {
+            if($_SESSION['flash'.'com_'.COMS] == 1){
+                $msg->success('Cập nhật thành công.');
+                echo $msg->display();
+            }else if($_SESSION['flash'.'com_'.COMS] == 0){
+                $msg->error('Có lỗi trong quá trình cập nhật.');
+                echo $msg->display();
+            }
+            unset($_SESSION['flash'.'com_'.COMS]);
+        }
+        ?>
+		<div id='action'>
+			<form name="frm_action" id="frm_action" action="" method="post">
+				<div><b>THÔNG TIN TRANG</b></div><hr size="1" style="margin:10px 0 20px;">
+				<div class="form-group">
+					<label class="col-sm-3 col-md-2 control-label">Tên website<font color="red"><font color="red">*</font></font></label>
+					<div class="col-md-12">
+						<input type="text" name="web_title" class="form-control" id="web_title" value="<?php echo $title;?>" placeholder="">
+						<div id="txt_name_err" class="mes-error"></div>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 col-md-2 control-label">Tên công ty</label>
+					<div class="col-md-12">
+						<input type="text" name="company_name" class="form-control" value="<?php echo $company_name;?>" placeholder="">
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 col-md-2 control-label">Mô tả website<font color="red"><font color="red">*</font></font></label>
+					<div class="col-md-12">
+						<input type="text" name="web_desc" class="form-control" id="web_desc" value="<?php echo $desc;?>" placeholder="">
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 col-md-2 control-label">Từ khóa<font color="red">*</font></label>
+					<div class="col-md-12">
+						<input type="text" name="web_keywords" class="form-control" id="web_keywords" value="<?php echo $key;?>" placeholder="">
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div><b>THÔNG TIN LIÊN HỆ</b></div><hr size="1" style="margin:10px 0 20px;">
+				<div class="form-group">
+					<label class="col-sm-3 col-md-2 control-label">Email liên hệ<font color="red">*</font></label>
+					<div class="col-md-12">
+						<input type="text" name="email_contact" class="form-control" id="email_contact" value="<?php echo $email_contact;?>" placeholder="">
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 col-md-2 control-label">Số điện thoại</label>
+					<div class="col-md-12">
+						<input type="text" name="txtphone" class="form-control" id="txtphone" value="<?php echo $phone;?>" placeholder="">
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 col-md-2 control-label">Di động</label>
+					<div class="col-md-12">
+						<input type="text" name="txttel" class="form-control" id="txttel" value="<?php echo $tel;?>" placeholder="Di động">
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 col-md-2 control-label">Fax</label>
+					<div class="col-md-12">
+						<input type="text" name="txtfax" class="form-control" id="txtfax" value="<?php echo $fax;?>" placeholder="Fax">
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 col-md-2 control-label">Thời gian làm việc</label>
+					<div class="col-md-12">
+						<input type="text" name="txt_work_time" class="form-control" value="<?php echo $work_time;?>" placeholder="Thời gian làm việc">
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 col-md-2 control-label">Địa chỉ</label>
+					<div class="col-md-12">
+						<input type="text" name="address" class="form-control" id="address" value="<?php echo $address;?>" placeholder="Địa chỉ">
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div><b>MẠNG XÃ HỘI</b></div><hr size="1" style="margin:10px 0 20px;">
+				<div class="row form-group">
+					<div class="col-md-6">
+						<label class="control-label">Facebook</label>
+						<input type="text" name="txtfacebook" class="form-control" id="txtfacebook" value="<?php echo $facebook;?>" placeholder="Link Facebook của bạn">
+					</div>
+					<div class="col-md-6">
+						<label class="control-label">G+</label>
+						<input type="text" name="txtgplus" class="form-control" id="txtgplus" value="<?php echo $gplus;?>"placeholder="Link G+ của bạn">
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-md-6">
+						<label class="control-label">Twitter</label>
+						<input type="text" name="txttwitter" class="form-control" id="txttwitter" value="<?php echo $twitter;?>" placeholder="Link Twitter của bạn">
+					</div>
+					<div class="col-md-6">
+						<label class="control-label">Youtube</label>
+						<input type="text" name="txtyoutube" class="form-control" id="txtyoutube" value="<?php echo $youtube;?>" placeholder="Link Youtube của bạn">
+					</div>
+				</div>
+				<input type="submit" name="cmdsave" id="cmdsave" value="Submit" style="display:none;" />
+				<div class="text-center toolbar">
+					<a class="save btn btn-success" href="#" onclick="dosubmitAction('frm_action','save');" title="Lưu thông tin"><i class="fas fa-save"></i>Lưu thông tin</a>
+				</div>
+			</form>
+		</div>
+	</div>
+</section>
+<!-- /.row -->
+<!-- /.content-header -->

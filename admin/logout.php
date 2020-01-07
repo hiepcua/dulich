@@ -4,7 +4,7 @@ require_once("../global/libs/gfinit.php");
 require_once("../global/libs/gfconfig.php");
 require_once("../global/libs/gffunc.php");
 require_once("includes/gfconfig.php");
-require_once("libs/cls.mysql.php");
+require_once("libs/cls.mysqli.php");
 require_once("libs/cls.user.php");
 $UserLogin = new CLS_USER();
 $UserLogin->LOGOUT();

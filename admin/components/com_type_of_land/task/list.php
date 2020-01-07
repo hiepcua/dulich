@@ -98,7 +98,6 @@
                     <i class="fa fa-floppy-o" aria-hidden="true"></i>
                 </a>
             </th>
-            <th width="100" align="center">Hiển thị trang chủ</th>
             <th width="50" align="center">Hiển thị</th>
             <th width="50" align="center">Sửa</th>
             <th width="50" align="center">Xóa</th>
@@ -115,11 +114,6 @@
             $name=$rows['title'];
             $intro=$rows['intro'];
             $order=$rows['order'];
-
-            if($rows['display_home']==1) 
-                $toggle_display='<i class="fa fa-toggle-on cgreen" aria-hidden="true"></i>';
-            else $toggle_display='<i class="fa fa-toggle-off cgray" aria-hidden="true"></i>';
-
             if($rows['isactive']==1) 
                 $icon_active="<i class='fa fa-check cgreen' aria-hidden='true'></i>";
             else $icon_active='<i class="fa fa-times-circle-o cred" aria-hidden="true"></i>';
@@ -133,20 +127,13 @@
             echo "<td>".$intro."</td>";
 
             echo "<td width=\"50\" align=\"center\"><input type=\"text\" name=\"txt_order\" id=\"txt_order\" value=\"$order\" class=\"order\"></td>";
-
-            echo "<td align=\"center\">";
-            echo "<a href=\"index.php?com=".COMS."&amp;task=toggle&amp;id=$ids\">";
-            echo $toggle_display;
-            echo "</a>";
-            echo "</td>";
-
             echo "<td align=\"center\">";
             echo "<a href=\"index.php?com=".COMS."&amp;task=active&amp;id=$ids\">";
             echo $icon_active;
             echo "</a>";
             echo "</td>";
-
             echo "<td align=\"center\">";
+        
             echo "<a href=\"".ROOTHOST_ADMIN.COMS."/edit/$ids\">";
             echo "<i class='fa fa-edit' aria-hidden='true'></i>";
             echo "</a>";

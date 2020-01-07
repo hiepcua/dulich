@@ -26,6 +26,28 @@ class CLS_DOCUMENT_TYPE {
 	public function Fetch_Assoc(){
 		return $this->objmysql->Fetch_Assoc();
 	}
+
+	public function getListCate($parid=0, $level=0){
+        $sql="SELECT * FROM tbl_document_group WHERE `par_id`='$parid' AND `isactive`='1' ";
+        $objdata=new CLS_MYSQL();
+        $objdata->Query($sql);
+        $char="";
+        if($level!=0){
+            for($i=0;$i<$level;$i++)
+                $char.="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"; 
+            $char.="|---";
+        }
+        if($objdata->Num_rows()<=0) return;
+        while($rows=$objdata->Fetch_Assoc()){
+            $id=$rows['id'];
+            $parid=$rows['par_id'];
+            $title=$rows['name'];
+            echo "<option value='$id'>$char $title</option>";
+            $nextlevel=$level+1;
+            $this->getListCate($id,$nextlevel);
+        }
+    }
+    
 	function getListBox(){
 		$sql="SELECT * FROM tbl_document_group WHERE `isactive`='1' ";
 		// echo $sql;

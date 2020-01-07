@@ -5,6 +5,8 @@
 	
 	$check_permission = $UserLogin->Permission(COMS);
 	if($check_permission==false) die($GLOBALS['MSG_PERMIS']);
+	$msg 		= new \Plasticbrain\FlashMessages\FlashMessages();
+	if(!isset($_SESSION['flash'.'com_'.COMS])) $_SESSION['flash'.'com_'.COMS] = 2;
 
 	// Begin Toolbar
 	include_once('libs/cls.module.php');
@@ -53,14 +55,15 @@
 				`class`='".$Class."',
 				`isactive`='".$isActive."' 
 				WHERE `id`='".$ID."'";
-			$objmysql->Exec($sql);
+			$result = $objmysql->Exec($sql);
+	        if($result) $_SESSION['flash'.'com_'.COMS] = 1;
+	        else $_SESSION['flash'.'com_'.COMS] = 0;
 		}else{
 			$sql="INSERT INTO `tbl_modules` (`type`,`viewtitle`,`menu_id`,`place_id`,`category_id`,`content_id`,`theme`,`position`,`class`,`isactive`,`title`,`intro`,`content`) VALUES ('".$Type."','".$ViewTitle."','".$MnuID."','".$Place_ID."','".$Cate_ID."','".$Con_ID."','".$Theme."','".$Position."','".$Class."','".$isActive."','".$Title."','".$Intro."','".$HTML."')";
-			$objmysql->Exec($sql);
+			$result = $objmysql->Exec($sql);
+	        if($result) $_SESSION['flash'.'com_'.COMS] = 1;
+	        else $_SESSION['flash'.'com_'.COMS] = 0;
 		}
-		?>
-		<script language="javascript">window.location='<?php echo ROOTHOST_ADMIN.COMS;?>'</script>
-		<?php
 	}
 
 	if(isset($_POST["txtaction"]) && $_POST["txtaction"]!=""){
@@ -79,18 +82,8 @@
 				break;
 			case "delete":
 				$sql="DELETE FROM `tbl_modules` WHERE `id` in ('$ids')";
-				$objmysql->Exec('BEGIN');
 				$result=$objmysql->Exec($sql);
 
-				$sql="DELETE FROM `tbl_modules_text` WHERE `mod_id` in ('$ids')";
-				$result1=$objmysql->Exec($sql);
-
-				if($result && $result1 ){
-					$objmysql->Exec('COMMIT');
-				}else {
-					$objmysql->Exec('ROLLBACK');
-				}
-		        break;
 			case 'order':
 				$sls = explode(',',$_POST['txtorders']); 
 				$ids = explode(',',$_POST['txtids']);

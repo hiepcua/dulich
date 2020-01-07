@@ -1,43 +1,41 @@
 <?php ob_start();
-	session_start();
-	if(!isset($_SESSION[MD5($_SERVER['HTTP_HOST']).'_USERLOGIN']) || $_SESSION[MD5($_SERVER['HTTP_HOST']).'_USERLOGIN']==false){
-		die('');
+session_start();
+if(!isset($_SESSION[MD5($_SERVER['HTTP_HOST']).'_USERLOGIN']) || $_SESSION[MD5($_SERVER['HTTP_HOST']).'_USERLOGIN']==false){
+	die('');
+}
+ini_set('upload_max_filesize', '10M'); 
+include_once('../../global/libs/gfconfig.php');
+if(isset($_SESSION["MMEM_ID"]))
+	$gid=$_SESSION["MMEM_ID"];
+define("BASE_PATH","../../images/");
+define("ROOT_BASE_PATH",ROOTHOST."images/");
+$array_type=array('image/gif','image/jpg','image/jpeg','image/pjpeg','image/png','image/x-png');
+include_once("cls.upload.php");
+include_once("cls.resize.php");
+include_once("function.php");
+$file="";
+if(!isset($_SESSION["CUR_DIR"]) || $_SESSION["CUR_DIR"]=="")
+	$_SESSION["CUR_DIR"]=BASE_PATH;
+if(isset($_POST["cbo_dir"]) && $_POST["cbo_dir"]!=""){
+	$_SESSION["CUR_DIR"]=$_POST["cbo_dir"];
+}
+$cur_dir=$_SESSION["CUR_DIR"];
+if(isset($_FILES["txt_video"])){
+	$objmedia=new CLS_UPLOAD();
+	$objmedia->setPath($cur_dir);
+	$file=$objmedia->UploadFile("txt_video",$cur_dir);
+}
+if(isset($_GET["file"])){
+	unlink($cur_dir.$_GET["file"]);
+	header("Location: upload_image.php");
+}
+/*tao thu muc*/
+if(isset($_POST["ok"]))
+{
+	if(!is_dir($cur_dir.$_POST["txtnewdir"])){
+		mkdir($cur_dir.$_POST["txtnewdir"],0777);
 	}
-	ini_set('upload_max_filesize', '10M'); 
-	include_once('../../global/libs/gfconfig.php');
-	if(isset($_SESSION["MMEM_ID"]))
-		$gid=$_SESSION["MMEM_ID"];
-	define("BASE_PATH","../../images/");
-	define("ROOT_BASE_PATH",ROOTHOST."images/");
-	$array_type=array('image/gif','image/jpg','image/jpeg','image/pjpeg','image/png','image/x-png');
-	include_once("cls.upload.php");
-	include_once("cls.resize.php");
-	include_once("function.php");
-	$file="";
-	if(!isset($_SESSION["CUR_DIR"]) || $_SESSION["CUR_DIR"]=="")
-		$_SESSION["CUR_DIR"]=BASE_PATH;
-	if(isset($_POST["cbo_dir"]) && $_POST["cbo_dir"]!=""){
-		$_SESSION["CUR_DIR"]=$_POST["cbo_dir"];
-	}
-
-	$cur_dir = $_SESSION["CUR_DIR"];
-	if(isset($_FILES["txt_video"])){
-		$objmedia = new CLS_UPLOAD();
-		$objmedia->setPath($cur_dir);
-		$file = $objmedia->UploadFile("txt_video", $cur_dir);
-	}
-
-	if(isset($_GET["file"])){
-		unlink($cur_dir.$_GET["file"]);
-		header("Location: upload_image.php");
-	}
-	/*tao thu muc*/
-	if(isset($_POST["ok"]))
-	{
-		if(!is_dir($cur_dir.$_POST["txtnewdir"])){
-			mkdir($cur_dir.$_POST["txtnewdir"],0777);
-		}
-	}
+}
 ?>
 <!DOCTYPE html>
 <html language='vi'>

@@ -53,253 +53,214 @@ if(isset($_POST["txt_type"])){
     });
 </script>
 
-<div id="path">
-    <ol class="breadcrumb">
-        <li><a href="<?php echo ROOTHOST_ADMIN;?>">Admin</a></li>
-        <li><a href="<?php echo ROOTHOST_ADMIN.COMS;?>">Danh sách module</a></li>
-        <li class="active">Cập nhật module</li>
-    </ol>
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">CẬP NHẬT MODULE</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="<?php echo ROOTHOST_ADMIN;?>">Home</a></li>
+                    <li class="breadcrumb-item"><a href="<?php echo ROOTHOST_ADMIN.COMS;?>">Danh sách module</a></li>
+                    <li class="breadcrumb-item active">Cập nhật module</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
 </div>
+<!-- /.content-header -->
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <?php
+        if (isset($_SESSION['flash'.'com_'.COMS])) {
+            if($_SESSION['flash'.'com_'.COMS] == 1){
+                $msg->success('Cập nhật thành công.');
+                echo $msg->display();
+            }else if($_SESSION['flash'.'com_'.COMS] == 0){
+                $msg->error('Có lỗi trong quá trình cập nhật.');
+                echo $msg->display();
+            }
+            unset($_SESSION['flash'.'com_'.COMS]);
+        }
+        ?>
+        <form id="frm_type" name="frm_type" method="post" action="" style="display:none;">
+            <label>
+                <input type="text" name="txt_type" id="txt_type" />
+            </label>
+        </form>
 
-<div class="com_header color">
-    <i class="fa fa-pencil-square" aria-hidden="true"></i> Cập nhật Module
-    <div class="pull-right">
-        <form id="frm_menu" name="frm_menu" method="post" action="">
-            <input type="hidden" name="txtorders" id="txtorders" />
-            <input type="hidden" name="txtids" id="txtids" />
-            <input type="hidden" name="txtaction" id="txtaction" />
+        <form id="frm_action" class="form-horizontal" name="frm_action" method="post" action="">
+            <input type="hidden" name="txtid" id="txtid" value="<?php echo $row['id'];?>" />
+            <p>Những mục đánh dấu <font color="red">*</font> là yêu cầu bắt buộc.</p>
+            <div class="row">
+                <div class="col-md-9 col-sm-8">
+                    <div class="form-group">
+                        <label>Kiểu hiển thị<small class="cred"> (*)</small><span id="err1" class="mes-error"></span></label>
+                        <select name="cbo_type" class="form-control" id="cbo_type" onchange="select_type();" style="width: 100%;">
+                            <?php 
+                            $obj->LoadModType();?>
+                            <script language="javascript">
+                                cbo_Selected('cbo_type','<?php echo $viewtype;?>');
+                                $(document).ready(function() {
+                                    $("#cbo_type").select2();
+                                });
+                            </script>
+                        </select>
+                    </div>
 
-            <ul class="list-inline">
-                <li><a class="save btn btn-success" href="#" onclick="dosubmitAction('frm_action','save');" title="Lưu"><i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</a></li>
-                <li><a class="btn btn-default"  href="<?php echo ROOTHOST_ADMIN.COMS;?>" title="Đóng"><i class="fa fa-sign-out" aria-hidden="true"></i> Đóng</a></li>
-            </ul>
+                    <div class="form-group">
+                        <label>Tiêu đề<small class="cred"> (*)</small><span id="err2" class="mes-error"></span></label>
+                        <input name="txttitle" type="text" id="txttitle" class="form-control" value="<?php echo stripslashes($row['title']);?>">
+                    </div>
+
+                    <?php 
+                    $arr_type = array('mainmenu','html','news','slide', 'partner', 'content');
+                    if(in_array($viewtype,$arr_type)){ 
+                        if($viewtype == "mainmenu"){ ?>
+                            <div class="form-group">
+                                <label>Menu<small class="cred"> (*)</small><span id="err3" class="mes-error"></span></label>
+                                <select name="cbo_menutype" class="form-control" id="cbo_menutype">
+                                    <option value="all">Chọn một kiểu menu</option>
+                                    <?php echo $objmenu->getListmenu("option"); ?>
+                                    <script language="javascript">
+                                        cbo_Selected('cbo_menutype','<?php echo $row['menu_id'];?>');
+                                    </script>
+                                </select>
+
+                                <span id="menutype_err" class="check_error"></span>
+                            </div>
+
+                        <?php }else if($viewtype=="news"){ ?>
+                            <div class="form-group">
+                                <label>Nhóm tin</label>
+                                <select name="cbo_cate" class="form-control" id="cbo_cate" style="width: 100%;">
+                                    <option value="0">Chọn một nhóm tin</option>
+                                    <?php
+                                    if(!isset($objCate)) $objCate = new CLS_CATEGORY();
+                                    $objCate->getListCate(0,0);
+                                    ?>
+                                </select>
+                                <script type="text/javascript">
+                                    $(document).ready(function() {
+                                        cbo_Selected('cbo_cate','<?php echo $row['category_id'];?>');
+                                        $("#cbo_cate").select2();
+
+                                    });
+                                </script>
+                            </div>
+
+                        <?php }else if($viewtype=="content"){ ?>
+                            <div class="form-group">
+                                <label>Bài tin</label>
+                                <select name="cbo_content" class="form-control" id="cbo_content" style="width: 100%;">
+                                    <option value="0">Chọn một bài tin</option>
+                                    <?php
+                                    $sql_con = "SELECT * FROM tbl_contents WHERE isactive = 1";
+                                    $objmysql->Query($sql_con);
+
+                                    while ($r = $objmysql->Fetch_Assoc()) {
+                                        if($r['id'] == $row['content_id']){
+                                            echo '<option value="'.$r['id'].'" selected>'.$r['title'].'</option>';
+                                        }else{
+                                            echo '<option value="'.$r['id'].'">'.$r['title'].'</option>';
+                                        }
+                                    }
+                                    ?>
+                                </select>
+                                <script type="text/javascript">
+                                    $(document).ready(function() {
+                                        $("#cbo_content").select2();
+                                    });
+                                </script>
+                            </div>
+
+                        <?php }else if($viewtype=="html"){?>
+                            <div class="form-group">
+                                <label>Nội dung html</label>
+                                <textarea name="txtcontent" id="txtcontent" class="form-control"><?php echo stripslashes($row['content']);?></textarea>
+                            </div>
+                            <script type="text/javascript">
+                                $(document).ready(function(){
+                                    $('#txtcontent').summernote({
+                                        placeholder: 'Mô tả ...',
+                                        height: 300,
+                                        toolbar: [
+                                        ['style', ['style']],
+                                        ['font', ['bold', 'italic', 'underline', 'superscript', 'subscript', 'strikethrough', 'clear']],
+                                        ['fontname', ['fontname']],
+                                        ['fontsize', ['fontsize']],
+                                        ['color', ['color']],
+                                        ['para', ['ul', 'ol', 'paragraph']],
+                                        ['height', ['height']],
+                                        ['table', ['table']],
+                                        ['insert', ['link', 'picture', 'video', 'hr']],
+                                        ['view', ['fullscreen', 'codeview', 'help']],
+                                        ],
+                                    });
+                                });
+                            </script>
+                        <?php } ?>
+                    <?php }?>
+
+                    <div class="form-group">
+                        <label>Giao diện</label>
+                        <select name="cbo_theme" class="form-control" id="cbo_theme" style="width: 100%;">
+                            <option value="">Chọn một giao diện</option>
+                            <?php LoadModBrow("mod_".$viewtype);?>
+                        </select>
+                        <script type="text/javascript">
+                            $(document).ready(function() {
+                                cbo_Selected('cbo_theme','<?php echo $row['theme'];?>');
+                                $("#cbo_theme").select2();
+                            });
+                        </script>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-4">
+                    <div class="form-group">
+                        <label>Vị trí</label>
+                        <select name="cbo_position" class="form-control" id="cbo_position" style="width: 100%;">
+                            <?php LoadPosition();?>
+                        </select>
+                        <script type="text/javascript">
+                            $(document).ready(function() {
+                                $("#cbo_position").select2();
+                                cbo_Selected('cbo_position','<?php echo $row['position'];?>');
+                            });
+                        </script>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Class</label>
+                        <input type="text" name="txtclass" id="txtclass" class="form-control" value="<?php echo $row['class'];?>" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Hiển thị tiêu đề</label>
+                        <div>
+                            <label class="radio-inline"><input type="radio" name="optviewtitle" value="1" <?php if($row['viewtitle']==1) echo "checked";?>>Có</label>
+                            <label class="radio-inline"><input type="radio" name="optviewtitle" value="0" <?php if($row['viewtitle']==0) echo "checked";?>>Không</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Hiển thị</label>
+                        <div>
+                            <label class="radio-inline"><input type="radio" name="optactive" value="1" <?php if($row['isactive']==1) echo "checked";?>>Có</label>
+                            <label class="radio-inline"><input type="radio" name="optactive" value="0" <?php if($row['isactive']==0) echo "checked";?>>Không</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <input type="submit" name="cmdsave" id="cmdsave" value="Submit" style="display:none;">
+            <div class="text-center toolbar">
+                <a class="save btn btn-success" href="#" onclick="dosubmitAction('frm_action','save');" title="Lưu thông tin"><i class="fas fa-save"></i>Lưu thông tin</a>
+            </div>
         </form>
     </div>
-</div>
-<div class="clearfix"></div>
-
-<form id="frm_type" name="frm_type" method="post" action="" style="display:none;">
-    <label>
-        <input type="text" name="txt_type" id="txt_type" />
-    </label>
-</form>
-
-<form id="frm_action" class="form-horizontal" name="frm_action" method="post" action="">
-    <input type="hidden" name="txtid" id="txtid" value="<?php echo $row['id'];?>" />
-    <fieldset>
-        <legend><strong>Chi tiết:</strong></legend>
-        <p>Những mục đánh dấu <font color="red">*</font> là yêu cầu bắt buộc.</p>
-
-        <div class="form-group">
-            <div class="col-md-6 col-sm-6">
-                <label>Kiểu hiển thị<small class="cred"> (*)</small><span id="err1" class="mes-error"></span></label>
-                <select name="cbo_type" class="form-control" id="cbo_type" onchange="select_type();" style="width: 100%;">
-                    <?php
-                    $sql='SELECT * FROM `tbl_modtype`';
-                    $objmysql->Query($sql);
-                    while($rows = $objmysql->Fetch_Assoc()){
-                        $code = $rows['code'];
-                        $name = $rows['name'];
-                        echo "<option value=\"$code\">$name</option>";
-                    }
-                    ?>
-                    <script language="javascript">
-                        cbo_Selected('cbo_type','<?php echo $viewtype;?>');
-                        $(document).ready(function() {
-                            $("#cbo_type").select2();
-                        });
-                    </script>
-                </select>
-            </div>
-            <div class="col-md-6 col-sm-6">
-                <label>Tiêu đề<small class="cred"> (*)</small><span id="err2" class="mes-error"></span></label>
-                <input name="txttitle" type="text" id="txttitle" class="form-control" value="<?php echo stripslashes($row['title']);?>">
-            </div>
-            <div class="clearfix"></div>
-        </div>
-            
-        <?php $arr_type=array('html','news');
-        if(in_array($viewtype,$arr_type)){ ?>
-            <div class="form-group">
-                <div class="col-xs-12">
-                    <label>Mô tả</label>
-                    <textarea name="txtintro" class="form-control" rows="5"><?php echo stripslashes($row['intro']);?></textarea>
-                </div>
-            </div>
-        <?php } ?>
-
-        <div class="form-group">
-            <div class="col-md-6 col-sm-6">
-                <label>Vị trí</label>
-                <select name="cbo_position" class="form-control" id="cbo_position" style="width: 100%;">
-                    <?php
-                    $sql = "SELECT * FROM tbl_position";
-                    $objmysql->Query($sql);
-                    while ($r_position = $objmysql->Fetch_Assoc()) {
-                        echo "<option value=\"".$r_position['name']."\">".$r_position['name']."</option>";
-                    }
-                    ?>
-                </select>
-                <script type="text/javascript">
-                    $(document).ready(function() {
-                        cbo_Selected('cbo_position','<?php echo $row['position'];?>');
-                        $("#cbo_position").select2();
-                    });
-                </script>
-            </div>
-            <div class="col-md-6 col-sm-6">
-                <label>Class</label>
-                <input type="text" name="txtclass" id="txtclass" class="form-control" value="<?php echo $row['class'];?>" />
-            </div>
-            <div class="clearfix"></div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-6 col-sm-6">
-                <label>Hiển thị tiêu đề</label>
-                <div>
-                    <label class="radio-inline"><input type="radio" name="optviewtitle" value="1" <?php if($row['viewtitle']==1) echo "checked";?>>Có</label>
-                    <label class="radio-inline"><input type="radio" name="optviewtitle" value="0" <?php if($row['viewtitle']==0) echo "checked";?>>Không</label>
-                </div>
-            </div>
-            <div class="col-md-6 col-sm-6">
-                <label>Hiển thị</label>
-                <div>
-                    <label class="radio-inline"><input type="radio" name="optactive" value="1" <?php if($row['isactive']==1) echo "checked";?>>Có</label>
-                    <label class="radio-inline"><input type="radio" name="optactive" value="0" <?php if($row['isactive']==0) echo "checked";?>>Không</label>
-                </div>
-            </div>
-        </div>
-    </fieldset>
-
-    <?php 
-    $arr_type = array('mainmenu','html','category','slide', 'partner', 'news', 'more', 'place');
-    if(in_array($viewtype,$arr_type)){ ?>
-    <fieldset>
-        <legend><strong><?php echo "Parameter";?>:</strong></legend>
-        <?php if($viewtype == "mainmenu"){ ?>
-            <div class="form-group">
-                <div class="col-md-6 col-sm-6">
-                    <label>Menu<small class="cred"> (*)</small><span id="err3" class="mes-error"></span></label>
-                    <select name="cbo_menutype" class="form-control" id="cbo_menutype">
-                        <option value="all">Chọn một kiểu menu</option>
-                        <?php echo $objmenu->getListmenu("option"); ?>
-                        <script language="javascript">
-                            cbo_Selected('cbo_menutype','<?php echo $row['menu_id'];?>');
-                        </script>
-                    </select>
-
-                    <span id="menutype_err" class="check_error"></span>
-                </div>
-            </div>
-
-        <?php }else if($viewtype=="category"){ ?>
-            <div class="form-group">
-                <div class="col-md-6 col-sm-6">
-                    <label>Nhóm tin</label>
-                    <select name="cbo_cate" class="form-control" id="cbo_cate" style="width: 100%;">
-                        <option value="0">Chọn một nhóm tin</option>
-                        <?php
-                        if(!isset($objCate)) $objCate=new CLS_CATEGORY();
-                        $objCate->getListCate(0,0);
-                        ?>
-                    </select>
-                    <script type="text/javascript">
-                        $(document).ready(function() {
-                            cbo_Selected('cbo_cate','<?php echo $row['category_id'];?>');
-                            $("#cbo_cate").select2();
-                        });
-                    </script>
-                </div>
-            </div>
-
-        <?php }else if($viewtype=="place"){ ?>
-            <div class="form-group">
-                <div class="col-md-6 col-sm-6">
-                    <label>Điểm đến du lịch</label>
-                    <select name="cbo_place" class="form-control" id="cbo_place" style="width: 100%;">
-                        <option value="0">Chọn một điểm đến</option>
-                        <?php $objPlace->getListCate(0,0); ?>
-                    </select>
-                    <script type="text/javascript">
-                        $(document).ready(function() {
-                            cbo_Selected('cbo_place','<?php echo $row['place_id'];?>');
-                            $("#cbo_place").select2();
-                        });
-                    </script>
-                </div>
-            </div>
-
-        <?php }else if($viewtype=="news"){ ?>
-            <div class="form-group">
-                <div class="col-md-6 col-sm-6">
-                    <label>Nhóm tin</label>
-                    <select name="cbo_cate" class="form-control" id="cbo_cate" style="width: 100%;">
-                        <option value="0">Chọn một nhóm tin</option>
-                        <?php
-                        if(!isset($objCate)) $objCate = new CLS_CATEGORY();
-                        $objCate->getListCate(0,0);
-                        ?>
-                    </select>
-                    <script type="text/javascript">
-                        $(document).ready(function() {
-                            cbo_Selected('cbo_cate','<?php echo $row['category_id'];?>');
-                            $("#cbo_cate").select2();
-                            
-                        });
-                    </script>
-                </div>
-            </div>
-
-        <?php }else if($viewtype=="html"){?>
-            <div class="form-group">
-                <div class="col-xs-12">
-                    <label>Nội dung html</label>
-                    <textarea name="txtcontent" id="txtcontent" class="form-control"><?php echo stripslashes($row['content']);?></textarea>
-                </div>
-            </div>
-            <script type="text/javascript">
-                $(document).ready(function(){
-                    $('#txtcontent').summernote({
-                        placeholder: 'Nội dung bài viết',
-                        height: 300,
-                        toolbar: [
-                            ['style', ['style']],
-                            ['font', ['bold', 'italic', 'underline', 'superscript', 'subscript', 'strikethrough', 'clear']],
-                            ['fontname', ['fontname']],
-                            ['fontsize', ['fontsize']],
-                            ['color', ['color']],
-                            ['para', ['ul', 'ol', 'paragraph']],
-                            ['height', ['height']],
-                            ['table', ['table']],
-                            ['insert', ['link', 'picture', 'video', 'hr']],
-                            ['view', ['codeview']]
-                        ],
-                    });
-                });
-            </script>
-        <?php } ?>
-        <div class="clearfix"></div>
-        <div class="form-group">
-            <div class="col-md-6 col-sm-6">
-                <label>Giao diện</label>
-                <select name="cbo_theme" class="form-control" id="cbo_theme" style="width: 100%;">
-                    <option value="">Chọn một giao diện</option>
-                    <?php LoadModBrow("mod_".$viewtype);?>
-                </select>
-                <script type="text/javascript">
-                    $(document).ready(function() {
-                        cbo_Selected('cbo_theme','<?php echo $row['theme'];?>');
-                        $("#cbo_theme").select2();
-                    });
-                </script>
-            </div>
-        </div>
-    </fieldset>
-    <?php }?>
-    <input type="submit" name="cmdsave" id="cmdsave" value="Submit" style="display:none;">
-    <div class="text-center toolbar">
-        <div style="height: 20px;"></div>
-        <a class="save btn btn-success" href="#" onclick="dosubmitAction('frm_action','save');" title="Lưu thông tin"><i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu thông tin</a>
-    </div>
-</form>
+</section>

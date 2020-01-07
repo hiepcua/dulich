@@ -103,8 +103,8 @@ function realTime()
 function clearAllProperties()
     {
     document.getElementById("inpURL").value="";
-    document.getElementById("inpWidth").value="560";
-    document.getElementById("inpHeight").value="320";
+    document.getElementById("inpWidth").value="320";
+    document.getElementById("inpHeight").value="290";
     document.getElementById("chkAutoStart").checked=true;
     document.getElementById("chkShowControls").checked=true;
     document.getElementById("chkShowStatusBar").checked=false;
@@ -133,52 +133,43 @@ function insertMedia()
     if(document.getElementById("chkAutoRewind").checked)sAutoRewind="true";
     else sAutoRewind="false";
     
-    var sFile_RelativePath = document.getElementById("inpURL").value;
-    var arrTmp = sFile_RelativePath.split(".");
-	var sFile_Extension = arrTmp[arrTmp.length-1]
-    var sHTML="";
-	
-	//Video
-	if(sFile_Extension.toUpperCase()=="WMV"||sFile_Extension.toUpperCase()=="AVI"||sFile_Extension.toUpperCase()=="MPG")
-		{
-		sHTML = "<embed type='video/avi' "+
+    /*
+    var sHTML = "<object width='320' height='290' "+
+        "classid='"+inpCLassID.value+"'>"+ 
+        "<param name='Filename' value='"+inpURL.value+"'>"+
+        "<param name='AutoStart' value='"+sAutoStart+"'>"+
+        "<param name='ShowControls' value='"+sShowControls+"'>"+
+        "<param name='ShowStatusBar' value='"+sShowStatusBar+"'>"+
+        "<param name='ShowDisplay' value='"+sShowDisplay+"'>"+
+        "<param name='AutoRewind' value='"+sAutoRewind+"'>"+
+        "   <embed "+
+        "   type='application/x-mplayer2' "+
+        "   pluginspage='http://www.microsoft.com/Windows/Downloads/Contents/MediaPlayer/' "+
+        "   width='"+inpWidth.value+"' "+
+        "   height='"+inpHeight.value+"' "+
+        "   src='"+inpURL.value+"' "+
+        "   filename='"+inpURL.value+"' "+
+        "   autostart='"+sAutoStart+"' "+
+        "   showcontrols='"+sShowControls+"' "+
+        "   showstatusbar='"+sShowStatusBar+"' "+ 
+        "   showdisplay='"+sShowDisplay+"' "+
+        "   autorewind='"+sAutoRewind+"'>"+
+        "   </embed>"+ 
+        "</object>"*/
+        
+    var sHTML = "<embed selThis=\"selThis\" "+
+        "type='application/x-mplayer2' "+
         "pluginspage='http://www.microsoft.com/Windows/Downloads/Contents/MediaPlayer/' "+
         "width='"+document.getElementById("inpWidth").value+"' "+
         "height='"+document.getElementById("inpHeight").value+"' "+
         "src='"+document.getElementById("inpURL").value+"' "+
-        "filename='"+sFile_RelativePath+"' "+
+        "filename='"+document.getElementById("inpURL").value+"' "+
         "autostart='"+sAutoStart+"' "+
         "showcontrols='"+sShowControls+"' "+
         "showstatusbar='"+sShowStatusBar+"' "+ 
         "showdisplay='"+sShowDisplay+"' "+
         "autorewind='"+sAutoRewind+"'></embed>"
-		}
-	//Sound
-	else if(sFile_Extension.toUpperCase()=="WMA"||sFile_Extension.toUpperCase()=="WAV"||sFile_Extension.toUpperCase()=="MID")
-		{
-		sHTML = "<embed type='audio/wav' "+
-        "pluginspage='http://www.microsoft.com/Windows/Downloads/Contents/MediaPlayer/' "+
-        "width='"+document.getElementById("inpWidth").value+"' "+
-        "height='"+document.getElementById("inpHeight").value+"' "+
-        "src='"+document.getElementById("inpURL").value+"' "+
-        "filename='"+sFile_RelativePath+"' "+
-        "autostart='"+sAutoStart+"' "+
-        "showcontrols='"+sShowControls+"' "+
-        "showstatusbar='"+sShowStatusBar+"' "+ 
-        "showdisplay='"+sShowDisplay+"' "+
-        "autorewind='"+sAutoRewind+"'></embed>"
-		}
-	//Video
-	else if(sFile_Extension.toUpperCase()=="MP4"||sFile_Extension.toUpperCase()=="WebM"||sFile_Extension.toUpperCase()=="Ogg")
-		{
-		sHTML = '<video width="'+document.getElementById("inpWidth").value+'" height="'+document.getElementById("inpHeight").value+'" controls><source src="'+sFile_RelativePath+'" type="video/mp4"><source src="'+sFile_RelativePath+'" type="video/ogg">Your browser does not support the video tag.</video>';
-		}
-	//Files (Hyperlinks)
-	else
-		{	
-		sHTML = '<iframe src="'+sFile_RelativePath+'" frameborder="0" allowfullscreen=""></iframe>';
-		}
-
+    
     var obj=window.opener.oUtil.obj;
     obj.insertHTML(sHTML);
     
@@ -247,7 +238,7 @@ function updateMedia()
         <td colspan="4" style="width:100%">
             <table cellpadding="0" cellspacing="0" style="width:100%">
             <tr>
-            <td style="width:100%"><input type="text" name="inpURL" id="inpURL" size=45 value="" style="width:100%" class="inpTxt"></td>
+            <td style="width:100%"><input type="text" name=inpURL id=inpURL size=45 value="" style="width:100%" class="inpTxt"></td>
             <td><input type="button" value="" onclick="openAsset()" id="btnAsset" name="btnAsset" style="display:none;background:url('openAsset.gif');width:20px;height:16px;border:#a5acb2 1px solid;margin-left:1px;"></td>
             </tr>
             </table>        
@@ -255,11 +246,11 @@ function updateMedia()
     </tr>
     <tr>
         <td nowrap><span id="txtLang" name="txtLang">Width</span>:</td>
-        <td colspan="4"><input type="text" name="inpWidth" id="inpWidth" value="560" size=4 class="inpTxt"></td>
+        <td colspan="4"><input type="text" name="inpWidth" id="inpWidth" value=320 size=4 class="inpTxt"></td>
     </tr>
     <tr>
         <td nowrap><span id="txtLang" name="txtLang">Height</span>:</td>
-        <td colspan="4"><input type="text" name="inpHeight" id="inpHeight" value="320" size=4 class="inpTxt"></td>
+        <td colspan="4"><input type="text" name="inpHeight" id="inpHeight" value=290 size=4 class="inpTxt"></td>
     </tr>   
     <!--
     <tr>

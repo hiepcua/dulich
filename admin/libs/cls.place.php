@@ -57,8 +57,12 @@ class CLS_PLACE{
         }
     }
 
-    public function listTable($strwhere="",$parid=0,$level=0,$rowcount){
-        $sql="SELECT * FROM tbl_place WHERE 1=1 $strwhere AND `par_id` = $parid ORDER BY `order` ASC";
+    public function listTable($strwhere="",$parid=0,$level=0,$rowcount, $search=0){
+        if($search == 0){
+            $sql="SELECT * FROM tbl_place WHERE 1=1 $strwhere AND `par_id` = $parid ORDER BY `order` ASC";    
+        }else{
+            $sql="SELECT * FROM tbl_place WHERE 1=1 $strwhere ORDER BY `order` ASC";
+        }
         $objdata=new CLS_MYSQL();
         $objdata->Query($sql);
         $str_space="";

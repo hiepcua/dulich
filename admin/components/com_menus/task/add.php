@@ -13,66 +13,89 @@ defined("ISHOME") or die("Can't acess this page, please come back!");
 	}
 </script>
 
-<div id="path">
-    <ol class="breadcrumb">
-        <li><a href="<?php echo ROOTHOST_ADMIN;?>">Admin</a></li>
-        <li><a href="<?php echo ROOTHOST_ADMIN.COMS;?>">Danh sách Menu</a></li>
-        <li class="active">Thêm mới Menu</li>
-    </ol>
+<!-- Content Header (Page header) -->
+<div class="content-header">
+	<div class="container-fluid">
+		<div class="row mb-2">
+			<div class="col-sm-6">
+				<h1 class="m-0 text-dark">THÊM MỚI MENU</h1>
+			</div><!-- /.col -->
+			<div class="col-sm-6">
+				<ol class="breadcrumb float-sm-right">
+					<li class="breadcrumb-item"><a href="<?php echo ROOTHOST_ADMIN;?>">Home</a></li>
+					<li class="breadcrumb-item"><a href="<?php echo ROOTHOST_ADMIN.COMS;?>">Danh sách menu</a></li>
+					<li class="breadcrumb-item active">Thêm mới menu</li>
+				</ol>
+			</div><!-- /.col -->
+		</div><!-- /.row -->
+	</div><!-- /.container-fluid -->
 </div>
-
-<div class="com_header color">
-    <h1>Thêm mới Menu</h1>
-    <div class="pull-right">
-        <form id="frm_menu" name="frm_menu" method="post" action="">
-            <input type="hidden" name="txtorders" id="txtorders" />
-            <input type="hidden" name="txtids" id="txtids" />
-            <input type="hidden" name="txtaction" id="txtaction" />
-
-            <ul class="list-inline">
-                <li><a class="save btn btn-success" href="#" onclick="dosubmitAction('frm_action','save');" title="Lưu"><i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</a></li>
-                <li><a class="btn btn-default"  href="<?php echo ROOTHOST_ADMIN.COMS;?>" title="Đóng"><i class="fa fa-sign-out" aria-hidden="true"></i> Đóng</a></li>
-            </ul>
-        </form>
-    </div>
-</div>
-<div class="clearfix"></div>
-
-<form id="frm_action" class="form-horizontal" name="frm_action" method="post" action="">
-	<p>Những mục đánh dấu <font color="red">*</font> là yêu cầu bắt buộc.</p>
-	<div class='col-sm-12'>
-		<div class="row">
-			<div class="form-group">
+<!-- /.content-header -->
+<!-- Main content -->
+<section class="content">
+	<div class="container-fluid">
+		<?php
+        if (isset($_SESSION['flash'.'com_'.COMS])) {
+            if($_SESSION['flash'.'com_'.COMS] == 1){
+                $msg->success('Thêm mới thành công.');
+                echo $msg->display();
+            }else if($_SESSION['flash'.'com_'.COMS] == 0){
+                $msg->error('Có lỗi trong quá trình thêm.');
+                echo $msg->display();
+            }
+            unset($_SESSION['flash'.'com_'.COMS]);
+        }
+        ?>
+		<form id="frm_action" class="form-horizontal" name="frm_action" method="post" action="">
+			<p>Những mục đánh dấu <font color="red">*</font> là yêu cầu bắt buộc.</p>
+			<div class="row">
 				<div class="col-md-6">
-					<label>Tên Menu<small class="cred"> (*)</small><span id="txtname_err" class="mes-error"></span></label>
-					<input type="text" class="form-control" name="txtname" id="txtname">
-				</div>
-			</div>
-
-			<div class="form-group">
-				<div class="col-md-6">
-					<label>Hiển thị</label>
-					<div>
-						<label class="radio-inline"><input name="optactive" type="radio" id="radio" value="1" checked>Có</label>
-						<label class="radio-inline"><input type="radio" value="0" name="optactive">Không</label>
+					<div class="form-group">
+						<label>Tên Menu<small class="cred"> (*)</small><span id="txtname_err" class="mes-error"></span></label>
+						<input type="text" class="form-control" name="txtname" id="txtname">
 					</div>
 				</div>
-			</div>
-			<div class="form-group">
-				<div class="col-xs-12">
-					<textarea name="txtdesc" id="txtdesc" rows="5"></textarea>
+
+				<div class="col-md-6">
+					<div class="form-group">
+						<label>Hiển thị</label>
+						<div>
+							<label class="radio-inline"><input name="optactive" type="radio" id="radio" value="1" checked>Có</label>
+							<label class="radio-inline"><input type="radio" value="0" name="optactive">Không</label>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-sm-12">
+					<div class="form-group">
+						<textarea name="txtdesc" id="txtdesc" rows="5"></textarea>
+					</div>
 				</div>
 			</div>
 			<input type="submit" name="cmdsave" id="cmdsave" value="Submit" style="display:none;">
 			<div class="text-center toolbar">
-				<div style="height: 20px;"></div>
-				<a class="save btn btn-success" href="#" onclick="dosubmitAction('frm_action','save');" title="Lưu thông tin"><i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu thông tin</a>
+				<a class="save btn btn-success" href="#" onclick="dosubmitAction('frm_action','save');" title="Lưu thông tin"><i class="fas fa-save"></i> Lưu thông tin</a>
 			</div>
-		</div>
+		</form>
 	</div>
-</form>
+</section>
 <script type="text/javascript">
-    $(document).ready(function(){
-        tinymce.init({selector:'#txtdesc'});
-    });
+	$(document).ready(function(){
+		$('#txtdesc').summernote({
+			placeholder: 'Mô tả ...',
+			height: 200,
+			toolbar: [
+			['style', ['style']],
+			['font', ['bold', 'italic', 'underline', 'superscript', 'subscript', 'strikethrough', 'clear']],
+			['fontname', ['fontname']],
+			['fontsize', ['fontsize']],
+			['color', ['color']],
+			['para', ['ul', 'ol', 'paragraph']],
+			['height', ['height']],
+			['table', ['table']],
+			['insert', ['link', 'picture', 'video', 'hr']],
+			['view', ['fullscreen', 'codeview', 'help']],
+			],
+		});
+	});
 </script>

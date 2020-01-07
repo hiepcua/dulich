@@ -16,19 +16,17 @@ if($flag == false){
 // Begin Toolbar
 require_once('libs/cls.menuitem.php');
 require_once('libs/cls.category.php');
-require_once('libs/cls.place.php');
 $objmysql = new CLS_MYSQL();
 $obj_cate = new CLS_CATEGORY();
-$obj_place = new CLS_PLACE();
 $obj = new CLS_MENUITEM();
+$msg 		= new \Plasticbrain\FlashMessages\FlashMessages();
+if(!isset($_SESSION['flash'.'com_'.COMS])) $_SESSION['flash'.'com_'.COMS] = 2;
 
 $mnuid = isset($_GET['mnuid']) ? (int)$_GET['mnuid'] : 0;
 if(isset($_POST['cmdsave'])){ 
 	$Cate_ID 	= '';
 	$Con_ID 	= '';
 	$Link 		= '';
-	$TypeOL_Id	= '';
-	$Place_ID	= '';
 	$Mnu_ID 	= (int)$mnuid;
 	$Code 		= addslashes(un_unicode($_POST['txtname']));
 	$Par_ID		= isset($_POST['cbo_parid']) ? (int)$_POST['cbo_parid'] : 0;
@@ -44,12 +42,6 @@ if(isset($_POST['cmdsave'])){
 	}
 	else if($Viewtype == 'article'){		
 		$Con_ID = (int)$_POST['cbo_article'];
-	}
-	else if($Viewtype == 'type_of_land'){
-		$TypeOL_Id = (int)$_POST['cbo_type_of_land'];
-	}
-	else if($Viewtype == 'place'){
-		$Place_ID = (int)$_POST['cbo_place'];
 	}
 	else{
 		$Link = addslashes($_POST['txtlink']);
@@ -67,20 +59,22 @@ if(isset($_POST['cmdsave'])){
 		`viewtype`='".$Viewtype."',
 		`category_id`='".$Cate_ID."',
 		`content_id`='".$Con_ID."',
-		`type_of_land_id`='".$TypeOL_Id."',
-		`place_id`='".$Place_ID."',
 		`link`='".$Link."',
 		`icon`='".$Icon."',
 		`class`='".$Class."',
 		`isactive`='".$isActive."'";
 		$sql.=" WHERE `id`='".$ID."'";
-		$objmysql->Exec($sql);
+		$result = $objmysql->Exec($sql);
+        if($result) $_SESSION['flash'.'com_'.COMS] = 1;
+        else $_SESSION['flash'.'com_'.COMS] = 0;
 	}else{
-		$sql="INSERT INTO `tbl_mnuitems`(`par_id`,`name`,`code`,`menu_id`,`viewtype`,`category_id`,`content_id`,`type_of_land_id`,`place_id`,`link`,`icon`,`class`,`intro`,`isactive`) VALUES ";
-		$sql.="('".$Par_ID."','".$Name."','".$Code."','".$Mnu_ID."','".$Viewtype."','".$Cate_ID."','".$Con_ID."','".$TypeOL_Id."','".$Place_ID."','".$Link."','".$Icon."','".$Class."','".$Intro."','".$isActive."') ";
-		$objmysql->Exec($sql);
+		$sql="INSERT INTO `tbl_mnuitems`(`par_id`,`name`,`code`,`menu_id`,`viewtype`,`category_id`,`content_id`,`link`,`icon`,`class`,`intro`,`isactive`) VALUES ";
+		$sql.="('".$Par_ID."','".$Name."','".$Code."','".$Mnu_ID."','".$Viewtype."','".$Cate_ID."','".$Con_ID."','".$Link."','".$Icon."','".$Class."','".$Intro."','".$isActive."') ";
+		$result = $objmysql->Exec($sql);
+        if($result) $_SESSION['flash'.'com_'.COMS] = 1;
+        else $_SESSION['flash'.'com_'.COMS] = 0;
 	}
-	echo '<script language="javascript">window.location="'.ROOTHOST_ADMIN.COMS.'/'.$mnuid.'"</script>';
+	// echo '<script language="javascript">window.location="'.ROOTHOST_ADMIN.COMS.'/'.$mnuid.'"</script>';
 }
 
 if(isset($_POST["txtaction"]) && $_POST["txtaction"]!=""){

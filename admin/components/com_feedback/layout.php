@@ -6,6 +6,8 @@ define('THIS_COM_PATH',COM_PATH.'com_'.COMS.'/');
 include_once(EXT_PATH.'cls.upload.php');
 $objUpload = new CLS_UPLOAD();
 $objmysql = new CLS_MYSQL();
+$msg 		= new \Plasticbrain\FlashMessages\FlashMessages();
+if(!isset($_SESSION['flash'.'com_'.COMS])) $_SESSION['flash'.'com_'.COMS] = 2;
 
 if(isset($_POST["cmdsave"])){		
 	$Name 		= addslashes($_POST['txt_name']);
@@ -24,13 +26,17 @@ if(isset($_POST["cmdsave"])){
 		`career`='".$Career."',
 		`avatar`='".$Avatar."'
 		WHERE `id`='".$ID."'";
-		$objmysql->Exec($sql);
+		$result = $objmysql->Exec($sql);
+		if($result) $_SESSION['flash'.'com_'.COMS] = 1;
+        else $_SESSION['flash'.'com_'.COMS] = 0;
 	}else{
 		$sql="INSERT INTO `tbl_feedback` ( `name`, `comment`, `career`, `avatar`, `isactive`) VALUES ";
 		$sql.="('".$Name."', '".$Comment."','".$Career."', '".$Avatar."', '".$isActive."')";
-		$objmysql->Exec($sql);
+		$result = $objmysql->Exec($sql);
+		if($result) $_SESSION['flash'.'com_'.COMS] = 1;
+        else $_SESSION['flash'.'com_'.COMS] = 0;
 	}
-	echo "<script language=\"javascript\">window.location='".ROOTHOST_ADMIN.COMS."'</script>";
+	// echo "<script language=\"javascript\">window.location='".ROOTHOST_ADMIN.COMS."'</script>";
 }
 
 if(isset($_POST["txtaction"]) && $_POST["txtaction"]!=""){

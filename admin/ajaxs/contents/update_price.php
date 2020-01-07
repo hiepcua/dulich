@@ -10,5 +10,4 @@ $price = isset($_POST['price']) ? (float)$_POST['price'] : 0;
 
 $sql="UPDATE tbl_contents SET price = $price WHERE id = $id";
 $objdata->Exec($sql);
-echo number_format($price);
 ?>
