@@ -187,9 +187,36 @@ $objmysql1 = new CLS_MYSQL();
 			$childs1 = $val0['childs'];
 			$cChild1 = count($childs1);
 			$viewtype = $val0['viewtype'];
+			switch ($val0['viewtype']) {
+				case 'link':
+				$link = $val0['link'];
+				break;
+				case 'block':
+				$sql="SELECT `code` FROM tbl_categories WHERE id=".$val0['category_id'];
+				$objmysql->Query($sql);
+				$row = $objmysql->Fetch_Assoc();
+				$link = ROOTHOST.'chuyen-muc/'.$row['code'];
+				break;
+				case 'article':
+				$sql="SELECT `code` FROM tbl_contents WHERE id=".$val0['content_id'];
+				$objmysql->Query($sql);
+				$row = $objmysql->Fetch_Assoc();
+				$link = ROOTHOST.'bai-viet/'.$row['code'];
+				break;
+				case 'place':
+				$sql="SELECT `code` FROM tbl_place WHERE id=".$val0['place_id'];
+				$objmysql->Query($sql);
+				$row = $objmysql->Fetch_Assoc();
+				$link = ROOTHOST.'diem-den/'.$row['code'];
+				break;
+
+				default:
+				$link = ROOTHOST;
+				break;
+			}
 
 			echo '<li class="nav-item">';
-			echo '<a href="'.$val0['link_lv0'].'" title="'.$val0['name'].'">'.$val0['name'].'</a>';
+			echo '<a href="'.$link.'" title="'.$val0['name'].'">'.$val0['name'].'</a>';
 			if($cChild1 > 0 && $viewtype == 'place') {
 				echo '<i class="fa fa-angle-down"></i>';
 				echo '<div class="dropdown-menu">';
@@ -199,13 +226,13 @@ $objmysql1 = new CLS_MYSQL();
 					$childs2 = $val1['childs2'];
 					$cChild2 = count($childs2);
 					echo '<div class="item">';
-					echo '<h5 class="dropdown-heading"><a href="'.$val1['link_lv1'].'" title="'.$val1['name'].'">'.$val1['name'].'</a></h5>';
+					echo '<h5 class="dropdown-heading"><a href="'.ROOTHOST.'diem-den/'.$val1['code'].'">'.$val1['name'].'</a></h5>';
 					if($cChild2 > 0){
 						echo '<i class="fa fa-angle-down"></i>';
 						echo '<ul class="list-unstyled">';
 						// Loop print childrent lever 2
 						foreach ($childs2 as $k2 => $val2) {
-							echo '<li><a href="'.$val2['link_lv2'].'" title="'.$val2['name'].'">'.$val2['name'].'</a></li>';
+							echo '<li><a href="'.ROOTHOST.'diem-den/'.$val2['code'].'" title="'.$val2['name'].'">'.$val2['name'].'</a></li>';
 						}
 						echo '</ul>';
 					}
@@ -218,7 +245,7 @@ $objmysql1 = new CLS_MYSQL();
 				echo '<div class="dropdown-menu">';
 					echo '<ul class="list-unstyled">';
 						foreach ($childs1 as $k1 => $val1) {
-							echo '<li><a href="'.$val1['link_lv1'].'" title="'.$val1['name'].'">'.$val1['name'].'</a></li>';
+							echo '<li><a href="'.ROOTHOST.'chuyen-muc/'.$val1['code'].'" title="'.$val1['name'].'">'.$val1['name'].'</a></li>';
 						}
 					echo '</ul>';
 				echo '</div>';
@@ -228,4 +255,3 @@ $objmysql1 = new CLS_MYSQL();
 		?>
 	</ul>
 </div>
->>>>>>> 476603479dac1556705abdc528119788c7dfddde
